@@ -20,7 +20,7 @@ CREATE TABLE Vehicle
 (
     id            int primary key default nextval('Vehicle_id_seq'),
     location      point,
-    battery_level decimal check ( battery_level <= 100 AND battery_level >= 0),
+    battery_level decimal check ( battery_level <= 100 AND battery_level >= 0 ),
     type          varchar(15),
     brand         varchar(30),
     price         decimal check ( price >= 0 ),
@@ -58,9 +58,9 @@ create table Client
     firstname                   varchar(50),
     surname                    varchar(50),
     email                      varchar(100) unique check ( email ~
-                                            '^[a-zA-Z0-9]+([._%+-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' ),
-    number                     varchar(20) unique check ( number ~ '^\+[1-9][0-9]{7,14}$'),
-    birthday                   date check ( birthday <= current_date - INTERVAL '16 years'),
+                                                           '^[a-zA-Z0-9]+([._%+-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' ),
+    number                     varchar(20) unique check ( number ~ '^\+[1-9][0-9]{7,14}$' ),
+    birthday                   date check ( birthday <= current_date - INTERVAL '16 years' ),
     subscription               int references subscription (id),
     starting_subscription_date date
 );
@@ -115,8 +115,7 @@ values;
 INSERT INTO Car_key default
 values;
 
-Insert INTO With_licence (location, battery_level, type, brand, price, isAvailable, fee, model, chassis_number, key_1,
-                          key_2)
+Insert INTO With_licence (location, battery_level, type, brand, price, isAvailable, fee, model, chassis_number, key_1, key_2)
 VALUES (point(4.91138, 50.41592),
         87,
         'Voiture',
@@ -156,4 +155,4 @@ VALUES ('Thoams',
         '+3343434343',
         '2006-08-09',
         1,
-        current_date);
+        current_date);  
