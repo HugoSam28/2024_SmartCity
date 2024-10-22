@@ -24,7 +24,6 @@ CREATE TABLE Vehicle
     location      POINT,
     battery_level DECIMAL CHECK ( battery_level <= 100 AND battery_level >= 0 ),
     type          VARCHAR(15),
-    brand         VARCHAR(30),
     price         DECIMAL CHECK ( price >= 0 ),
     isAvailable   BOOLEAN,
     fee           DECIMAL CHECK ( fee >= 0 )
@@ -38,6 +37,7 @@ CREATE TABLE Car_key
 CREATE TABLE With_licence
 (
     id             INT PRIMARY KEY DEFAULT NEXTVAL('Vehicle_id_seq'),
+    brand          VARCHAR(30),
     model          VARCHAR(20),
     chassis_number VARCHAR(20) UNIQUE
 ) inherits (Vehicle);
@@ -66,14 +66,14 @@ CREATE TABLE Client
     email                      VARCHAR(100) UNIQUE CHECK ( email ~
                                                            '^[a-zA-Z0-9]+([._%+-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' ),
     number                     VARCHAR(20) UNIQUE CHECK ( number ~ '^\+[1-9][0-9]{7,14}$' ),
-    password                   VARCHAR(250);
-birthday                   DATE CHECK ( birthday <= CURRENT_DATE - INTERVAL '16 years' ),
+    password                   VARCHAR(250),
+    birthday                   DATE CHECK ( birthday <= CURRENT_DATE - INTERVAL '16 years' ),
     subscription               INT REFERENCES Subscription (id),
     starting_subscription_date DATE,
     balance                    DECIMAL,
-    has_Valid_Licence          BOOLEAN
+    has_valid_licence          BOOLEAN
 );
---gngn oui le password est en clair je sais ça sera modifié plus tard, 
+--gngn oui le password est en clair je sais ça sera modifié plus tard,
 --faut que le lise la doc, à voir s'il y a un type particulier pour enregistrer, a voir en fonction du hashage j'imagine
 
 CREATE TABLE Trip
