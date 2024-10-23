@@ -26,7 +26,7 @@ CREATE TABLE Vehicle
     type          VARCHAR(15),
     price         DECIMAL CHECK ( price >= 0 ),
     isAvailable   BOOLEAN,
-    fee           DECIMAL CHECK ( fee >= 0 )
+    fees          DECIMAL CHECK ( fees >= 0 )
 );
 
 CREATE TABLE Car_key
@@ -71,10 +71,14 @@ CREATE TABLE Client
     subscription               INT REFERENCES Subscription (id),
     starting_subscription_date DATE,
     balance                    DECIMAL,
-    has_valid_licence          BOOLEAN
+    has_car_licence            BOOLEAN,
+    has_motorbike_licence      BOOLEAN
 );
 --gngn oui le password est en clair je sais ça sera modifié plus tard,
 --faut que le lise la doc, à voir s'il y a un type particulier pour enregistrer, a voir en fonction du hashage j'imagine
+
+--Ajouter une contrainte jsp comment pour qu'on ne puisse pas créer un trajet en voiture ou scooter
+--avec un client qui n'a pas le permis adécquat
 
 CREATE TABLE Trip
 (
@@ -98,28 +102,28 @@ CREATE TABLE Sponsoring
     PRIMARY KEY (sponsor, referred)
 );
 
-INSERT INTO Vehicle (location, battery_level, type, price, isAvailable, fee)
+INSERT INTO Vehicle (location, battery_level, type, price, isAvailable, fees)
 VALUES (point(4.91336, 50.41501),
         70.4,
         'Trotinette',
         0.5,
         TRUE,
         1);
-INSERT INTO Vehicle (location, battery_level, type, price, isAvailable, fee)
+INSERT INTO Vehicle (location, battery_level, type, price, isAvailable, fees)
 VALUES (point(4.91536, 50.41501),
         60.4,
         'Trotinette',
         0.5,
         FALSE,
         1);
-INSERT INTO Vehicle (location, battery_level, type, price, isAvailable, fee)
+INSERT INTO Vehicle (location, battery_level, type, price, isAvailable, fees)
 VALUES (point(4.91326, 50.41501),
         10.4,
         'Velo',
         0.3,
         TRUE,
         1);
-INSERT INTO Vehicle (location, battery_level, type, price, isAvailable, fee)
+INSERT INTO Vehicle (location, battery_level, type, price, isAvailable, fees)
 VALUES (point(4.91320, 50.41501),
         100,
         'Velo',
@@ -134,7 +138,7 @@ VALUES;
 INSERT INTO Car_key DEFAULT
 VALUES;
 
-INSERT INTO With_licence (location, battery_level, type, brand, price, isAvailable, fee, model, chassis_number)
+INSERT INTO With_licence (location, battery_level, type, brand, price, isAvailable, fees, model, chassis_number)
 VALUES (point(4.91138, 50.41592),
         87,
         'Voiture',
@@ -144,7 +148,7 @@ VALUES (point(4.91138, 50.41592),
         50,
         'Tiguan-2018',
         'FTAU7258TIGUS82JS822');
-INSERT INTO With_licence (location, battery_level, type, brand, price, isAvailable, fee, model, chassis_number)
+INSERT INTO With_licence (location, battery_level, type, brand, price, isAvailable, fees, model, chassis_number)
 VALUES (point(4.90997, 50.41512),
         100,
         'Voiture',
