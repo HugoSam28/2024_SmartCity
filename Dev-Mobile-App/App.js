@@ -1,12 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
+import Scan from './screens/scan'
+import Map from './screens/map'
+import List from './screens/list'
+import Profile from './screens/profile'
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+const Tab = createBottomTabNavigator();
+
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <NavigationContainer>
+        <Tab.Navigator initialRouteName="Search" screenOptions={{ headerShown: false }}>
+          <Tab.Screen name="Scan" component={Scan}/>
+          <Tab.Screen name="Search" component={Map}/>
+          <Tab.Screen name="Profile" component={Profile}/>
+        </Tab.Navigator>
+      </NavigationContainer>
   );
 }
 
