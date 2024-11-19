@@ -2,7 +2,7 @@
 import { StyleSheet } from "react-native";
 import { useFonts} from "expo-font";
 
-export default function Styles() {
+export default function LoadStyles() {
   const [loaded] = useFonts({
     Podkova: require("../assets/fonts/Podkova-Regular.ttf"),
     RobotoCondensed: require("../assets/fonts/RobotoCondensed-Regular.ttf"),

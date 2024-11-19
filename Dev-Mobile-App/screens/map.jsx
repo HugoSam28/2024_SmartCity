@@ -1,9 +1,17 @@
-import {StyleSheet, View} from 'react-native'
+import {StyleSheet, Text, View} from 'react-native'
 import MapView from 'react-native-maps';
+import { useState } from 'react'
+import List from './list'
+import {Colors, GlobalStyles} from "../components/styles";
+import {SegmentedButtons} from "react-native-paper";
+import {SafeAreaView} from "react-native-safe-area-context";
+import {createStaticNavigation, useNavigation} from "@react-navigation/native";
 
 export default function Map() {
+  const [value, setValue] = useState('map');
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={GlobalStyles.container}>
       <MapView style={styles.map}
                initialRegion={{
                  latitude: 50.46681,
@@ -12,18 +20,31 @@ export default function Map() {
                  longitudeDelta: 0.0045
                }}
       >
-
       </MapView>
-    </View>
+      <SegmentedButtons
+        value={value}
+        onValueChange={setValue}
+        buttons={[
+          {
+            value: 'map',
+            checkedColor: Colors.accentColor,
+            uncheckedColor: Colors.mutedColor,
+          },
+          {
+            value: 'list',
+            checkedColor: Colors.accentColor,
+            uncheckedColor: Colors.mutedColor,
+            onPress: () => {
+              setValue('list');
+              navigation.navigate(List);
+            }
+          },
+        ]}
+      />
+    </SafeAreaView>
   )
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FAF9F6',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
   map: {
     ...StyleSheet.absoluteFillObject,
   }
