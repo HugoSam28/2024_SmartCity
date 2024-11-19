@@ -1,16 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Text, View} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { GlobalStyles }  from '../components/styles'
+
 export default function Scan(){
   return (
-    <View style={styles.container}>
-      <Text>Scan</Text>
+    <View style={GlobalStyles.container}>
+      <Text style={GlobalStyles.title}>Scan</Text>
     </View>
   )
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor:'#FAF9F6',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-}) ;
