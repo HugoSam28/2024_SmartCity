@@ -18,7 +18,8 @@ const lightColors = {
   mutedColor: "#666666",                // Texte secondaire
   containerBackGroundColor: "#ECF3FF",  // Encadrer
   containerInArrayColor: "#D3E9FF",     // Bouton dans les encadrer
-};
+  selected: "#D3E9FF",
+}
 const darkColors = {
   backgroundColor: "#1C2335",
   text: "#F2F6FF",
@@ -26,6 +27,8 @@ const darkColors = {
   mutedColor: "#666666",
   containerBackGroundColor: "#29334D",
   containerInArrayColor: "#333F5E",
+  selected: "#333F5E",
+
 
 };
 
@@ -40,6 +43,7 @@ export function colors(theme){
       mutedColor: theme === 'light' ? lightColors.mutedColor : darkColors.mutedColor,
       containerBackGroundColor: theme === 'light' ? lightColors.containerBackGroundColor : darkColors.containerBackGroundColor,
       containerInArrayColor: theme === 'light' ? lightColors.containerInArrayColor : darkColors.containerInArrayColor,
+      selected: theme === 'light' ? lightColors.selected : darkColors.selected,
     }
   )
 };

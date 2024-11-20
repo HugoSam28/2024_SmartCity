@@ -30,7 +30,7 @@ export default function MapListSwitch({screen}) {
             icon:({ size, color }) => (
               <Ionicons
                 name={screenValue === 'map' ? 'map' : 'map-outline'}
-                size={20}
+                size={27}
                 color={screenValue === 'map' ? styleColors.accentColor : styleColors.mutedColor} />
             ),
             checkedColor: styleColors.accentColor,
@@ -38,6 +38,10 @@ export default function MapListSwitch({screen}) {
             onPress: () => {
               setScreenValue('map');
               navigation.navigate("Map");
+            },
+            style: {
+              backgroundColor: screenValue === 'map' ? styleColors.selected : styleColors.backgroundColor,
+              borderRadius: 12,
             }
           },
           {
@@ -46,7 +50,7 @@ export default function MapListSwitch({screen}) {
             icon:({ size, color }) => (
               <Ionicons
                 name={screenValue === 'list' ? 'list' : 'list-outline'}
-                size={17}
+                size={27}
                 color={screenValue === 'list' ? styleColors.accentColor : styleColors.mutedColor} />
             ),
             checkedColor: styleColors.accentColor,
@@ -54,6 +58,10 @@ export default function MapListSwitch({screen}) {
             onPress: () => {
               setScreenValue('list');
               navigation.navigate("List");
+            },
+            style: {
+              backgroundColor: screenValue === 'list' ? styleColors.selected : styleColors.backgroundColor,
+              borderRadius: 12,
             }
           },
         ]}
@@ -65,7 +73,7 @@ const segmentedButtonStyle =
   StyleSheet.create({
     container: {
       position: "absolute",
-      top: 30, // 50 pixels depuis le haut du conteneur
-      right: 170,
+      top:50,
+      right: 180,
     },
   });
