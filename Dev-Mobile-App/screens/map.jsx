@@ -1,15 +1,10 @@
 import { StyleSheet, View } from 'react-native'
 import MapView from 'react-native-maps';
-import { useState } from 'react'
-import { GlobalStyles, colors } from "../components/styles";
-
-import { SegmentedButtons } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
+import { GlobalStyles } from "../components/styles";
 import theme from "../provider/Theme";
+import MapListSwitch from "../components/MapListSwitch";
 
 export default function Map() {
-  const [value, setValue] = useState('map');
-  const navigation = useNavigation();
   const styles = GlobalStyles(theme);
   return (
     <View style={styles.container}>
@@ -22,26 +17,7 @@ export default function Map() {
                }}
       >
       </MapView>
-      <SegmentedButtons
-        value={value}
-        onValueChange={setValue}
-        buttons={[
-          {
-            value: 'map',
-            checkedColor: colors.accentColor,
-            uncheckedColor: colors.mutedColor,
-          },
-          {
-            value: 'list',
-            checkedColor: colors.accentColor,
-            uncheckedColor: colors.mutedColor,
-            onPress: () => {
-              setValue('list');
-              navigation.navigate("List");
-            }
-          },
-        ]}
-      />
+      <MapListSwitch screen={'map'}/>
     </View>
   )
 };

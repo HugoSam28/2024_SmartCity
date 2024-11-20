@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { colors } from "./styles";
 import React, {useContext} from "react";
 import ThemeContext from "../provider/Theme";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 
@@ -27,17 +27,20 @@ export default function TabsMenu() {
   }
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={screenOptions}>
+      <Tab.Navigator screenOptions={screenOptions} initialRouteName="Search">
           <Tab.Screen
             name="Scan"
             component={Scan}
             options={{
-              tabBarInactiveTintColor: stylesColors.iconColor,
-              tabBarActiveTintColor: stylesColors.accentColor,
-              tabBarLabelStyle: {
-                fontSize: 13,
-                fontFamily: 'RobotoMono'
-              },
+              tabBarLabel: ({ focused }) => (
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontFamily: focused ? 'RobotoMonoBold' : 'RobotoMono',
+                    color: focused ? stylesColors.accentColor : stylesColors.iconColor,
+                  }}
+                >Scan</Text>
+              ),
               tabBarIcon: ({focused}) => {
                 return (
                   <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -55,12 +58,15 @@ export default function TabsMenu() {
             name="Search"
             component={MapListNavigator}
             options={{
-              tabBarInactiveTintColor: stylesColors.iconColor,
-              tabBarActiveTintColor: stylesColors.accentColor,
-              tabBarLabelStyle: {
-                fontSize: 13,
-                fontFamily: 'RobotoMono'
-              },
+              tabBarLabel: ({ focused }) => (
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontFamily: focused ? 'RobotoMonoBold' : 'RobotoMono',
+                    color: focused ? stylesColors.accentColor : stylesColors.iconColor,
+                  }}
+                >Search</Text>
+              ),
               tabBarIcon: ({focused}) => {
                 return (
                   <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -78,12 +84,15 @@ export default function TabsMenu() {
             name="Profile"
             component={Profile}
             options={{
-              tabBarInactiveTintColor: stylesColors.iconColor,
-              tabBarActiveTintColor: stylesColors.accentColor,
-              tabBarLabelStyle: {
-                fontSize: 13,
-                fontFamily: 'RobotoMono'
-              },
+              tabBarLabel: ({ focused }) => (
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontFamily: focused ? 'RobotoMonoBold' : 'RobotoMono',
+                    color: focused ? stylesColors.accentColor : stylesColors.iconColor,
+                  }}
+                >Profil</Text>
+              ),
               tabBarIcon: ({focused}) => {
                 return (
                     <Ionicons

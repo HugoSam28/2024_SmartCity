@@ -1,11 +1,20 @@
-// viewVariables/styles.js
 import { StyleSheet } from "react-native";
+import { useFonts} from "expo-font";
+
+export default function LoadStyles() {
+  const [loaded] = useFonts({
+    Podkova: require("../assets/fonts/Podkova-Regular.ttf"),
+    RobotoCondensed: require("../assets/fonts/RobotoCondensed-Regular.ttf"),
+    RobotoMono: require("../assets/fonts/RobotoMono-Regular.ttf"),
+    RobotoMonoBold: require("../assets/fonts/RobotoMono-Bold.ttf"),
+  })
+}
 
 // Couleurs globales
 const lightColors = {
   backgroundColor: "#FAFDFF",           // Couleur de fond
-  text: "#00005E",                      // Texte principal
-  iconColor: "#00005E",                 // Couleur des icones
+  text: "#000095",                      // Texte principal
+  iconColor: "#000095",                 // Couleur des icones
   mutedColor: "#666666",                // Texte secondaire
   containerBackGroundColor: "#ECF3FF",  // Encadrer
   containerInArrayColor: "#D3E9FF",     // Bouton dans les encadrer
@@ -43,7 +52,6 @@ export const Sizes = {
   large: 35,
   extraLarge: 47,
 };
-
 
 // Styles globaux
 export function GlobalStyles(theme){
