@@ -1,14 +1,5 @@
 // viewVariables/styles.js
 import { StyleSheet } from "react-native";
-import { useFonts } from "expo-font";
-
-export default function LoadStyles() {
-  const [loaded] = useFonts({
-    Podkova: require("../assets/fonts/Podkova-Regular.ttf"),
-    RobotoCondensed: require("../assets/fonts/RobotoCondensed-Regular.ttf"),
-    RobotoMono: require("../assets/fonts/RobotoMono-Regular.ttf"),
-  })
-}
 
 // Couleurs globales
 const lightColors = {
@@ -46,12 +37,13 @@ export function colors(theme){
 
 // Tailles et espacements
 export const Sizes = {
-  extraSmall: 7,
+  extraSmall: 12,
   small: 15,
   medium: 26,
   large: 35,
   extraLarge: 47,
 };
+
 
 // Styles globaux
 export function GlobalStyles(theme){

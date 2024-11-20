@@ -1,5 +1,4 @@
 import { Text } from 'react-native'
-import Map from './map'
 import { useContext, useState } from 'react'
 import { SegmentedButtons } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -24,7 +23,7 @@ export default function List(){
             uncheckedColor: colors.mutedColor,
             onPress: () => {
               setValue('map');
-              navigation.navigate(Map);
+              navigation.navigate("Map");
             }
           },
           {

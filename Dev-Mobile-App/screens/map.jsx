@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native'
 import MapView from 'react-native-maps';
 import { useState } from 'react'
-import List from './list'
 import { GlobalStyles, colors } from "../components/styles";
 
 import { SegmentedButtons } from "react-native-paper";
@@ -38,7 +37,7 @@ export default function Map() {
             uncheckedColor: colors.mutedColor,
             onPress: () => {
               setValue('list');
-              navigation.navigate(List);
+              navigation.navigate("List");
             }
           },
         ]}
