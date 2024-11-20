@@ -1,18 +1,20 @@
-import {StyleSheet, Text, View} from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import MapView from 'react-native-maps';
 import { useState } from 'react'
 import List from './list'
-import {Colors, GlobalStyles} from "../components/styles";
-import {SegmentedButtons} from "react-native-paper";
-import {SafeAreaView} from "react-native-safe-area-context";
-import {createStaticNavigation, useNavigation} from "@react-navigation/native";
+import { GlobalStyles, colors } from "../components/styles";
+
+import { SegmentedButtons } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+import theme from "../provider/Theme";
 
 export default function Map() {
   const [value, setValue] = useState('map');
   const navigation = useNavigation();
+  const styles = GlobalStyles(theme);
   return (
-    <SafeAreaView style={GlobalStyles.container}>
-      <MapView style={styles.map}
+    <View style={styles.container}>
+      <MapView style={mapStyle.map}
                initialRegion={{
                  latitude: 50.46681,
                  longitude: 4.86583,
@@ -27,13 +29,13 @@ export default function Map() {
         buttons={[
           {
             value: 'map',
-            checkedColor: Colors.accentColor,
-            uncheckedColor: Colors.mutedColor,
+            checkedColor: colors.accentColor,
+            uncheckedColor: colors.mutedColor,
           },
           {
             value: 'list',
-            checkedColor: Colors.accentColor,
-            uncheckedColor: Colors.mutedColor,
+            checkedColor: colors.accentColor,
+            uncheckedColor: colors.mutedColor,
             onPress: () => {
               setValue('list');
               navigation.navigate(List);
@@ -41,11 +43,11 @@ export default function Map() {
           },
         ]}
       />
-    </SafeAreaView>
+    </View>
   )
-}
-const styles = StyleSheet.create({
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  }
+};
+const mapStyle = StyleSheet.create({
+    map: {
+      ...StyleSheet.absoluteFillObject,
+    }
 });

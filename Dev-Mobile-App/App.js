@@ -5,13 +5,15 @@ import Profile from './screens/profile'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoadStyles from "./components/styles";
-
-
+import {useColorScheme} from "react-native";
+import ThemeContext from "./provider/Theme";
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const theme = useColorScheme();
   return (
+    <ThemeContext.Provider value={theme}>
       <NavigationContainer>
         <LoadStyles/>
         <Tab.Navigator initialRouteName="Search" screenOptions={{ headerShown: false }}>
@@ -20,6 +22,7 @@ export default function App() {
           <Tab.Screen name="Profile" component={Profile}/>
         </Tab.Navigator>
       </NavigationContainer>
+    </ThemeContext.Provider>
   );
 }
 
