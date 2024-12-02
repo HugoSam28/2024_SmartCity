@@ -3,9 +3,10 @@
 Appliction mobile qui regroupe divers moyen de transport partagés:
 - Trotinnettes
 - Vélos
-- Voitures partagées
+- Scooter
+- Voitures
 
-Ca simplifie l'utilisation de fait, il existe plusieurs marques de trotinettes
+Ça simplifie l'utilisation de fait, il existe plusieurs marques de trotinettes
 et de vélos. Ces transports sont généralement utilsés avec leur application dédiée.
 Ce qui peut rendre l'experience utilisateur plus compliquée.
 
@@ -20,11 +21,11 @@ Nous proposons alors de créer une marque (fictive) qui va mettre en circulation
 - Choisir un ou plusieurs abonnement
 - Mode clair/sombre
 - Du parrainage pour récupérer un petit montant.
+- Création d'un compte en même temps que l'abonnement
 ### Avancées
 - Identifier un "vehicule" via un QrCode.
 - itinéraire vers le vehicle 'x'
 ## Membres
-
 - Hugo Samray
 - Thomas Lambert
 - Danaé Charloteaux

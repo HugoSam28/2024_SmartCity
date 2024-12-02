@@ -1,16 +1,10 @@
-/*
-    !!!!!!!
-        A faire : 'CREATE DATABASE'.
-    !!!!!!!
-*/
-
 DROP TABLE IF EXISTS Trip CASCADE;
 DROP TABLE IF EXISTS Vehicle CASCADE;
 DROP TABLE IF EXISTS With_licence CASCADE;
 DROP TABLE IF EXISTS Client CASCADE;
 DROP TABLE IF EXISTS Subscription CASCADE;
 DROP TABLE IF EXISTS Car_key CASCADE;
-DROP TABLE IF EXISTS Sponsoring;
+DROP TABLE IF EXISTS Sponsoring CASCADE;
 
 DROP SEQUENCE IF EXISTS Vehicle_id_seq;
 CREATE SEQUENCE Vehicle_id_seq
@@ -44,7 +38,7 @@ CREATE TABLE With_licence
 CREATE TABLE Car_key
 (
     id     INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    car_id INT REFERENCES With_licence (id)
+    car_id INT REFERENCES With_licence (id) ON DELETE SET NULL
 );
 
 CREATE TABLE Subscription
@@ -59,27 +53,30 @@ CREATE TABLE Subscription
 CREATE TABLE Client
 (
     id                         INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    first_name                 VARCHAR(50)  NOT NULL,
-    last_name                  VARCHAR(50)  NOT NULL,
+    firstname                  VARCHAR(50)  NOT NULL,
+    surname                    VARCHAR(50)  NOT NULL,
     email                      VARCHAR(100) NOT NULL UNIQUE CHECK ( email ~
                                                                     '^[a-zA-Z0-9]+([._%+-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' ),
-    phone_number                     VARCHAR(20)  NOT NULL UNIQUE CHECK ( number ~ '^\+[1-9][0-9]{7,14}$' ),
+    number                     VARCHAR(20)  NOT NULL UNIQUE CHECK ( number ~ '^\+[1-9][0-9]{7,14}$' ),
     password                   VARCHAR(250) NOT NULL,
     birthday                   DATE         NOT NULL CHECK ( birthday <= CURRENT_DATE - INTERVAL '16 years' ),
-    subscription               INT REFERENCES Subscription (id),
+    subscription               INT REFERENCES Subscription (id) ON DELETE SET NULL,
     starting_subscription_date DATE,
     balance                    DECIMAL DEFAULT 0,
     has_car_licence            BOOLEAN DEFAULT FALSE,
     has_motorbike_licence      BOOLEAN DEFAULT FALSE
 );
+--gngn oui le password est en clair je sais ça sera modifié plus tard,
+--faut que le lise la doc, à voir s'il y a un type particulier pour enregistrer, a voir en fonction du hashage j'imagine
+
 --Ajouter une contrainte jsp comment pour qu'on ne puisse pas créer un trajet en voiture ou scooter
 --avec un client qui n'a pas le permis adécquat
 
 CREATE TABLE Trip
 (
     id                INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    client_ID         INT       NOT NULL REFERENCES Client (id),
-    vehicle_ID        INT       NOT NULL REFERENCES Vehicle (id),
+    client_ID         INT       NOT NULL REFERENCES Client (id) ON DELETE SET NULL,
+    vehicle_ID        INT       NOT NULL REFERENCES Vehicle (id) ON DELETE SET NULL,
     starting_date     TIMESTAMP NOT NULL,
     ending_date       TIMESTAMP NOT NULL,
     distance          DECIMAL   NOT NULL CHECK ( distance >= 0),
@@ -92,8 +89,8 @@ CREATE TABLE Trip
 
 CREATE TABLE Sponsoring
 (
-    sponsor  INT NOT NULL REFERENCES Client (id),
-    referred INT NOT NULL REFERENCES Client (id),
+    sponsor  INT NOT NULL REFERENCES Client (id) ON DELETE SET NULL,
+    referred INT NOT NULL REFERENCES Client (id) ON DELETE SET NULL,
     PRIMARY KEY (sponsor, referred)
 );
 
