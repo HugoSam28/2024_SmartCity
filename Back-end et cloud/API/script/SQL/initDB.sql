@@ -50,15 +50,16 @@ CREATE TABLE Subscription
     payment_recurrence VARCHAR(10) NOT NULL
 );
 
-CREATE TABLE Client
+CREATE TABLE User
 (
     id                         INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    firstname                  VARCHAR(50)  NOT NULL,
-    surname                    VARCHAR(50)  NOT NULL,
+    first_name                  VARCHAR(50)  NOT NULL,
+    last_name                    VARCHAR(50)  NOT NULL,
     email                      VARCHAR(100) NOT NULL UNIQUE CHECK ( email ~
                                                                     '^[a-zA-Z0-9]+([._%+-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' ),
-    number                     VARCHAR(20)  NOT NULL UNIQUE CHECK ( number ~ '^\+[1-9][0-9]{7,14}$' ),
+    phone_number                     VARCHAR(20)  NOT NULL UNIQUE CHECK ( number ~ '^\+[1-9][0-9]{7,14}$' ),
     password                   VARCHAR(250) NOT NULL,
+    role                       VARCHAR(10) NOT NULL,
     birthday                   DATE         NOT NULL CHECK ( birthday <= CURRENT_DATE - INTERVAL '16 years' ),
     subscription               INT REFERENCES Subscription (id) ON DELETE SET NULL,
     starting_subscription_date DATE,
@@ -159,19 +160,21 @@ VALUES ('Gold',
         0.15)
 ;
 
-INSERT INTO Client (firstname, surname, email, number, password, birthday)
+INSERT INTO User (first_name, last_name, email, phone_number, password, role, birthday)
 VALUES ('Hugo',
         'Samray',
         'etu51688@henallux.be',
         '+32471740915',
         'my strong password',
+        'ROLE_USER',
         '2004-05-28');
-INSERT INTO Client (firstname, surname, email, number, password, birthday, subscription, starting_subscription_date)
+INSERT INTO User (first_name, last_name, email, phone_number, password, role, birthday, subscription, starting_subscription_date)
 VALUES ('Thoams',
         'Lambert',
         'thomas.lambert@gmail.com',
         '+3343434343',
         'Hugo est incroyable vrm',
+        'ROLE_ADMIN',
         '2006-08-09',
         1,
         CURRENT_DATE);

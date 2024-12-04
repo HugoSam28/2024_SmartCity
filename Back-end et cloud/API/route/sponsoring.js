@@ -7,13 +7,13 @@ import {
 } from "../controller/sponsoring.js";
 
 import {checkJWT} from "../middleware/identification/jwt.js";
-import {manager} from '../middleware/authorization/mustBe.js';
+import {admin} from '../middleware/authorization/mustBeAdmin.js';
 
 const router = Router();
 
-router.use("/info", checkJWT, manager, getSponsoring);
-router.use("/add", checkJWT, manager, addSponsoring);
-router.use("/delete", checkJWT, manager, deleteSponsoring);
-router.use("/update", checkJWT, manager, updateSponsoring);
+router.use("/info", checkJWT, admin, getSponsoring);
+router.use("/add", checkJWT, admin, addSponsoring);
+router.use("/delete", checkJWT, admin, deleteSponsoring);
+router.use("/update", checkJWT, admin, updateSponsoring);
 
 export default router;
