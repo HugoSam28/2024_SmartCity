@@ -2,16 +2,33 @@ export async function getUserByEmail(SQLClient, {email}){
     const {rows} = await SQLClient.query("SELECT * FROM user WHERE email = $1", [email]);
     return rows[0];
 }
+export async function getUserByReferralCode(SQLClient, {referralCode}){
+  const {rows} = await SQLClient.query("SELECT id FROM user WHERE referral_code = $1", [referralCode]);
+  return rows[0];
+}
 
-export async function deleteUserByID(SQLClient, {idList}){
+export async function deleteUsers(SQLClient, {idList}){
     return await SQLClient.query("DELETE * FROM user WHERE id IN ($1)", [idList]);
 }
 
 export async function addUser(SQLClient, {firstName, lastName, email, phoneNumber, password, birthday, subscription, startingSubscriptionDate, balance, hasCarLicense, hasMotorbikeLicense}){
     const {rows} = await SQLClient.query("INSERT INTO user (first_name, last_name, email, phone_number, password, birthday, subscription, starting_subscription_date, balance, has_car_license, has_motorbike_license)" + 
-        " VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11", [firstName, lastName, email, phoneNumber, password, birthday, subscription, startingSubscriptionDate, balance, hasCarLicense, hasMotorbikeLicense]);
-        return rows[0]?.id;
-    }
+        " VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id",
+      [
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        password,
+        birthday,
+        subscription,
+        startingSubscriptionDate,
+        balance,
+        hasCarLicense,
+        hasMotorbikeLicense
+      ]);
+    return rows[0]?.id;
+}
 
 export async function updateUser(SQLClient, {id, firstName, lastName, email, phoneNumber, password, birthday, subscription, startingSubscriptionDate, balance, hasCarLicense, hasMotorbikeLicense}){
     let query = `UPDATE user SET `;
@@ -69,4 +86,21 @@ export async function updateUser(SQLClient, {id, firstName, lastName, email, pho
     } else {
         throw new Error("No field given");
     }
+}
+
+export async function registration(SQLClient, {firstName, lastName, email, phoneNumber, password, birthday, hasCarLicense, hasMotorbikeLicense}){
+  const {rows} = await SQLClient.query(
+    "INSERT INTO user (first_name, last_name, email, phone_number, password, birthday, has_car_license, has_motorbike_license) " +
+    "VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id",
+    [
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      password,
+      birthday,
+      hasCarLicense,
+      hasMotorbikeLicense
+    ]);
+  return rows[0]?.id;
 }

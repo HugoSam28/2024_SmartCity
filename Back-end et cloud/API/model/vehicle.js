@@ -8,6 +8,18 @@ export async function getVehicleById(SQLClient, {id}) {
   return rows[0];
 }
 
+
+export async function getAllVehicles(SQLClient, {min, max}) { // admin
+  
+  const {allVehicles} = await SQLClient.query("SELECT * FROM vehicle");
+
+  return allVehicles;
+}
+
+export async function getVehiclesAroundMe(SQLClient, {min, max}) {
+  // a faire
+}
+
 export async function addVehicle(SQLClient, {lat, lon, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber}) {
   if (type === 'Voiture' || 'Scooter') {
     const {rows} = SQLClient.query(
@@ -26,7 +38,12 @@ export async function deleteVehicle(SQLClient, {idList}){
   return await SQLClient.query("DELETE FROM vehicle WHERE id IN ($1)", [idList]);
 }
 
-export async function updateVehicle(SQLClient, {id, lat, lon, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber}){
+export async function updateStatus(SQLClient, {id}) {
+  const is_available = await SQLClient.query("GET is_available FROM vehicle WHERE id = $1", [id]);
+  return await SQLClient.query("UPDATE vehicle SET is_available = $1 WHERE id = $2", [!is_available, id]);
+}
+
+export async function updateInformations(SQLClient, {id, lat, lon, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber}){
   let query = `UPDATE ${id%2===0 ? 'with_license' : 'vehicle'} SET `;
   const querySet = [];
   const queryValues = [];

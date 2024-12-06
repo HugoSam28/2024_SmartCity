@@ -1,6 +1,6 @@
-export async function getTripByID(SQLClient, {id}){
-    const {rows} = await SQLClient.query("SELECT * FROM trip WHERE id = $1", [id]);
-    return rows[0];
+export async function getOwnTrips(SQLClient, {client_id}){
+    const {rows} = await SQLClient.query("SELECT * FROM trip WHERE client_ID= $1 ORDER BY starting_date DESC;", [client_id]);
+    return rows;
 }
 
 export async function deleteTrip(SQLClient, {idList}) {

@@ -2,7 +2,7 @@ import Router from 'express-promise-router';
 
 import{
     getAllVehicles,
-    getVehiclesAroundPosition,
+    getVehiclesAroundMe,
     getVehicleById,
     addVehicle,
     updateStatus,
@@ -16,14 +16,14 @@ import {checkJWT} from '../middleware/identification/jwt.js';
 const router = Router();
 
 router.get('/getAllVehicles', checkJWT, admin, getAllVehicles);
-router.get('/getAroundUs', getVehiclesAroundPosition);
-router.get('/getVehicleById', getVehicleById);
+router.get('/getAroundUs', getVehiclesAroundMe);
+router.get('/getById', getVehicleById);
 
-router.post('/addVehicle', checkJWT, admin, addVehicle);
+router.post('/add', checkJWT, admin, addVehicle);
 
 router.patch('/updateStatus', checkJWT, updateStatus);
-router.patch('/updateInformations', checkJWT, admin, updateInformations);
+router.patch('/update', checkJWT, admin, updateInformations);
 
-router.delete('/deleteVehicles', checkJWT, admin, deleteVehicles);
+router.delete('/delete', checkJWT, admin, deleteVehicles);
 
 export default router

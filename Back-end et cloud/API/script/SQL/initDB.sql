@@ -23,7 +23,7 @@ CREATE TABLE Vehicle
     battery_level DECIMAL     NOT NULL CHECK ( battery_level <= 100 AND battery_level >= 0 ),
     type          VARCHAR(15) NOT NULL,
     price         DECIMAL     NOT NULL CHECK ( price >= 0 ),
-    is_available  BOOLEAN     NOT NULL,
+    is_available  BOOLEAN     NOT NULL DEFAULT FALSE, 
     fees          DECIMAL     NOT NULL CHECK ( fees >= 0 )
 );
 
@@ -53,25 +53,25 @@ CREATE TABLE Subscription
 CREATE TABLE User
 (
     id                         INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    first_name                  VARCHAR(50)  NOT NULL,
-    last_name                    VARCHAR(50)  NOT NULL,
+    first_name                 VARCHAR(50)  NOT NULL,
+    last_name                  VARCHAR(50)  NOT NULL,
     email                      VARCHAR(100) NOT NULL UNIQUE CHECK ( email ~
                                                                     '^[a-zA-Z0-9]+([._%+-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' ),
-    phone_number                     VARCHAR(20)  NOT NULL UNIQUE CHECK ( number ~ '^\+[1-9][0-9]{7,14}$' ),
+    phone_number               VARCHAR(20)  NOT NULL UNIQUE CHECK ( number ~ '^\+[1-9][0-9]{7,14}$' ),
     password                   VARCHAR(250) NOT NULL,
-    role                       VARCHAR(10) NOT NULL,
+    role                       VARCHAR(10)  NOT NULL,
     birthday                   DATE         NOT NULL CHECK ( birthday <= CURRENT_DATE - INTERVAL '16 years' ),
     subscription               INT REFERENCES Subscription (id) ON DELETE SET NULL,
     starting_subscription_date DATE,
     balance                    DECIMAL DEFAULT 0,
     has_car_licence            BOOLEAN DEFAULT FALSE,
     has_motorbike_licence      BOOLEAN DEFAULT FALSE
-);
---gngn oui le password est en clair je sais ça sera modifié plus tard,
---faut que le lise la doc, à voir s'il y a un type particulier pour enregistrer, a voir en fonction du hashage j'imagine
+    referal_code               VARCHAR(8) UNIQUE NOT NULL DEFAULT (
+        UPPER(
+        SUBSTRING(MD5(RANDOM()::TEXT || CLOCK_TIMESTAMP()::TEXT) FROM 1 FOR 8)
+    ));
+)
 
---Ajouter une contrainte jsp comment pour qu'on ne puisse pas créer un trajet en voiture ou scooter
---avec un client qui n'a pas le permis adécquat
 
 CREATE TABLE Trip
 (
