@@ -68,13 +68,13 @@ export async function personUpdateValidatorMiddleware(req, res, next) {
 }
 
 const loginSchema = vine.object({
-  username: vine.string().email(),
+  email: vine.string().email(),
   password: vine.string(),
 })
 const loginValidator = vine.compile(loginSchema);
 export async function loginValidatorMiddleware(req, res, next) {
   const data = {
-    username: req.body.username,
+    email: req.body.username,
     password: req.body.password
   };
   try {
@@ -84,5 +84,4 @@ export async function loginValidatorMiddleware(req, res, next) {
     console.error(e);
     res.sendStatus(500);
   }
-
 }

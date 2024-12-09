@@ -61,14 +61,14 @@ export const deletePersons = async(req, res) => {
 
 export const login = async (req,res) => {
   try {
+    let userDetails = {id: null, role: null};
     const person = await personModel.getPersonByEmail(pool, req.val.email);
-    if (person.id){
-      const status = await util.verify(person.password, req.val.password)  ?
+    if (person?.id){
+      userDetails = await util.verify(req.val.password, person.password)  ?
       {id: person.id, role: person.role} : {id: null, role: null};
-      const token = jwt.sign({id: status.id, role: status.role}, process.env.JWTKEY, {expiresIn: "18h"} );
-      res.status(201).send(token);
     }
-    res.sendStatus(404);
+    const token = jwt.sign({id: userDetails.id, role: userDetails.role}, process.env.JWTKEY, {expiresIn: "18h"} );
+    res.send(token);
   } catch(e) {
     console.error(e);
     res.sendStatus(500);
