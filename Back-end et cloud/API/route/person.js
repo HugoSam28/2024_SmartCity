@@ -1,6 +1,6 @@
 import Router from 'express-promise-router';
 import {
-    getPersonById,
+    getMyInfos,
     getAllPersons,
     updatePerson,
     deletePersons,
@@ -22,7 +22,7 @@ const router = Router();
 router.post("/registration", PVM, registration);
 router.post("/login", LVM, login);
 
-router.get("/info", checkJWT, getPersonById);
+router.get("/infos", checkJWT, getMyInfos);
 router.get("/getPersons", checkJWT, admin, pageValidator, getAllPersons);
 
 router.patch("/update", checkJWT, PUVM, updatePerson);

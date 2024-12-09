@@ -70,8 +70,8 @@ export async function deletePersons(SQLClient, {idList}){
   return await SQLClient.query("DELETE * FROM Person WHERE id IN ($1)", [idList]);
 }
 
-export async function getPersonByEmail(SQLClient, {email}){
-  const {rows} = await SQLClient.query("SELECT * FROM Person WHERE email = $1", [email]);
+export async function getPersonByEmail(SQLClient, email){
+  const {rows} = await SQLClient.query("SELECT id, password, email, role FROM Person WHERE email = $1", [email]);
   return rows[0];
 }
 

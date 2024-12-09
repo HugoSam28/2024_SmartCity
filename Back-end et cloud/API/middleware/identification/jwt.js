@@ -1,6 +1,6 @@
 import {verify} from '../../util/jwt.js';
 
-export const checkJWT = async(req, res, next) => {
+export const checkJWT = async (req, res, next) => {
     const authorize = req.get("authorization");
     if(authorize?.includes('Bearer')){
         const jwtEncoded = authorize.split(' ')[1];
@@ -15,4 +15,4 @@ export const checkJWT = async(req, res, next) => {
     else{
         res.status(401).send('No JWT');
     }
-}
+};

@@ -74,7 +74,7 @@ const loginSchema = vine.object({
 const loginValidator = vine.compile(loginSchema);
 export async function loginValidatorMiddleware(req, res, next) {
   const data = {
-    email: req.body.username,
+    email: req.body.email,
     password: req.body.password
   };
   try {

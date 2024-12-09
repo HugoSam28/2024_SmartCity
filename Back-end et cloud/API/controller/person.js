@@ -5,9 +5,9 @@ import jwt from 'jsonwebtoken';
 import {addSponsoring} from "../model/sponsoring.js";
 import * as util from "../util/argon.js";
 
-export const getPersonById = async(req, res) => {
+export const getMyInfos = async(req, res) => {
   try{
-    const person = await personModel.getPersonById(pool, req.val);
+    const person = await personModel.getPersonById(pool, req.session);
     if(person){
       res.send(person);
     }

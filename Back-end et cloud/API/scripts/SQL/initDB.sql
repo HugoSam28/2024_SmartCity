@@ -104,7 +104,6 @@ CREATE TABLE Sponsoring
 CREATE OR REPLACE FUNCTION sponsor_limit()
     RETURNS TRIGGER AS $$
 BEGIN
-    -- Vérifier le nombre de lignes avec le même sponsor
     IF (SELECT COUNT(*) FROM sponsoring WHERE sponsor = NEW.sponsor) >= 10 THEN
         RAISE EXCEPTION 'Un sponsor ne peut parrainer que 10 personnes maximum.';
     END IF;
