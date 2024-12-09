@@ -1,4 +1,4 @@
-import {pool} from "../database/database";
+import {pool} from "../database/database.js";
 import * as sponsoringModel from "../model/sponsoring.js";
 
 export const getAllSponsorings = async (req, res) => {//admin
@@ -36,7 +36,7 @@ export const updateSponsoring = async (req, res) => {
     }
 }
 
-export const deleteSponsoring = async (req, res) => {
+export const deleteSponsorings = async (req, res) => {
     try {
         await sponsoringModel.deleteSponsoring(pool, req.val);
         res.sendStatus(204);

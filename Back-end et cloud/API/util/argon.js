@@ -6,7 +6,7 @@ export const hash = (password) => {
 };
 
 
-export const compare = (plainText, hash) => {
+export const verify = (plainText, hash) => {
     return argon2.verify(
         hash,
         plainText,

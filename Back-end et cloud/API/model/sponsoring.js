@@ -19,7 +19,7 @@ export async function deleteSponsoring(SQLClient, {idList}){
   return await SQLClient.query("DELETE FROM sponsoring WHERE id in ($1)", [idList]);
 }
 
-export async function addSponsoring(SQLClient, {sponsor, referred}){
+export async function addSponsoring(SQLClient, sponsor, referred){
     const {rows} = await SQLClient.query("INSERT INTO sponsoring (sponsor, referred) VALUES ($1, $2)", [sponsor, referred]);
     return rows[0];
 }

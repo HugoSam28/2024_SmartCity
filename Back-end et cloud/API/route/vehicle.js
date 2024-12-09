@@ -8,7 +8,7 @@ import{
     updateStatus,
     updateInformations,
     deleteVehicles
-} from '../controller./vehicle';
+} from '../controller/vehicle.js';
 
 import {admin} from '../middleware/authorization/mustBeAdmin.js';
 import {checkJWT} from '../middleware/identification/jwt.js';

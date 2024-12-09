@@ -1,4 +1,4 @@
-import {pool} from "../database/database";
+import {pool} from "../database/database.js";
 import * as carKeyModel from "../model/carKey.js";
 
 export const getAllCarKeys = async(req, res) => {
@@ -20,7 +20,7 @@ export const getAllCarKeys = async(req, res) => {
 export const addCarKey = async(req, res) => {
     try{
         const id = await carKeyModel.addCarKey(pool, req.val)
-        res.sendStatus(201).send(id);
+        res.status(204).send(id);
     }
     catch(e){
         console.error(e);

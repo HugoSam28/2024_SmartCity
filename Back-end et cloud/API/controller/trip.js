@@ -1,4 +1,4 @@
-import {pool} from "../database/database";
+import {pool} from "../database/database.js";
 import * as tripModel from "../model/trip.js";
 
 export const getAllTrips = async (req, res) => {//admin

@@ -1,4 +1,4 @@
-import {pool} from "../database/database";
+import {pool} from "../database/database.js";
 import * as subscriptionModel from "../model/subscription.js";
 
 export const getAllSubscriptions = async (req, res) => {//admin
@@ -51,9 +51,9 @@ export const updateSubscription = async (req, res) => {
     }
 }
 
-export const deleteSubscription = async (req, res) => {
+export const deleteSubscriptions = async (req, res) => {
     try {
-        await subscriptionModel.deleteSubscription(pool, req.val);
+        await subscriptionModel.deleteSubscriptions(pool, req.val);
         res.sendStatus(204);
     } catch (e) {
         console.error(e)

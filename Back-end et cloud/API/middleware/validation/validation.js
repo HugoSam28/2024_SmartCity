@@ -1,16 +1,19 @@
-import vine from "@vine/vine"
-import { validator } from "@vinejs/vine/factories";
+import vine from "@vinejs/vine";
 
 const schema = vine.object({
   iPage: vine.number().withoutDecimals().min(1)
 });
 
-const validator = vine.compile(validator, schema);
+const validator = vine.compile(schema);
 
-export const pageValidator = (req, res, {iPage}) => {
+export const pageValidator = async (req, res, next) => {
   let data = {
-    iPage: iPage
+    iPage: req.body.iPage,
   }
-  req.val = validator.validate(data);
-  next();
+  try {
+    req.val = await validator.validate(data);
+    next();
+  } catch (e) {
+    console.error(e);
+  }
 }

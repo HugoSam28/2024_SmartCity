@@ -7,6 +7,7 @@ const personSchema = vine.object({
   password: vine.string(),
   referralCode: vine.string().optional(),
   phoneNumber: vine.string().regex(/^\+[1-9][0-9]{7,14}$/),
+  birthday: vine.date(),
   hasCarLicence: vine.boolean(),
   hasMotorbikeLicence: vine.boolean()
 })
@@ -19,10 +20,19 @@ export async function personValidatorMiddleware(req, res, next) {
     email: req.body.email,
     password: req.body.password,
     referralCode: req.body.referralCode,
-    phoneNumber: req.body.phoneNumber
+    phoneNumber: req.body.phoneNumber,
+    birthday: req.body.birthday,
+    hasCarLicence: req.body.hasCarLicence,
+    hasMotorbikeLicence: req.body.hasMotorbikeLicence
   }
-  req.val = await personValidator.validate(data);
-  next();
+  try {
+    req.val = await personValidator.validate(data);
+    next();
+  }
+  catch(e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
 }
 
 const updatePersonSchema = vine.object({
@@ -37,7 +47,7 @@ const updatePersonSchema = vine.object({
 })
 const updatePersonValidator = vine.compile(updatePersonSchema);
 
-export async function personUpdateValidatiorMiddleware(req, res, next) {
+export async function personUpdateValidatorMiddleware(req, res, next) {
   const data = {
     id: req.body.id,
     firstName: req.body.firstName,
@@ -45,11 +55,16 @@ export async function personUpdateValidatiorMiddleware(req, res, next) {
     email: req.body.email,
     password: req.body.password,
     phoneNumber: req.body.phoneNumber,
-    hasCarLicence: req.body.hasCarLicense,
-    hasMotorbikeLicence: req.body.hasMotorBikeLicense,
+    hasCarLicence: req.body.hasCarLicence,
+    hasMotorbikeLicence: req.body.hasMotorbikeLicence,
+  };
+  try {
+    req.val = await updatePersonValidator.validate(data);
+    next();
+  } catch(e) {
+    console.error(e);
+    res.sendStatus(500);
   }
-  req.val = await updatePersonValidator.validate(data);
-  next();
 }
 
 const loginSchema = vine.object({
@@ -61,7 +76,13 @@ export async function loginValidatorMiddleware(req, res, next) {
   const data = {
     username: req.body.username,
     password: req.body.password
+  };
+  try {
+    req.val = await loginValidator.validate(data);
+    next();
+  } catch(e) {
+    console.error(e);
+    res.sendStatus(500);
   }
-  req.val = await loginValidator.validate(data);
-  next();
+
 }

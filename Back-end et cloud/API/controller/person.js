@@ -1,9 +1,9 @@
-import {pool} from "../database/database";
+import {pool} from "../database/database.js";
 
-import * as personModel from "../model/person";
-import jsonwebtoken from 'jsonwebtoken';
-import * as argon2 from "node/crypto";
-import {addSponsoring} from "../model/sponsoring";
+import * as personModel from "../model/person.js";
+import jwt from 'jsonwebtoken';
+import {addSponsoring} from "../model/sponsoring.js";
+import * as util from "../util/argon.js";
 
 export const getPersonById = async(req, res) => {
   try{
@@ -21,11 +21,11 @@ export const getPersonById = async(req, res) => {
   }
 }
 
-export const getAllPersons = async(res, res) => {
+export const getAllPersons = async (req, res) => {
   try{
-    people = await personModel.getAllPersons(pool, req.val);
-    if(people){
-      res.send(people);
+    const people = await personModel.getAllPersons(pool, req.val);
+    if(people[0] !== undefined){
+      res.status(200).send(people);
     }
     else{
       res.sendStatus(404);
@@ -63,9 +63,9 @@ export const login = async (req,res) => {
   try {
     const person = await personModel.getPersonByEmail(pool, req.val.email);
     if (person.id){
-      const status = argon2.verify(person.password, req.val.password)  ?
+      const status = await util.verify(person.password, req.val.password)  ?
       {id: person.id, role: person.role} : {id: null, role: null};
-      const token = jsonwebtoken.sign({id: status.id, role: status.role}, process.env.JWTKEY, {expiresIn: "18h"} );
+      const token = jwt.sign({id: status.id, role: status.role}, process.env.JWTKEY, {expiresIn: "18h"} );
       res.status(201).send(token);
     }
     res.sendStatus(404);
@@ -75,7 +75,7 @@ export const login = async (req,res) => {
   }
 }
 
-export const registration = async (req,res) => {
+export const registration = async (req, res) => {
   try {
     const idReferred = await personModel.addPerson(pool, req.val);
     if(req.val.referralCode) {
@@ -84,7 +84,7 @@ export const registration = async (req,res) => {
         SQLClient = await pool.connect();
         await SQLClient.query("BEGIN");
         const idSponsor = await personModel.getPersonByReferralCode(SQLClient, req.val.referralCode);
-        await addSponsoring(SQLClient, {idSponsor, idReferred});
+        await addSponsoring(SQLClient, idSponsor, idReferred);
         await SQLClient.query(
           "UPDATE Person SET balance = balance+3 WHERE id IN ($1, $2)",
           [idSponsor, idReferred]);
@@ -106,7 +106,7 @@ export const registration = async (req,res) => {
         }
       }
     }
-    res.sendStatus(201);
+    res.status(201).send(`${idReferred}`);
   }
   catch (e) {
     console.error(e);

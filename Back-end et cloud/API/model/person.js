@@ -1,3 +1,4 @@
+import * as util from "../util/argon.js"
 export const getPersonById = async(SQLClient,{id}) => {
   const {rows} = await SQLClient.query("SELECT * FROM Person WHERE id = $1", [id]);
   return rows[0];
@@ -11,7 +12,7 @@ export const getAllPersons = async(SQLClient, {iPage}) => {
   return rows;
 }
 
-export async function updatePerson(SQLClient, {id, firstName, lastName, email, phoneNumber, password, birthday, balance, hasCarLicense, hasMotorbikeLicense, referralCode}){
+export async function updatePerson(SQLClient, id, {firstName, lastName, email, phoneNumber, password, birthday, balance, hasCarlicence, hasMotorbikelicence, referralCode}){
   let query = `UPDATE Person SET `;
   const querySet = [];
   const queryValues = [];
@@ -33,7 +34,7 @@ export async function updatePerson(SQLClient, {id, firstName, lastName, email, p
       querySet.push(`phone_number = $${queryValues.length}`)
   }
   if (password){
-      queryValues.push(password);
+      queryValues.push(util.hash(password));
       querySet.push(`password = $${queryValues.length}`)
   }
   if (birthday){
@@ -44,13 +45,13 @@ export async function updatePerson(SQLClient, {id, firstName, lastName, email, p
   queryValues.push(balance);
   querySet.push(`balance = $${queryValues.length}`)
   }
-  if (hasCarLicense){
-      queryValues.push(hasCarLicense);
-      querySet.push(`has_car_license = $${queryValues.length}`)
+  if (hasCarlicence){
+      queryValues.push(hasCarlicence);
+      querySet.push(`has_car_licence = $${queryValues.length}`)
   }
-  if (hasMotorbikeLicense){
-      queryValues.push(hasMotorbikeLicense);
-      querySet.push(`has_motorbike_license = $${queryValues.length}`)
+  if (hasMotorbikelicence){
+      queryValues.push(hasMotorbikelicence);
+      querySet.push(`has_motorbike_licence = $${queryValues.length}`)
   }
   if (referralCode){
     queryValues.push(referralCode);
@@ -74,24 +75,28 @@ export async function getPersonByEmail(SQLClient, {email}){
   return rows[0];
 }
 
-export async function addPerson(SQLClient, {firstName, lastName, email, phoneNumber, password, birthday, hasCarLicense, hasMotorbikeLicense}){
+export async function addPerson(SQLClient, {firstName, lastName, email, phoneNumber, password, birthday, hasCarLicence, hasMotorbikeLicence}){
+  const hashedPassword = await util.hash(password)
   const {rows} = await SQLClient.query(
-    "INSERT INTO Person (first_name, last_name, email, phone_number, password, birthday, has_car_license, has_motorbike_license) " +
+    "INSERT INTO Person (first_name, last_name, email, phone_number, password, birthday, has_car_licence, has_motorbike_licence) " +
     "VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id",
     [
       firstName,
       lastName,
       email,
       phoneNumber,
-      password,
+      hashedPassword,
       birthday,
-      hasCarLicense,
-      hasMotorbikeLicense
+      hasCarLicence,
+      hasMotorbikeLicence
     ]);
   return rows[0]?.id;
 }
 
-export async function getPersonByReferralCode(SQLClient, {referralCode}){
-const {rows} = await SQLClient.query("SELECT id FROM Person WHERE referral_code = $1", [referralCode]);
-return rows[0]?.id;
+export async function getPersonByReferralCode(SQLClient, referralCode){
+  const {rows} = await SQLClient.query("SELECT id FROM Person WHERE referral_code = $1", [referralCode]);
+  if(rows[0]?.id !== undefined) {
+    return rows[0].id;
+  }
+  throw new Error(`No user found for referral code: ${referralCode}`);
 }

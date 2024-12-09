@@ -7,7 +7,7 @@ import {
     updateSubscription,
     deleteSubscriptions
 
-} from "../controller/trip.js";
+} from "../controller/subscription.js";
 
 import {checkJWT} from "../middleware/identification/jwt.js";
 import {admin} from '../middleware/authorization/mustBeAdmin.js';

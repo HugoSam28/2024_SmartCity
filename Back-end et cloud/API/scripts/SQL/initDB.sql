@@ -60,7 +60,7 @@ CREATE TABLE Person
                                                                     '^[a-zA-Z0-9]+([._%+-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' ),
     phone_number               VARCHAR(20)  NOT NULL UNIQUE CHECK ( phone_number ~ '^\+[1-9][0-9]{7,14}$' ),
     password                   VARCHAR(250) NOT NULL,
-    role                       VARCHAR(10)  NOT NULL,
+    role                       VARCHAR(10)  NOT NULL DEFAULT ('ROLE_USER'),
     birthday                   DATE         NOT NULL CHECK ( birthday <= CURRENT_DATE - INTERVAL '16 years' ),
     balance                    DECIMAL DEFAULT 0,
     has_car_licence            BOOLEAN DEFAULT FALSE,
@@ -97,7 +97,7 @@ CREATE TABLE Trip
 CREATE TABLE Sponsoring
 (
     sponsor  INT NOT NULL REFERENCES Person (id) ON DELETE SET NULL,
-    referred INT NOT NULL REFERENCES Person (id) ON DELETE SET NULL,
+    referred INT NOT NULL UNIQUE REFERENCES Person (id) ON DELETE SET NULL,
     PRIMARY KEY (sponsor, referred)
 );
 
@@ -189,7 +189,7 @@ VALUES ('Hugo',
         'etu51688@henallux.be',
         '+32471740915',
         'my strong password',
-        'ROLE_User',
+        'ROLE_USER',
         '2004-05-28');
 INSERT INTO Person (first_name, last_name, email, phone_number, password, role, birthday)
 VALUES ('Thoams',

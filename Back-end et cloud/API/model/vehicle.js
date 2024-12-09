@@ -9,13 +9,11 @@ export async function getAllVehicles(SQLClient, {iPage}) { // admin
   return rows;
 }
 
-export async function getVehiclesAroundMe(SQLClient, {lat, lon}) {
-  const {rows} = await SQLClient.query("SELECT * FROM Vehicle v WHERE ( 6371000 * ACOS(" +
-            "COS(RADIANS($1)) * COS(RADIANS(v.location[2])) * " +
-            "COS(RADIANS(v.location[1]) - RADIANS($2)) + " +
-            "SIN(RADIANS($1)) * SIN(RADIANS(v.location[2]))" +
-        ")) <= 5", [lat, lon]);
-
+export async function getVehiclesAroundMe(SQLClient, {lat, lon, distance}) {
+  const {rows} = await SQLClient.query("SELECT * FROM Vehicle " +
+    " WHERE 111195 * DEGREES(ACOS(COS(RADIANS($1)) * COS(RADIANS(location[1])) * COS(RADIANS(location[0]) " +
+    "- RADIANS($2)) + SIN(RADIANS($1)) * SIN(RADIANS(location[1])))) <= $3;",
+    [lat, lon, distance]);
   return rows;
 }
 
@@ -49,7 +47,7 @@ export async function updateStatus(SQLClient, {id}) {
 }
 
 export async function updateInformations(SQLClient, {id, lat, lon, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber}){
-  let query = `UPDATE ${id%2===0 ? 'with_license' : 'vehicle'} SET `;
+  let query = `UPDATE ${id%2===0 ? 'with_licence' : 'vehicle'} SET `;
   const querySet = [];
   const queryValues = [];
 
@@ -101,6 +99,6 @@ export async function updateInformations(SQLClient, {id, lat, lon, batteryLevel,
   }
 }
 
-export async function deleteVehicle(SQLClient, {idList}){ 
+export async function deleteVehicles(SQLClient, {idList}){
   return await SQLClient.query("DELETE FROM vehicle WHERE id IN ($1)", [idList]);
 }

@@ -49,6 +49,6 @@ export async function updateSubscription(SQLClient, {id, label, price, paymentRe
   }
 }
 
-export async function deleteSubscription(SQLClient, {idList}){
+export async function deleteSubscriptions(SQLClient, {idList}){
   return await SQLClient.query("DELETE FROM subscription WHERE id IN ($1)", [idList])
 }

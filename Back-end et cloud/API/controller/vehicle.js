@@ -75,7 +75,7 @@ export const updateInformations = async (req, res) => {
 
 export const deleteVehicles = async (req, res) => {
     try {
-        await vehicleModel.deleteProduct(pool, req.val);
+        await vehicleModel.deleteVehicles(pool, req.val);
         res.sendStatus(204);
     } catch (e) {
         console.error(e)
