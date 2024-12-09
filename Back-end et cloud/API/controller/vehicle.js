@@ -1,11 +1,11 @@
-import {pool} from "../database/database";
+import {pool} from "../database/database.js";
 import * as vehicleModel from "../model/vehicle.js";
 
 export const getAllVehicles = async (req, res) => {
     try{
-        const vehicules = await vehicleModel.getAllVehicles(pool, req.val);
-        if(vehicules){
-            res.send(vehicules)
+        const vehicles = await vehicleModel.getAllVehicles(pool, req.val);
+        if(vehicles){
+            res.send(vehicles)
         }else{
             res.sendStatus(404);
         }
@@ -17,8 +17,16 @@ export const getAllVehicles = async (req, res) => {
 
 export const getVehiclesAroundMe = async (req, res) => {
   try {
-    const vehicles = await vehicleModel.getAllVehicles(pool, req.val);
-  }
+    const vehicles = await vehicleModel.getVehiclesAroundMe(pool, req.val);
+    if(vehicles){
+        res.send(vehicles)
+    }else{
+        res.sendStatus(404);
+    }
+  }catch (e){
+    console.error(e)
+    res.sendStatus(500);
+}
 }
 
 export const getVehicleById = async (req, res) => {

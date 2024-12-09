@@ -30,20 +30,20 @@ export const getOwnTrips = async (req, res) => {
     }
 }
 
-export const addTrip = async (req, res) => {
+export const updateTrip = async (req, res) => {
     try{
-        const id = await tripModel.addTrip(pool, req.val);
-        res.status(201).send(id);
+        await tripModel.updateTrip(pool, req.session.id, req.val);
+        res.sendStatus(204);
     } catch (e){
         console.error(e)
         res.sendStatus(500);
     }
 }
 
-export const updateTrip = async (req, res) => {
+export const addTrip = async (req, res) => {
     try{
-        await tripModel.updateTrip(pool, req.session.id, req.val);
-        res.sendStatus(204);
+        const id = await tripModel.addTrip(pool, req.val);
+        res.status(201).send(id);
     } catch (e){
         console.error(e)
         res.sendStatus(500);

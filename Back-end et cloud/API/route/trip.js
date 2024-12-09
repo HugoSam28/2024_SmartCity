@@ -10,10 +10,11 @@ import {
 
 import {checkJWT} from "../middleware/identification/jwt.js";
 import {admin} from '../middleware/authorization/mustBeAdmin.js';
+import {pageValidator} from '../middleware/validation/validation.js';
 
 const router = Router();
 
-router.get("/getAllTrips", checkJWT, admin, getAllTrips);
+router.get("/getAllTrips", checkJWT, admin, pageValidator, getAllTrips);
 router.get("/getOwnTrips", checkJWT, getOwnTrips);
 
 router.patch("/update", checkJWT, admin, updateTrip);

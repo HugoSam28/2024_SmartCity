@@ -12,10 +12,12 @@ import{
 
 import {admin} from '../middleware/authorization/mustBeAdmin.js';
 import {checkJWT} from '../middleware/identification/jwt.js';
+import {pageValidator} from '../middleware/validation/validation.js'
+
 
 const router = Router();
 
-router.get('/getAllVehicles', checkJWT, admin, getAllVehicles);
+router.get('/getAllVehicles', checkJWT, admin, pageValidator, getAllVehicles);
 router.get('/getAroundUs', getVehiclesAroundMe);
 router.get('/getById', getVehicleById);
 

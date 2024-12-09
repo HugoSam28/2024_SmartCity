@@ -1,6 +1,6 @@
 import vine from "@vinejs/vine";
 
-const userSchema = vine.object({
+const personSchema = vine.object({
   firstName: vine.string(),
   lastName: vine.string(),
   email: vine.string().email(),
@@ -10,9 +10,9 @@ const userSchema = vine.object({
   hasCarLicence: vine.boolean(),
   hasMotorbikeLicence: vine.boolean()
 })
-const userValidator = vine.compile(userSchema);
+const personValidator = vine.compile(personSchema);
 
-export async function userValidatorMiddleware(req, res, next) {
+export async function personValidatorMiddleware(req, res, next) {
   const data = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -21,13 +21,11 @@ export async function userValidatorMiddleware(req, res, next) {
     referralCode: req.body.referralCode,
     phoneNumber: req.body.phoneNumber
   }
-  req.val = await userValidator.validate(data);
+  req.val = await personValidator.validate(data);
   next();
 }
 
-
-
-const updateUserSchema = vine.object({
+const updatePersonSchema = vine.object({
   id: vine.number(),
   firstName: vine.string().optional(),
   lastName: vine.string().optional(),
@@ -37,9 +35,9 @@ const updateUserSchema = vine.object({
   hasCarLicence: vine.boolean().optional(),
   hasMotorbikeLicence: vine.boolean().optional()
 })
-const updateUserValidator = vine.compile(updateUserSchema);
+const updatePersonValidator = vine.compile(updatePersonSchema);
 
-export async function userUpdateValidatiorMiddleware(req, res, next) {
+export async function personUpdateValidatiorMiddleware(req, res, next) {
   const data = {
     id: req.body.id,
     firstName: req.body.firstName,
@@ -50,7 +48,7 @@ export async function userUpdateValidatiorMiddleware(req, res, next) {
     hasCarLicence: req.body.hasCarLicense,
     hasMotorbikeLicence: req.body.hasMotorBikeLicense,
   }
-  req.val = await updateUserValidator.validate(data);
+  req.val = await updatePersonValidator.validate(data);
   next();
 }
 

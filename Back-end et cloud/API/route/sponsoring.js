@@ -1,7 +1,7 @@
 import Router from "express-promise-router";
 
 import {
-    getSponsorings,
+    getAllSponsorings,
     addSponsoring,
     updateSponsoring,
     deleteSponsorings
@@ -9,10 +9,12 @@ import {
 
 import {checkJWT} from "../middleware/identification/jwt.js";
 import {admin} from '../middleware/authorization/mustBeAdmin.js';
+import {pageValidator} from '../middleware/validation/validation.js';
+
 
 const router = Router();
 
-router.use("/getSponsorings", checkJWT, admin, getSponsorings);
+router.use("/getAllSponsorings", checkJWT, admin, pageValidator, getAllSponsorings);
 
 router.use("/add", checkJWT, addSponsoring);
 

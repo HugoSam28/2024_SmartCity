@@ -3,6 +3,18 @@ export async function getSponsoringByID(SQLClient, {id}){
     return rows[0];
 }
 
+export async function getAllSponsoring(SQLClient, { iPage }) { // admin
+
+  const { rows } = await SQLClient.query(`
+    WITH Sponsoring_key AS (
+      SELECT * FROM Sponsoring
+      ORDER BY sponsor, referred LIMIT 10 OFFSET ($1 - 1) * 10)
+      SELECT * FROM Sponsoring_key;`, [iPage]);
+
+  return rows;
+}
+
+
 export async function deleteSponsoring(SQLClient, {idList}){
   return await SQLClient.query("DELETE FROM sponsoring WHERE id in ($1)", [idList]);
 }

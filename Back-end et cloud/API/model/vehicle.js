@@ -1,3 +1,24 @@
+
+export async function getAllVehicles(SQLClient, {iPage}) { // admin
+  
+  const {rows} = await SQLClient.query("WITH vehicles AS ( " +
+    "SELECT * FROM vehicles" +
+    "ORDER BY id LIMIT 10 OFFSET (:$1 - 1) * 10) "+
+    "SELECT * FROM vehicles", [iPage]);
+
+  return rows;
+}
+
+export async function getVehiclesAroundMe(SQLClient, {lat, lon}) {
+  const {rows} = await SQLClient.query("SELECT * FROM Vehicle v WHERE ( 6371000 * ACOS(" +
+            "COS(RADIANS($1)) * COS(RADIANS(v.location[2])) * " +
+            "COS(RADIANS(v.location[1]) - RADIANS($2)) + " +
+            "SIN(RADIANS($1)) * SIN(RADIANS(v.location[2]))" +
+        ")) <= 5", [lat, lon]);
+
+  return rows;
+}
+
 export async function getVehicleById(SQLClient, {id}) {
   if (id % 2 === 0) {
     const {rows} = await SQLClient.query("SELECT * FROM  WHERE id = $1", [id]);
@@ -6,18 +27,6 @@ export async function getVehicleById(SQLClient, {id}) {
     const {rows} = await SQLClient.query(`SELECT * FROM ${id % 2 === 0 ? 'with_licence' : 'vehicle' } WHERE id = $1`, [id]);
   }
   return rows[0];
-}
-
-
-export async function getAllVehicles(SQLClient, {min, max}) { // admin
-  
-  const {allVehicles} = await SQLClient.query("SELECT * FROM vehicle");
-
-  return allVehicles;
-}
-
-export async function getVehiclesAroundMe(SQLClient, {min, max}) {
-  // a faire
 }
 
 export async function addVehicle(SQLClient, {lat, lon, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber}) {
@@ -32,10 +41,6 @@ export async function addVehicle(SQLClient, {lat, lon, batteryLevel, type, price
       "point($2,$1), $3, $4, $5, $6, $7", [lat, lon, batteryLevel, type, price, isAvailable, fees]);
   }
   return rows[0]?.id;
-}
-
-export async function deleteVehicle(SQLClient, {idList}){ 
-  return await SQLClient.query("DELETE FROM vehicle WHERE id IN ($1)", [idList]);
 }
 
 export async function updateStatus(SQLClient, {id}) {
@@ -94,4 +99,8 @@ export async function updateInformations(SQLClient, {id, lat, lon, batteryLevel,
   } else {
     throw new Error("No field given");
   }
+}
+
+export async function deleteVehicle(SQLClient, {idList}){ 
+  return await SQLClient.query("DELETE FROM vehicle WHERE id IN ($1)", [idList]);
 }
