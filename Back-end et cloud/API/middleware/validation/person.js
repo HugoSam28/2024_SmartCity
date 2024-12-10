@@ -75,6 +75,7 @@ const updatePersonSchemaViaAdmin = vine.object({
   phoneNumber: vine.string().regex(/^\+[1-9][0-9]{7,14}$/).optional(),
   birthday: vine.date().optional(),
   referralCode: vine.string().optional(),
+  balance: vine.number().optional(),
   role: vine.string().optional(),
   hasCarLicence: vine.boolean().optional(),
   hasMotorbikeLicence: vine.boolean().optional()
@@ -89,6 +90,7 @@ export async function personUpdateValidatorMiddlewareViaAdmin(req, res, next) {
     phoneNumber: req.body.phoneNumber,
     birthday: req.body.birthday,
     referralCode: req.body.referralCode,
+    balance: req.body.balance,
     role: req.body.role,
     hasCarLicence: req.body.hasCarLicence,
     hasMotorbikeLicence: req.body.hasMotorbikeLicence,
@@ -103,6 +105,8 @@ export async function personUpdateValidatorMiddlewareViaAdmin(req, res, next) {
 }
 
 
+
+
 const loginSchema = vine.object({
   email: vine.string().email(),
   password: vine.string(),
@@ -115,23 +119,6 @@ export async function loginValidatorMiddleware(req, res, next) {
   };
   try {
     req.val = await loginValidator.validate(data);
-    next();
-  } catch(e) {
-    console.error(e);
-    res.sendStatus(500);
-  }
-}
-
-const deleteSchema = vine.object({
-  idList: vine.string().regex(/^[0-9]+(,([0-9]+))*$/),
-})
-const deleteValidator = vine.compile(deleteSchema);
-export async function deleteValidatorMiddleware(req, res, next) {
-  const data = {
-    idList: req.body.idList
-  }
-  try {
-    req.val = await deleteValidator.validate(data);
     next();
   } catch(e) {
     console.error(e);

@@ -48,7 +48,8 @@ CREATE TABLE Subscription
     label              VARCHAR(20) NOT NULL,
     price              DECIMAL     NOT NULL CHECK ( price > 0 ),
     discount           DECIMAL     NOT NULL CHECK ( discount <= 1 ),
-    payment_recurrence VARCHAR(10) NOT NULL
+    payment_recurrence VARCHAR(10) NOT NULL,
+    vehicle_type       VARCHAR(15) NOT NULL
 );
 
 CREATE TABLE Person

@@ -46,3 +46,15 @@ export async function updateSponsoring(SQLClient, {id, sponsor, referred}){
       throw new Error("No field given");
   }
 }
+
+export async function getSearchTrips(SQLClient, {value}) {
+  const trips = await SQLClient.query(
+    `SELECT *
+    FROM Sponsoring s
+    JOIN Person sponsorPerson ON s.sponsor = sponsorPerson.id
+    JOIN Person referredPerson ON s.referred = referredPerson.id
+    WHERE sponsorPerson.email LIKE $1 OR referredPerson.email LIKE $1;`, 
+    [value]
+  );
+  return trips.rows;
+}

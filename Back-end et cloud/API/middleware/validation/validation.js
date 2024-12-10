@@ -1,19 +1,53 @@
 import vine from "@vinejs/vine";
 
-const schema = vine.object({
+const pageSchema = vine.object({
   iPage: vine.number().withoutDecimals().min(1)
 });
 
-const validator = vine.compile(schema);
+const pageValidator = vine.compile(pageSchema);
 
-export const pageValidator = async (req, res, next) => {
+export const pageValidatorMiddleware = async (req, res, next) => {
   let data = {
     iPage: req.body.iPage,
   }
   try {
-    req.val = await validator.validate(data);
+    req.val.page = await pageValidatorMiddleware.validate(data);
     next();
   } catch (e) {
     console.error(e);
+  }
+}
+
+const deleteSchema = vine.object({
+  idList: vine.string().regex(/^[0-9]+(,([0-9]+))*$/),
+})
+const deleteValidator = vine.compile(deleteSchema);
+export async function deleteValidatorMiddleware(req, res, next) {
+  const data = {
+    idList: req.body.idList
+  }
+  try {
+    req.val = await deleteValidator.validate(data);
+    next();
+  } catch(e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+}
+
+const searchSchema = vine.object({
+  value: vine.string()
+})
+const searchValidator = vine.compile(searchSchema);
+export const searchValidatorMiddleware = async (req, res, next) => {
+  const data = {
+    value: req.body.search
+  }
+  try {
+    req.val.search = await searchValidator.validate(data);
+    next();
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
   }
 }

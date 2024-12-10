@@ -63,9 +63,38 @@ export async function addTrip(SQLClient, {clientID, vehicleID, startingDate, end
         return rows[0];
 }
 
+export async function startTrip(SQLClient, {clientID, vehicleID, startingDate, startingLocation}){
+  const {rows} = await SQLClient.query("INSERT INTO trip (client_id, vehicle_id, starting_date, starting_location)" +
+      " VALUES ($1, $2, $3, $4,) RETURNING id", [clientID, vehicleID, startingDate, startingLocation]);
+      return rows[0]?.id;
+}
+
 export async function deleteTrip(SQLClient, {idList}) {
   const query = "DELETE FROM Trip WHERE id = ANY($1)";
   const idArray = idList.split(',').map(Number);
   return await SQLClient.query(query, [idArray]);
 }
+
+export async function tripsCount(SQLClient) {
+  return await SQLClient.query("SELECT COUNT(*) FROM Trip");
+}
+
+export async function tripsSearchCount(SQLClient) {
+  return await SQLClient.query("SELECT COUNT(*) FROM Trip JOIN Person p ON Trip.person_id = p.id WHERE p.email ILIKE %$1%");
+}
+
+export async function getSearchTrips(SQLClient, {value},  {iPage}) {
+  const rows = await SQLClient.query(
+    `WITH Trip AS (SELECT * FROM Trip
+    ORDER BY id LIMIT 10 OFFSET ($2 - 1) * 10) 
+    SELECT id, person_ID, email, vehicle_ID, starting_date, ending_date, distance, starting_location, ending_location FROM Trip
+    JOIN Person p ON Trip.person_id = p.id
+    WHERE p.email ILIKE '%$1%'`, 
+    [value]
+  );
+  return rows;
+}
+
+
+
 

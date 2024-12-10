@@ -10,7 +10,7 @@ export async function getAllVehicles(SQLClient, {iPage}) { // admin
 }
 
 export async function getVehiclesAroundMe(SQLClient, {lat, lon, distance}) {
-  const {rows} = await SQLClient.query("SELECT * FROM Vehicle " +
+  const {rows} = await SQLClient.query("SELECT id, location, type FROM Vehicle " +
     " WHERE 111195 * DEGREES(ACOS(COS(RADIANS($1)) * COS(RADIANS(location[1])) * COS(RADIANS(location[0]) " +
     "- RADIANS($2)) + SIN(RADIANS($1)) * SIN(RADIANS(location[1])))) <= $3;",
     [lat, lon, distance]);

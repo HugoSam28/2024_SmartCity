@@ -27,7 +27,7 @@ const endTripSchema = vine.object({
   endingDate: vine.date(),
   endingLocation: vine.array(vine.number())
 })
-const endTripValidator = vine.compile(tripSchema);
+const endTripValidator = vine.compile(endTripSchema);
 export const endTripValidatorMiddelware = async(req, res, next) => {
   const data = {
     tripId: req.body.tripId,
@@ -35,7 +35,7 @@ export const endTripValidatorMiddelware = async(req, res, next) => {
     endLocation: req.body.endLocation
   }
   try {
-    req.val = await startTripValidator.validate(data);
+    req.val = await endTripValidator.validate(data);
     next();
   } catch(e) {
     console.error(e);

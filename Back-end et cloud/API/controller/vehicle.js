@@ -5,6 +5,9 @@ export const getAllVehicles = async (req, res) => {
     try{
         const vehicles = await vehicleModel.getAllVehicles(pool, req.val);
         if(vehicles){
+            vehicles.forEach(v => {
+                v.distance = 111195 * DEGREES(ACOS(COS(RADIANS(req.val.lat)) * COS(RADIANS(v.location[1])) * COS(RADIANS(v.location[0]) - RADIANS(req.val.lon)) + SIN(RADIANS(req.val.lat)) * SIN(RADIANS(v.location[1]))))
+            });
             res.send(vehicles)
         }else{
             res.sendStatus(404);
