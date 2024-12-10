@@ -33,3 +33,6 @@ router.patch("/update", checkJWT, admin, PUVMVA, updatePerson);
 router.delete("/delete", checkJWT, DVM, admin, deletePersons);
 
 export default router;
+
+// PLUS TOUCHER !
+// CA FONCTIONNE !
