@@ -12,7 +12,6 @@ const personSchema = vine.object({
   hasMotorbikeLicence: vine.boolean()
 })
 const personValidator = vine.compile(personSchema);
-
 export async function personValidatorMiddleware(req, res, next) {
   const data = {
     firstName: req.body.firstName,
@@ -46,10 +45,9 @@ const updatePersonSchema = vine.object({
   hasMotorbikeLicence: vine.boolean().optional()
 })
 const updatePersonValidator = vine.compile(updatePersonSchema);
-
 export async function personUpdateValidatorMiddleware(req, res, next) {
   const data = {
-    id: req.body.id,
+    id: req.session.id,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
@@ -67,6 +65,44 @@ export async function personUpdateValidatorMiddleware(req, res, next) {
   }
 }
 
+// Car un user ne peut pas modifier sa propre date de naissance, ni son role, ni le referralCode
+// un admin ne peut modifier le mot de passe d'un user
+const updatePersonSchemaViaAdmin = vine.object({
+  id: vine.number(),
+  firstName: vine.string().optional(),
+  lastName: vine.string().optional(),
+  email: vine.string().email().optional(),
+  phoneNumber: vine.string().regex(/^\+[1-9][0-9]{7,14}$/).optional(),
+  birthday: vine.date().optional(),
+  referralCode: vine.string().optional(),
+  role: vine.string().optional(),
+  hasCarLicence: vine.boolean().optional(),
+  hasMotorbikeLicence: vine.boolean().optional()
+})
+const updatePersonValidatorViaAdmin = vine.compile(updatePersonSchemaViaAdmin);
+export async function personUpdateValidatorMiddlewareViaAdmin(req, res, next) {
+  const data = {
+    id: req.body.id,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    phoneNumber: req.body.phoneNumber,
+    birthday: req.body.birthday,
+    referralCode: req.body.referralCode,
+    role: req.body.role,
+    hasCarLicence: req.body.hasCarLicence,
+    hasMotorbikeLicence: req.body.hasMotorbikeLicence,
+  };
+  try {
+    req.val = await updatePersonValidatorViaAdmin.validate(data);
+    next();
+  } catch(e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+}
+
+
 const loginSchema = vine.object({
   email: vine.string().email(),
   password: vine.string(),
@@ -79,6 +115,23 @@ export async function loginValidatorMiddleware(req, res, next) {
   };
   try {
     req.val = await loginValidator.validate(data);
+    next();
+  } catch(e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+}
+
+const deleteSchema = vine.object({
+  idList: vine.string().regex(/^[0-9]+(,([0-9]+))*$/),
+})
+const deleteValidator = vine.compile(deleteSchema);
+export async function deleteValidatorMiddleware(req, res, next) {
+  const data = {
+    idList: req.body.idList
+  }
+  try {
+    req.val = await deleteValidator.validate(data);
     next();
   } catch(e) {
     console.error(e);

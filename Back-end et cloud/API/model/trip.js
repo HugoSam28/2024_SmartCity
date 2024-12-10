@@ -64,6 +64,8 @@ export async function addTrip(SQLClient, {clientID, vehicleID, startingDate, end
 }
 
 export async function deleteTrip(SQLClient, {idList}) {
-  return await SQLClient.query("DELETE FROM trip WHERE id IN ($1)", [idList])
+  const query = "DELETE FROM Trip WHERE id = ANY($1)";
+  const idArray = idList.split(',').map(Number);
+  return await SQLClient.query(query, [idArray]);
 }
 

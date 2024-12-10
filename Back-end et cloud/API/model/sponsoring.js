@@ -16,7 +16,9 @@ export async function getAllSponsoring(SQLClient, { iPage }) { // admin
 
 
 export async function deleteSponsoring(SQLClient, {idList}){
-  return await SQLClient.query("DELETE FROM sponsoring WHERE id in ($1)", [idList]);
+  const query = "DELETE FROM Sponsoring WHERE referred = ANY($1)";
+  const idArray = idList.split(',').map(Number);
+  return await SQLClient.query(query, [idArray]);
 }
 
 export async function addSponsoring(SQLClient, sponsor, referred){

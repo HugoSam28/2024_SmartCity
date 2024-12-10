@@ -50,5 +50,7 @@ export async function updateSubscription(SQLClient, {id, label, price, paymentRe
 }
 
 export async function deleteSubscriptions(SQLClient, {idList}){
-  return await SQLClient.query("DELETE FROM subscription WHERE id IN ($1)", [idList])
+  const query = "DELETE FROM subscription WHERE id = ANY($1)";
+  const idArray = idList.split(',').map(Number);
+  return await SQLClient.query(query, [idArray]);
 }

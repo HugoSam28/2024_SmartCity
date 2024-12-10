@@ -37,9 +37,9 @@ export const getAllPersons = async (req, res) => {
   }
 }
 
-export const updatePerson = async(req, res) =>{
+export const updatePerson = async(req, res) => {
   try {
-    await personModel.updatePerson(pool, req.session.id, req.val);
+    await personModel.updatePerson(pool, req.val.id, req.val);
     res.sendStatus(204);
   }
   catch(e) {

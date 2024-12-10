@@ -100,5 +100,7 @@ export async function updateInformations(SQLClient, {id, lat, lon, batteryLevel,
 }
 
 export async function deleteVehicles(SQLClient, {idList}){
-  return await SQLClient.query("DELETE FROM vehicle WHERE id IN ($1)", [idList]);
+  const query = "DELETE FROM Vehicle WHERE id = ANY($1)";
+  const idArray = idList.split(',').map(Number);
+  return await SQLClient.query(query, [idArray]);
 }

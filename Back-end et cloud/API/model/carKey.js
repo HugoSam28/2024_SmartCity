@@ -20,7 +20,9 @@ export const updateCarKey = async(SQLClient, {id, newCarId}) => {
 }
 
 export const deleteCarKeys = async(SQLClient, {idList}) => {
-    return await SQLClient.query('DELETE FROM Car_key WHERE id IN $1', [idList]);
+  const query = "DELETE FROM Car_key WHERE id = ANY($1)";
+  const idArray = idList.split(',').map(Number);
+  return await SQLClient.query(query, [idArray]);
 }
 
 

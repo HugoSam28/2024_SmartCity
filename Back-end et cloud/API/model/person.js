@@ -6,17 +6,16 @@ export const getPersonById = async(SQLClient,{id}) => {
 
 export const getAllPersons = async(SQLClient, {iPage}) => {
   const {rows} = await SQLClient.query("WITH Person AS ( " +
-    "SELECT * FROM Person" +
+    "SELECT * FROM Person " +
     "ORDER BY id LIMIT 10 OFFSET ($1 - 1) * 10) "+
     "SELECT * FROM Person", [iPage]);
   return rows;
 }
 
-export async function updatePerson(SQLClient, id, {firstName, lastName, email, phoneNumber, password, birthday, balance, hasCarlicence, hasMotorbikelicence, referralCode}){
+export async function updatePerson(SQLClient, id, {firstName, lastName, email, phoneNumber, password, birthday, balance, hasCarlicence, hasMotorbikelicence, role}){
   let query = `UPDATE Person SET `;
   const querySet = [];
   const queryValues = [];
-  
   if (firstName) {
       queryValues.push(firstName);
       querySet.push(`first_name = $${queryValues.length}`);
@@ -34,7 +33,7 @@ export async function updatePerson(SQLClient, id, {firstName, lastName, email, p
       querySet.push(`phone_number = $${queryValues.length}`)
   }
   if (password){
-      queryValues.push(util.hash(password));
+      queryValues.push(await util.hash(password));
       querySet.push(`password = $${queryValues.length}`)
   }
   if (birthday){
@@ -53,9 +52,9 @@ export async function updatePerson(SQLClient, id, {firstName, lastName, email, p
       queryValues.push(hasMotorbikelicence);
       querySet.push(`has_motorbike_licence = $${queryValues.length}`)
   }
-  if (referralCode){
-    queryValues.push(referralCode);
-    querySet.push(`referral_code = $${queryValues.length}`)
+  if (role){
+    queryValues.push(role);
+    querySet.push(`role = $${queryValues.length}`)
 }
   if(queryValues.length > 0){
       queryValues.push(id);
@@ -67,7 +66,9 @@ export async function updatePerson(SQLClient, id, {firstName, lastName, email, p
 }
 
 export async function deletePersons(SQLClient, {idList}){
-  return await SQLClient.query("DELETE * FROM Person WHERE id IN ($1)", [idList]);
+  const query = "DELETE FROM Person WHERE id = ANY($1)";
+  const idArray = idList.split(',').map(Number);
+  return await SQLClient.query(query, [idArray]);
 }
 
 export async function getPersonByEmail(SQLClient, email){
