@@ -5,7 +5,6 @@ import{
     getVehiclesAroundMe,
     getVehicleById,
     addVehicle,
-    updateStatus,
     updateInformations,
     deleteVehicles
 } from '../controller/vehicle.js';
@@ -20,7 +19,7 @@ import {
 
 const router = Router();
 
-router.get("/getAllVehicles", checkJWT, admin, PageVM, getAllCarKeys); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
+router.get("/getAllVehicles", checkJWT, admin, PageVM, getAllVehicles); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
 router.get("/getAllVehiclesAndPagesCount", ) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages 
 router.get("/getSearchVehicles", checkJWT, admin, PageVM, SVM, ) //Champ de recherche sur les ligne
 

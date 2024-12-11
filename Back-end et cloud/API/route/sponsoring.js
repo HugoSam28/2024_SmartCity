@@ -17,7 +17,7 @@ import {
 
 const router = Router();
 
-router.get("/getAllSponsorings", checkJWT, admin, PageVM, getAllCarKeys); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
+router.get("/getAllSponsorings", checkJWT, admin, PageVM, getAllSponsorings); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
 router.get("/getAllSponsoringsAndPagesCount", checkJWT, admin, ) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
 router.get("/getSearchSponsorings", checkJWT, admin, PageVM, SVM, ) //Champ de recherche sur les ligne
 

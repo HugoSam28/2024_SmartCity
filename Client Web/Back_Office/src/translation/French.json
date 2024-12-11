@@ -1,0 +1,8 @@
+{
+  "register":"Inscription",
+  "login": "Connexion",
+  "password": "Mot de passe",
+  "wrongPassword": "Email ou mot de passe incorrect",
+  "connectionApiError": "Erreur lors de la connexion à l'API"
+
+}

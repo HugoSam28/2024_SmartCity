@@ -1,9 +1,8 @@
 import {pool} from "../database/database.js";
 import * as carKeyModel from "../model/carKey.js";
+import {getAllCarKeys} from "../model/carKey.js";
 
-    addCarKey,
-    updateCarKey,
-    deleteCarKeys
+
 
 export const getAllKeys = async(req, res) => {
     try{
@@ -25,7 +24,7 @@ export const getAllKeysAndPagesCount = async(req, res) => {
     try{
         const result = {};
         result.keys = await carKeyModel.getAllCarKeys(pool, req.val.page);
-        result.nbPagesKeys = Math.ceil((await carKeyModel.pagesCount(pool))/10);
+        result.nbPagesKeys = Math.ceil((await carKeyModel.getAllCarKeys(pool, req.val.page))/10);
         if(carKeys.keys && result.nbPagesKeys){
             res.send(result);
         }

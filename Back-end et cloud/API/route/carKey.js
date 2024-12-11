@@ -1,7 +1,7 @@
 import Router from 'express-promise-router';
 
 import{
-    getAllKeys,
+  getAllKeys,
     getAllKeysAndPagesCount,
     getSearchKeys,
     addCarKey,
@@ -18,9 +18,9 @@ import {
 
 const router = Router();
 
-router.get("/getAllKeys", checkJWT, admin, PageVM, getAllCarKeys); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllKeysAndPagesCount", checkJWT, admin, PageVM, getAllCarKeys) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
-router.get("/getSearchKeys", checkJWT, admin, PageVM, SVM, ) //Champ de recherche sur les clés
+router.get("/getAllKeys", checkJWT, admin, PageVM, getAllKeys); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
+router.get("/getAllKeysAndPagesCount", checkJWT, admin, PageVM, getAllKeysAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
+router.get("/getSearchKeys", checkJWT, admin, PageVM, SVM, getSearchKeys) //Champ de recherche sur les clés
 
 router.post("/add", checkJWT, admin, addCarKey); //Ajout d'une ligne avec les infos rentrée
 

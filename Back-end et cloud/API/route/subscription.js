@@ -17,7 +17,7 @@ import {
 } from "../middleware/validation/validation.js";
 
 const router = Router();
-router.get("/getAllSubscriptions", checkJWT, admin, PageVM, getAllCarKeys); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
+router.get("/getAllSubscriptions", checkJWT, admin, PageVM, getAllSubscriptions); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
 router.get("/getAllSubscriptionsAndPagesCount", checkJWT, admin, PageVM, ) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
 router.get("/getSearchSubscriptions", checkJWT, admin, PageVM, SVM, ) //Champ de recherche sur les ligne
 

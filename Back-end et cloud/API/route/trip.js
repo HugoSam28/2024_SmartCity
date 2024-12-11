@@ -2,6 +2,8 @@ import Router from 'express-promise-router';
 
 import {
     getAllTrips,
+    getAllTripsAndPagesCount,
+    getSearchTrips,
     getOwnTrips,
     updateTrip,
     addTrip,

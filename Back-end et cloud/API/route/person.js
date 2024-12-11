@@ -29,7 +29,7 @@ router.post("/login", LVM, login); //OK
 
 router.get("/infos", checkJWT, getMyInfos); //Récupère toutes les infos du profil
 router.get("/porfile", ) //Récupérer les infos de bases concernant l'utilisateur pour le profil + le code de parrainage
-router.get("/getAllPersons", checkJWT, admin, PageVM, getAllCarKeys); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
+router.get("/getAllPersons", checkJWT, admin, PageVM, getAllPersons); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
 router.get("/getAllPersonsAndPagesCount", ) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages 
 router.get("/getSearchPersons", checkJWT, admin, PageVM, SVM, ) //Champ de recherche sur les ligne
 

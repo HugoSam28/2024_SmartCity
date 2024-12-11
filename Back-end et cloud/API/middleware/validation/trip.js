@@ -5,7 +5,7 @@ const startTripSchema = vine.object({
   startingDate: vine.date(),
   personId: vine.number().withoutDecimals(),
   startingLocation: vine.array(vine.number())})
-const startTripValidator = vine.compile(tripSchema);
+const startTripValidator = vine.compile(startTripSchema);
 export const startTripValidatorMiddelware = async(req, res, next) => {
   const data = {
     vehicleId: req.body.vehiclId,

@@ -177,10 +177,11 @@ INSERT INTO Car_key (car_id)
 VALUES (4);
 
 
-INSERT INTO Subscription (label, price, payment_recurrence, discount)
+INSERT INTO Subscription (label, price, payment_recurrence, vehicle_type, discount)
 VALUES ('Gold',
         20,
         'monthly',
+        'Voiture',
         0.15);
 
 INSERT INTO Person (first_name, last_name, email, phone_number, password, role, birthday)
