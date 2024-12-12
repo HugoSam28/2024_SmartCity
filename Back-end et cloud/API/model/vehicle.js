@@ -1,13 +1,13 @@
 
-export const getAllVehicles = async(SQLClient, {iPage}, {value}) => { 
+export const getAllVehicles = async(SQLClient, {iPage}, {column}) => {
   
   const {rows} = await SQLClient.query(`WITH vehicles_pages AS (
     SELECT * FROM vehicle
-    ORDER BY id LIMIT 10 OFFSET ($1 - 1) * 10) SELECT
+    ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) SELECT
     v.*, wl.brand, wl.model, wl.chassis_number
     FROM Vehicles_pages v
     LEFT JOIN With_licence wl ON v.id = wl.id
-    order by $2`, [iPage, value]);
+    order by $2`, [iPage, column]);
 
   return rows;
 }
@@ -19,7 +19,7 @@ export const vehiclesCount = async(SQLClient) => {
 export const getSearchVehicles = async(SQLClient, {iPage}, {value}, {column}) => {
   const {rows} = await SQLClient.query(`WITH vehicles_pages AS (
     SELECT * FROM vehicle
-    ORDER BY id LIMIT 10 OFFSET ($1 - 1) * 10) SELECT
+    ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) SELECT
     v.*, wl.brand, wl.model, wl.chassis_number
     FROM Vehicles_pages v
     LEFT JOIN With_licence wl ON v.id = wl.id

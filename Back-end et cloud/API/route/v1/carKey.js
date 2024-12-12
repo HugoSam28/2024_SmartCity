@@ -15,6 +15,7 @@ import {
   pageValidatorMiddleware as PageVM,
   searchValidatorMiddleware as SVM,
   deleteValidatorMiddleware as DVM,
+  orderValidatorMiddleware as OVM,
 } from '../../middleware/v1/validation/validation.js';
 import {
   addCarKeyValidatorMiddleware as ACKVM,

@@ -1,7 +1,7 @@
 export const getAllCarKeys= async(SQLClient, {iPage}, {column}) => {
   const {rows} = await SQLClient.query(`WITH Car_key_page AS (
     SELECT * FROM Car_key
-    ORDER BY id LIMIT 10 OFFSET ($1 - 1) * 10) 
+    ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
     SELECT c.*, v.model FROM Car_key_page c JOIN With_licence v ON v.id = c.car_id
     ORDER BY $2`, [iPage, column]);
   return rows;
@@ -14,7 +14,7 @@ export const keysCount = async(SQLClient) => {
 export const getSearchCarKeys = async(SQLClient, {iPage}, {value}, {column}) => {
   const {rows} = await SQLClient.query(
     `WITH Car_key_page AS (SELECT * FROM Car_key
-    ORDER BY id LIMIT 10 OFFSET ($1 - 1) * 10) 
+    ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) 
     SELECT c.*, v.model FROM Car_key c JOIN With_licence v ON c.car_id = v.id
     WHERE v.model ILIKE '%$2%'
     ORDER BY $3`, 

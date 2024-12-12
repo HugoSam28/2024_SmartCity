@@ -2,10 +2,11 @@ import {pool} from "../database/database.js";
 import * as vehicleModel from "../model/vehicle.js";
 
 export const getAllVehicles = async (req, res) => {
-    try{
+  try{
         const vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order);
         if(vehicles){
-            res.sendStatus(200).send(vehicles)
+          console.log(vehicles);
+            res.send(vehicles)
         }else{
             res.sendStatus(404);
         }

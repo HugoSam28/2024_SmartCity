@@ -11,7 +11,7 @@ export const pageValidatorMiddleware = async (req, res, next) => {
     iPage: req.body.iPage,
   }
   try {
-    req.val.page = await pageValidator.validate(data);
+    req.val = {...req.val, page: await pageValidator.validate(data)}
     next();
   } catch (e) {
     console.error(e);
@@ -28,7 +28,7 @@ export async function deleteValidatorMiddleware(req, res, next) {
     idList: req.body.idList
   }
   try {
-    req.val = await deleteValidator.validate(data);
+    req.val = { ...req.val, del: await deleteValidator.validate(data)}
     next();
   } catch(e) {
     console.error(e);
@@ -45,7 +45,24 @@ export const searchValidatorMiddleware = async (req, res, next) => {
     value: req.body.search
   }
   try {
-    req.val.search = await searchValidator.validate(data);
+    req.val = { ...req.val, search: await searchValidator.validate(data)}
+    next();
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+}
+
+const orderSchema = vine.object({
+  column: vine.string()
+})
+const orderValidator = vine.compile(orderSchema);
+export const orderValidatorMiddleware = async (req, res, next) => {
+  const data = {
+    column: req.body.column
+  }
+  try {
+    req.val = { ...req.val, order: await orderValidator.validate(data)}
     next();
   } catch (e) {
     console.error(e);

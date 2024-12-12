@@ -1,7 +1,7 @@
 export const getAllSponsorings = async(SQLClient, {iPage}, {value}) => {
   const {rows} = await SQLClient.query(`WITH sponsorings_page AS (
     SELECT * FROM sponsoring
-    ORDER BY referred LIMIT 10 OFFSET ($1 - 1) * 10) 
+    ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
     SELECT s.sponsor, pS.email, s.referred, pR.email FROM sponsorings_page s
     JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
     ORDER BY $2`, [iPage, value]);
@@ -15,7 +15,7 @@ export const sponsoringsCount = async(SQLClient) => {
 export const getSearchSponsorings = async(SQLClient, {iPage}, {value}, {column}) => {
   const {rows} = await SQLClient.query(`WITH sponsorings_page AS (
     SELECT * FROM sponsoring
-    ORDER BY referred LIMIT 10 OFFSET ($1 - 1) * 10) 
+    ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) 
     SELECT s.sponsor, pS.email, s.referred, pR.email FROM sponsorings_page s
     JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
     WHERE (pS.email ILIKE '%$2%' OR pR.email ILIKE '%$2%')

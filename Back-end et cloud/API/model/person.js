@@ -46,7 +46,7 @@ export const getProfileInfosById = async(SQLClient, {id}) =>{
 export const getAllPersons = async(SQLClient, {iPage}, {column}) => {
   const {rows} = await SQLClient.query(`WITH Person_page AS ( 
     SELECT * FROM Person 
-    ORDER BY id LIMIT 10 OFFSET ($1 - 1) * 10) 
+    ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
     SELECT * FROM Person_page
     ORDER BY $2`, [iPage, column]);
   return rows;
@@ -59,7 +59,7 @@ export const personsCount = async(SQLClient) => {
 export const getSearchPersons = async(SQLClient, {iPage}, {value}, {column}) => {
   const {rows} = await SQLClient.query(
     `WITH Person_page AS (SELECT * FROM Person
-    ORDER BY id LIMIT 10 OFFSET ($1 - 1) * 10) 
+    ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) 
     SELECT * FROM Person_page
     WHERE (first_name ILIKE '%$2%' OR last_name ILIKE '%$2%')
     ORDER BY $3`, 
