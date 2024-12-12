@@ -14,16 +14,17 @@ import {admin} from '../../middleware/v1/authorization/mustBeAdmin.js';
 import {
     pageValidatorMiddleware as PageVM,
     searchValidatorMiddleware as SVM,
-    deleteValidatorMiddleware as DVM
+    deleteValidatorMiddleware as DVM,
+    orderValidatorMiddleware as OVM,
 } from '../../middleware/v1/validation/validation.js';
 import {sponsoringValidatorMiddleware as SponsorVM} from "../../middleware/v1/validation/sponsoring..js";
 
 
 const router = Router();
 
-router.get("/getAllSponsorings", checkJWT, admin, PageVM, getAllSponsorings); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllSponsoringsAndPagesCount", checkJWT, admin, getAllSponsoringsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
-router.get("/getSearchSponsorings", checkJWT, admin, PageVM, SVM, getSearchSponsorings) //Champ de recherche sur les ligne
+router.get("/getAllSponsorings", checkJWT, admin, PageVM, OVM, getAllSponsorings); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
+router.get("/getAllSponsoringsAndPagesCount", checkJWT, admin, PageVM, OVM, getAllSponsoringsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
+router.get("/getSearchSponsorings", checkJWT, admin, PageVM, SVM, OVM, getSearchSponsorings) //Champ de recherche sur les ligne
 
 router.post("/add", checkJWT, admin, SponsorVM, PageVM, addSponsoring);
 

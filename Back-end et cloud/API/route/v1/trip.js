@@ -17,7 +17,8 @@ import {admin} from '../../middleware/v1/authorization/mustBeAdmin.js';
 import {
   pageValidatorMiddleware as PageVM,
   searchValidatorMiddleware as SVM,
-  deleteValidatorMiddleware as DVM
+  deleteValidatorMiddleware as DVM,
+  orderValidatorMiddleware as OVM,
 } from '../../middleware/v1/validation/validation.js';
 import {
     startTripValidatorMiddelware as STVM,
@@ -26,9 +27,9 @@ import {
 
 const router = Router();
 
-router.get("/getAllTrips", checkJWT, admin, PageVM, getAllTrips); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllTripsAndPagesCount", checkJWT, admin, PageVM ,getAllTripsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
-router.get("/getSearchTrips", checkJWT, admin, PageVM, SVM, getSearchTrips) //Champ de recherche sur les ligne
+router.get("/getAllTrips", checkJWT, admin, PageVM, OVM, getAllTrips); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
+router.get("/getAllTripsAndPagesCount", checkJWT, admin, PageVM, OVM, getAllTripsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
+router.get("/getSearchTrips", checkJWT, admin, PageVM, SVM, OVM, getSearchTrips) //Champ de recherche sur les ligne
 
 router.get("/getOwnTrips", checkJWT, getOwnTrips); //Récupération de nos voyages avec toutes les infos
 

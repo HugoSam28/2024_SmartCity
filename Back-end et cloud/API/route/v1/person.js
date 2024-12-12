@@ -24,7 +24,8 @@ import {admin} from '../../middleware/v1/authorization/mustBeAdmin.js';
 import {
     pageValidatorMiddleware as PageVM,
     deleteValidatorMiddleware as DVM,
-    searchValidatorMiddleware as SVM
+    searchValidatorMiddleware as SVM,
+    orderValidatorMiddleware as OVM
   } from '../../middleware/v1/validation/validation.js';
 
 const router = Router();
@@ -34,9 +35,9 @@ router.post("/login", LVM, login); //OK
 
 router.get("/infos", checkJWT, getMyInfos); //Récupère toutes les infos du profil
 router.get("/porfile", getProfileInfos) //Récupérer les infos de bases concernant l'utilisateur pour le profil + le code de parrainage
-router.get("/getAllPersons", checkJWT, admin, PageVM, getAllPersons); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllPersonsAndPagesCount", getAllPersonsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages 
-router.get("/getSearchPersons", checkJWT, admin, PageVM, SVM, getSearchPersons) //Champ de recherche sur les ligne
+router.get("/getAllPersons", checkJWT, admin, PageVM, OVM, getAllPersons); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
+router.get("/getAllPersonsAndPagesCount",checkJWT, admin, PageVM, OVM, getAllPersonsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
+router.get("/getSearchPersons", checkJWT, admin, PageVM, SVM, OVM, getSearchPersons) //Champ de recherche sur les ligne
 
 router.patch("/updateMySelf", checkJWT, PUVM, updateMySelf); //Modification de son propre compte
 router.patch("/update", checkJWT, admin, PUVMVA, updatePerson);

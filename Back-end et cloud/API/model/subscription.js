@@ -3,7 +3,7 @@ export const getAllSubscriptions = async(SQLClient, {iPage}) => { // admin
   
   const {rows} = await SQLClient.query(`WITH Subscription AS (
     SELECT * FROM Subscription
-    ORDER BY id LIMIT 10 OFFSET (:$1 - 1) * 10)
+    ORDER BY id LIMIT 10 OFFSET ($1 - 1) * 10)
     SELECT * FROM Subscription`, [iPage]);
 
   return rows;

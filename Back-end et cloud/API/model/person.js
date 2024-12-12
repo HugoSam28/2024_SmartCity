@@ -53,7 +53,8 @@ export const getAllPersons = async(SQLClient, {iPage}, {column}) => {
 }
 
 export const personsCount = async(SQLClient) => {
-  return await SQLClient.query(`SELECT COUNT(*) FROM Person`);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Person`);
+  return rows[0]?.count;
 }
 
 export const getSearchPersons = async(SQLClient, {iPage}, {value}, {column}) => {

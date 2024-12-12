@@ -62,7 +62,8 @@ export const orderValidatorMiddleware = async (req, res, next) => {
     column: req.body.column
   }
   try {
-    req.val = { ...req.val, order: await orderValidator.validate(data)}
+    req.val = { ...req.val, order: await orderValidator.validate(data)};
+    console.log(req.val);
     next();
   } catch (e) {
     console.error(e);

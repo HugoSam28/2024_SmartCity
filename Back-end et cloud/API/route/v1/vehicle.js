@@ -28,7 +28,7 @@ import {
 const router = Router();
 
 router.get("/getAllVehicles", checkJWT, admin, PageVM, OVM, getAllVehicles); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllVehiclesAndPagesCount", getAllVehiclesAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages 
+router.get("/getAllVehiclesAndPagesCount",checkJWT, admin, PageVM, OVM, getAllVehiclesAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
 router.get("/getSearchVehicles", checkJWT, admin, PageVM, SVM, getSearchVehicles) //Champ de recherche sur les ligne
 
 router.get('/getAroundMe', getVehiclesAroundMe); //renvoie tout (map/list) --> tri par vehicle dans l'app
