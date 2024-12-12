@@ -10,7 +10,8 @@ export const getAllTrips = async(SQLClient, {iPage}, {column}) => {
 }
 
 export const tripsCount = async(SQLClient) => {
-  return await SQLClient.query(`SELECT COUNT(*) FROM Trip`);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Trip`);
+  return rows[0]?.count;
 }
 
 export const getSearchTrips = async(SQLClient, {iPage}, {value}, {column}) => {
@@ -27,7 +28,8 @@ export const getSearchTrips = async(SQLClient, {iPage}, {value}, {column}) => {
 }
 
 export const tripsSearchCount = async(SQLClient, {value}) => {
-  return await SQLClient.query(`SELECT COUNT(*) FROM Trip t JOIN Person p ON t.person_id = p.id WHERE p.email ILIKE %$1%`, [value]);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Trip t JOIN Person p ON t.person_id = p.id WHERE p.email ILIKE %$1%`, [value]);
+  return rows[0]?.count;
 }
 
 export const getOwnTrips = async(SQLClient, {id}) => {

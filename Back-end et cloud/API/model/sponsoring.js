@@ -9,7 +9,8 @@ export const getAllSponsorings = async(SQLClient, {iPage}, {value}) => {
 }
 
 export const sponsoringsCount = async(SQLClient) => {
-  return await SQLClient.query(`SELECT COUNT(*) FROM Sponsoring`);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Sponsoring`);
+  return rows[0]?.count;
 }
 
 export const getSearchSponsorings = async(SQLClient, {iPage}, {value}, {column}) => {

@@ -8,7 +8,8 @@ export const getAllCarKeys= async(SQLClient, {iPage}, {column}) => {
 }
 
 export const keysCount = async(SQLClient) => {
-  return await SQLClient.query(`SELECT COUNT(*) FROM Car_key`);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Car_key`);
+  return rows[0]?.count;
 }
 
 export const getSearchCarKeys = async(SQLClient, {iPage}, {value}, {column}) => {
@@ -24,7 +25,8 @@ export const getSearchCarKeys = async(SQLClient, {iPage}, {value}, {column}) => 
 }
 
 export const keysSearchCount = async(SQLClient, {value}) => {
-  return await SQLClient.query(`SELECT COUNT(*) FROM Car_key c JOIN With_licence v ON c.car_id = v.id WHERE v.model ILIKE %$1%`, [value]);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Car_key c JOIN With_licence v ON c.car_id = v.id WHERE v.model ILIKE %$1%`, [value]);
+  return rows[0]?.count;
 }
 
 export const addCarKey = async(SQLClient, {carId}) => {

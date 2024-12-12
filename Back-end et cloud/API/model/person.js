@@ -70,7 +70,8 @@ export const getSearchPersons = async(SQLClient, {iPage}, {value}, {column}) => 
 }
 
 export const personsSearchCount = async(SQLClient, {value}) => {
-  return await SQLClient.query(`SELECT COUNT(*) FROM Person WHERE (first_name ILIKE '%$1%' OR last_name ILIKE '%$1%')`, [value]);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Person WHERE (first_name ILIKE '%$1%' OR last_name ILIKE '%$1%')`, [value]);
+  return rows[0]?.count;
 }
 
 export const updateMySelf = async(SQLClient, {id, firstName, lastName, email, phoneNumber, password, hasCarlicence, hasMotorbikelicence}) => {

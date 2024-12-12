@@ -13,7 +13,8 @@ export const getAllVehicles = async(SQLClient, {iPage}, {column}) => {
 }
 
 export const vehiclesCount = async(SQLClient) => {
-  return await SQLClient.query(`SELECT COUNT(*) FROM vehicles`);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM vehicles`);
+  return rows[0]?.count;
 }
 
 export const getSearchVehicles = async(SQLClient, {iPage}, {value}, {column}) => {
@@ -29,7 +30,8 @@ export const getSearchVehicles = async(SQLClient, {iPage}, {value}, {column}) =>
 }
 
 export const vehiclesSearchCount = async(SQLClient, {value}) => {
-  return await SQLClient.query(`SELECT COUNT(*) FROM vehicle WHERE type ILIKE %$1%`, [value]);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM vehicle WHERE type ILIKE %$1%`, [value]);
+  return rows[0]?.count;
 }
 
 export const getVehiclesAroundMe = async(SQLClient, {lat, lon, distance}) => {
