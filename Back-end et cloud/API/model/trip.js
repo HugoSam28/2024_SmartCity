@@ -17,12 +17,11 @@ export const tripsCount = async(SQLClient) => {
 export const getSearchTrips = async(SQLClient, {iPage}, {value}, {column}) => {
   const {rows} = await SQLClient.query(`
     WITH trips_page AS (
-    SELECT * FROM trip
-    ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) 
-    SELECT p.email, t.* FROM trips_page t
-    JOIN Person p ON t.person_id = p.id
-    WHERE p.email ILIKE '%$2%'
-    ORDER BY $3`, 
+      SELECT p.email, t.* FROM trips t
+      JOIN Person p ON t.person_id = p.id
+      WHERE p.email ILIKE '%$2%'
+      ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) 
+      SELECT * FROM trips_page`, 
     [iPage, value, column]
   );
   return rows;

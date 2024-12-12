@@ -1,14 +1,12 @@
 
 export const getAllVehicles = async(SQLClient, {iPage}, {column}) => {
   
-  const {rows} = await SQLClient.query(`WITH vehicles_pages AS (
-    SELECT * FROM vehicle
-    ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) SELECT
-    v.*, wl.brand, wl.model, wl.chassis_number
-    FROM Vehicles_pages v
-    LEFT JOIN With_licence wl ON v.id = wl.id
-    order by $2`, [iPage, column]);
-
+  const {rows} = await SQLClient.query(`
+    WITH vehicles_page AS (
+      SELECT v.*, wl.brand, wl.model, wl.chassis_number FROM Vehicles v
+      LEFT JOIN With_licence wl ON v.id = wl.id
+      ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10)
+      SELECT * FROM vehicles_page`, [iPage, column]);
   return rows;
 }
 
@@ -18,14 +16,13 @@ export const vehiclesCount = async(SQLClient) => {
 }
 
 export const getSearchVehicles = async(SQLClient, {iPage}, {value}, {column}) => {
-  const {rows} = await SQLClient.query(`WITH vehicles_pages AS (
-    SELECT * FROM vehicle
-    ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) SELECT
-    v.*, wl.brand, wl.model, wl.chassis_number
-    FROM Vehicles_pages v
-    LEFT JOIN With_licence wl ON v.id = wl.id
-    WHERE v.type ILIKE '%$2%'
-    order by $3`, [iPage, value, column]);
+  const {rows} = await SQLClient.query(`
+    WITH vehicles_pages AS (
+      SELECT v.*, wl.brand, wl.model, wl.chassis_number FROM vehicle v
+      LEFT JOIN With_licence wl ON v.id = wl.id
+      WHERE v.type ILIKE '%$2%'
+      ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10)
+    SELECT FROM Vehicles_pages`, [iPage, value, column]);
   return rows;
 }
 
