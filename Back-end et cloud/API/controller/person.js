@@ -5,76 +5,6 @@ import jwt from 'jsonwebtoken';
 import {addSponsoring} from "../model/sponsoring.js";
 import * as util from "../util/argon.js";
 
-export const getMyInfos = async(req, res) => {
-  try{
-    const person = await personModel.getPersonById(pool, req.session);
-    if(person){
-      res.send(person);
-    }
-    else{
-      res.sendStatus(404);
-    }
-  }
-  catch(e){
-    console.error(e);
-    res.sendStatus(500);
-  }
-}
-
-export const getAllPersons = async (req, res) => {
-  try{
-    const people = await personModel.getAllPersons(pool, req.val);
-    if(people[0] !== undefined){
-      res.status(200).send(people);
-    }
-    else{
-      res.sendStatus(404);
-    }
-  }
-  catch(e) {
-    console.error(e);
-    res.sendStatus(500);
-  }
-}
-
-export const updatePerson = async(req, res) => {
-  try {
-    await personModel.updatePerson(pool, req.val.id, req.val);
-    res.sendStatus(204);
-  }
-  catch(e) {
-    console.error(e);
-    res.sendStatus(500);
-  }
-}
-
-export const deletePersons = async(req, res) => {
-  try{
-    await personModel.deletePersons(pool, req.val);
-    res.sendStatus(204);
-  }
-  catch(e) {
-    console.error(e);
-    res.sendStatus(500);
-  }
-}
-
-export const login = async (req,res) => {
-  try {
-    let userDetails = {id: null, role: null};
-    const person = await personModel.getPersonByEmail(pool, req.val.email);
-    if (person?.id){
-      userDetails = await util.verify(req.val.password, person.password)  ?
-      {id: person.id, role: person.role} : {id: null, role: null};
-    }
-    const token = jwt.sign({id: userDetails.id, role: userDetails.role}, process.env.JWTKEY, {expiresIn: "18h"} );
-    res.send(token);
-  } catch(e) {
-    console.error(e);
-    res.sendStatus(500);
-  }
-}
-
 export const registration = async (req, res) => {
   try {
     const idReferred = await personModel.addPerson(pool, req.val);
@@ -106,11 +36,167 @@ export const registration = async (req, res) => {
         }
       }
     }
-    res.status(201).send(`${idReferred}`);
+    res.status(201).send({idReferred});
   }
   catch (e) {
     console.error(e);
     res.sendStatus(500);
   }
 }
+
+export const login = async (req,res) => {
+  try {
+    let userDetails = {id: null, role: null};
+    const person = await personModel.getPersonByEmail(pool, req.val.email);
+    if (person?.id && await util.verify(req.val.password, person.password)){
+      userDetails = {id: person.id, role: person.role};
+    }
+    const token = jwt.sign({id: userDetails.id, role: userDetails.role}, process.env.JWTKEY, {expiresIn: "18h"} );
+    res.send(token);
+  } catch(e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+}
+
+export const getMyInfos = async(req, res) => {
+  try{
+    const person = await personModel.getPersonById(pool, req.val);
+    if(person){
+      res.sendStatus(200).send(person);
+    }
+    else{
+      res.sendStatus(404);
+    }
+  }
+  catch(e){
+    console.error(e);
+    res.sendStatus(500);
+  }
+}
+
+export const getProfileInfos = async(req, res) => {
+  try{
+    const person = await personModel.getProfileInfosById(pool, req.val);
+    if(person){
+      res.sendStatus(200).send(person);
+    }
+    else{
+      res.sendStatus(404);
+    }
+  }
+  catch(e){
+    console.error(e);
+    res.sendStatus(500)
+  }
+}
+
+export const getAllPersons = async (req, res) => {
+  try{
+    const people = await personModel.getAllPersons(pool, req.val.page, req.val.order);
+    if(people){
+      res.status(200).send(people);
+    }
+    else{
+      res.sendStatus(404);
+    }
+  }
+  catch(e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+}
+
+
+export const getAllPersonsAndPagesCount = async(req, res) => {
+  try{
+    const result = {};
+    result.persons = await personModel.getAllPersons(pool, req.val.page, req.val.order);
+    result.nbPagesPersons = Math.ceil((await personModel.personsCount(pool))/10);
+    if(result.persons && result.nbPagesPersons){
+        res.sendStatus(200).send(result);
+    }
+    else{
+        res.sendStatus(404);
+    }
+  }
+  catch(e){
+      console.error(e);
+      res.sendStatus(500);
+  }
+}
+
+export const getSearchPersons = async(req, res) => {
+  try{
+    const result = {};
+    result.persons = await personModel.getSearchPersons(pool, req.val.page, req.val.search, req.val.order);
+    result.nbPagesPersons = Math.ceil((await personModel.personsSearchCount(pool, req.val.search))/10);
+    if(result.persons && result.nbPagesPersons){
+        res.sendStatus(200).send(result);
+    }
+    else{
+        res.sendStatus(404);
+    }
+  }
+  catch(e){
+      console.error(e);
+      res.sendStatus(500);
+  }
+}
+
+export const updateMySelf = async(req, res) => {
+  try{
+    await personModel.updateMySelf(pool, req.val);
+    const people = await personModel.getAllPersons(pool, req.val.page, req.val.order)
+    res.sendStatus(200).send(people);
+  }
+  catch(e){
+      console.error(e);
+      res.sendStatus(500);
+  }
+}
+
+export const updatePerson = async(req, res) => {
+  try{
+    await personModel.updatePerson(pool, req.val);
+    const people = await personModel.getAllPersons(pool, req.val.page, req.val.order)
+    res.sendStatus(200).send(people);
+  }
+  catch(e){
+      console.error(e);
+      res.sendStatus(500);
+  }
+}
+
+export const updatePersonalBalance = async(req, res) =>{
+  try{
+    const balance = personModel.updatePersonalBalance(pool, req.val);
+    if(balance){
+      res.sendStatus(200).send(balance);
+    }
+    else{
+      res.sendStatus(404);
+    }
+  }
+  catch(e){
+    console.error(e);
+    res.sendStatus(500);
+  }
+}
+
+export const deletePersons = async(req, res) => {
+  try{
+    await personModel.deletePersons(pool, req.val);
+    const result= {};
+    result.persons = await personModel.getAllPersons(pool, req.val.page, req.val.order);
+    result.nbPagesPersons = Math.ceil((await personModel.personsCount(pool))/10);
+    res.sendStatus(200).send(result);
+  }
+  catch(e){
+      console.error(e);
+      res.sendStatus(500);
+  }
+}
+
+
 

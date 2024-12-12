@@ -1,33 +1,46 @@
-export async function getSponsoringByID(SQLClient, {id}){
-    const {rows} = await SQLClient.query("SELECT * FROM sponsoring WHERE id = $1", [id]);
-    return rows[0];
-}
-
-export async function getAllSponsoring(SQLClient, { iPage }) { // admin
-
-  const { rows } = await SQLClient.query(`
-    WITH Sponsoring_key AS (
-      SELECT * FROM Sponsoring
-      ORDER BY sponsor, referred LIMIT 10 OFFSET ($1 - 1) * 10)
-      SELECT * FROM Sponsoring_key;`, [iPage]);
-
+export const getAllSponsorings = async(SQLClient, {iPage}, {value}) => {
+  const {rows} = await SQLClient.query(`WITH sponsorings_page AS (
+    SELECT * FROM sponsoring
+    ORDER BY referred LIMIT 10 OFFSET ($1 - 1) * 10) 
+    SELECT s.sponsor, pS.email, s.referred, pR.email FROM sponsorings_page s
+    JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
+    ORDER BY $2`, [iPage, value]);
   return rows;
 }
 
-
-export async function deleteSponsoring(SQLClient, {idList}){
-  const query = "DELETE FROM Sponsoring WHERE referred = ANY($1)";
-  const idArray = idList.split(',').map(Number);
-  return await SQLClient.query(query, [idArray]);
+export const sponsoringsCount = async(SQLClient) => {
+  return await SQLClient.query(`SELECT COUNT(*) FROM Sponsoring`);
 }
 
-export async function addSponsoring(SQLClient, sponsor, referred){
-    const {rows} = await SQLClient.query("INSERT INTO sponsoring (sponsor, referred) VALUES ($1, $2)", [sponsor, referred]);
+export const getSearchSponsorings = async(SQLClient, {iPage}, {value}, {column}) => {
+  const {rows} = await SQLClient.query(`WITH sponsorings_page AS (
+    SELECT * FROM sponsoring
+    ORDER BY referred LIMIT 10 OFFSET ($1 - 1) * 10) 
+    SELECT s.sponsor, pS.email, s.referred, pR.email FROM sponsorings_page s
+    JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
+    WHERE (pS.email ILIKE '%$2%' OR pR.email ILIKE '%$2%')
+    ORDER BY $3`, 
+    [iPage, value, column]
+  );
+  return rows;
+}
+
+export const sponsoringsSearchCount = async(SQLClient, {value}) => {
+  return await SQLClient.query(`SELECT COUNT(*) FROM Sponsoring s JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
+    WHERE (pS.email ILIKE '%$1%' OR pR.email ILIKE '%$1%')`, [value]);
+}
+
+export const getSponsoringByID = async(SQLClient, {id}) => {
+    const {rows} = await SQLClient.query(`SELECT * FROM sponsoring WHERE id = $1`, [id]);
     return rows[0];
 }
 
-export async function updateSponsoring(SQLClient, {id, sponsor, referred}){
-    let query = "UPDATE sponsoring SET ";
+export const addSponsoring = async(SQLClient, sponsor, referred) =>{
+    await SQLClient.query(`INSERT INTO sponsoring (sponsor, referred) VALUES ($1, $2)`, [sponsor, referred]);
+}
+
+export const updateSponsoring = async(SQLClient, {idReferred, sponsor, referred}) =>{
+  let query = `UPDATE sponsoring SET `;
   const querySet = [];
   const queryValues = [];
   if(sponsor){
@@ -39,22 +52,14 @@ export async function updateSponsoring(SQLClient, {id, sponsor, referred}){
     querySet.push(`referred = $${queryValues.length}`);
   }
   if(queryValues.length > 0){
-      queryValues.push(id);
-      query += `${querySet.join(", ")} WHERE id = $${queryValues.length}`;
+      queryValues.push(idReferred);
+      query += `${querySet.join(", ")} WHERE referred = $${queryValues.length}`;
       return await SQLClient.query(query, queryValues);
   } else {
       throw new Error("No field given");
   }
 }
 
-export async function getSearchTrips(SQLClient, {value}) {
-  const trips = await SQLClient.query(
-    `SELECT *
-    FROM Sponsoring s
-    JOIN Person sponsorPerson ON s.sponsor = sponsorPerson.id
-    JOIN Person referredPerson ON s.referred = referredPerson.id
-    WHERE sponsorPerson.email LIKE $1 OR referredPerson.email LIKE $1;`, 
-    [value]
-  );
-  return trips.rows;
+export const deleteSponsoring = async(SQLClient, {idList}) => {
+  return await SQLClient.query(`DELETE FROM Sponsoring WHERE id = ANY($1)`, [idList]);
 }

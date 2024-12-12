@@ -7,14 +7,15 @@ import {
     updateSubscription,
     deleteSubscriptions
 
-} from "../controller/subscription.js";
+} from "../../controller/subscription.js";
 
-import {checkJWT} from "../middleware/identification/jwt.js";
-import {admin} from '../middleware/authorization/mustBeAdmin.js';
+import {checkJWT} from "../../middleware/v1/identification/jwt.js";
+import {admin} from '../../middleware/v1/authorization/mustBeAdmin.js';
 import {
     pageValidatorMiddleware as PageVM,
     searchValidatorMiddleware as SVM,
-} from "../middleware/validation/validation.js";
+    deleteValidatorMiddleware as DVM
+} from "../../middleware/v1/validation/validation.js";
 
 const router = Router();
 router.get("/getAllSubscriptions", checkJWT, admin, PageVM, getAllSubscriptions); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
@@ -28,6 +29,6 @@ router.post("/add", checkJWT, admin, addSubscription);
 router.patch("/update", checkJWT, admin, updateSubscription);
 router.patch("/updateOwnSubscriptions", ) //Modification de nos abonnements
 
-router.delete("/delete", checkJWT, admin, deleteSubscriptions);
+router.delete("/delete", checkJWT, admin, DVM, PageVM, deleteSubscriptions);
 
 export default router;

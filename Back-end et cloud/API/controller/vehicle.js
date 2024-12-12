@@ -47,9 +47,10 @@ export const getVehicleById = async (req, res) => {
 }
 
 export const addVehicle = async (req, res) => {
-    try {
+  console.log(req.val);
+  try {
         const id = await vehicleModel.addVehicle(pool, req.val);
-        res.status(201).send(id);
+        res.send({id});
     } catch (e) {
         console.error(e)
         res.sendStatus(500);

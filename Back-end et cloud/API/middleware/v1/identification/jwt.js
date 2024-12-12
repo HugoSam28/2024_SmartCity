@@ -1,4 +1,4 @@
-import {verify} from '../../util/jwt.js';
+import {verify} from '../../../util/jwt.js';
 
 export const checkJWT = async (req, res, next) => {
     const authorize = req.get("authorization");

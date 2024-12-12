@@ -20,7 +20,7 @@ export default function LoginScreen() {
     setError(""); // Reset error
 
     try {
-      const response = await fetch('http://localhost:3267/person/login', {
+      const response = await fetch('http://localhost:3267/v1/person/login', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
@@ -31,7 +31,6 @@ export default function LoginScreen() {
         }),
       });
       if (!response.ok) {
-        //gerer les exception de l'api (crash)
         throw new Error(t("connectionApiError"))
       }
       const token = await response.text();

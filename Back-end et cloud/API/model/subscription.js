@@ -1,27 +1,27 @@
 
-export async function getAllSubscriptions(SQLClient, {iPage}) { // admin
+export const getAllSubscriptions = async(SQLClient, {iPage}) => { // admin
   
-  const {rows} = await SQLClient.query("WITH Subscription AS ( " +
-    "SELECT * FROM Subscription" +
-    "ORDER BY id LIMIT 10 OFFSET (:$1 - 1) * 10) "+
-    "SELECT * FROM Subscription", [iPage]);
+  const {rows} = await SQLClient.query(`WITH Subscription AS (
+    SELECT * FROM Subscription
+    ORDER BY id LIMIT 10 OFFSET (:$1 - 1) * 10)
+    SELECT * FROM Subscription`, [iPage]);
 
   return rows;
 }
 
-export async function getSubscriptionById(SQLClient, {id}){
-  const {rows} = await SQLClient.query("SELECT * FROM subscription WHERE ID = $1", [id]);
+export const getSubscriptionById = async(SQLClient, {id}) => {
+  const {rows} = await SQLClient.query(`SELECT * FROM subscription WHERE ID = $1`, [id]);
   return rows[0];
 }
 
-export async function addSubscription(SQLClient, {label, price, paymentRecurrence, discount}){
-  const {rows} = await SQLClient.query("INSERT INTO subscription(label, price, payment_recurrence, discount) VALUES " +
-    "($1, $2, $3, $4) RETURNING id", label, price, paymentRecurrence, discount);
+export const addSubscription = async(SQLClient, {label, price, paymentRecurrence, discount}) => {
+  const {rows} = await SQLClient.query(`INSERT INTO subscription(label, price, payment_recurrence, discount) VALUES
+    ($1, $2, $3, $4) RETURNING id`, label, price, paymentRecurrence, discount);
     return rows[0]?.id;
 }
 
-export async function updateSubscription(SQLClient, {id, label, price, paymentRecurrence, discount}){
-  let query = "UPDATE subscription SET ";
+export const updateSubscription = async(SQLClient, {id, label, price, paymentRecurrence, discount}) => {
+  let query = `UPDATE subscription SET `;
   const querySet = [];
   const queryValues = [];
   if(label){
@@ -45,12 +45,12 @@ export async function updateSubscription(SQLClient, {id, label, price, paymentRe
       query += `${querySet.join(", ")} WHERE id = $${queryValues.length}`;
       return await SQLClient.query(query, queryValues);
   } else {
-      throw new Error("No field given");
+      throw new Error(`No field given`);
   }
 }
 
-export async function deleteSubscriptions(SQLClient, {idList}){
-  const query = "DELETE FROM subscription WHERE id = ANY($1)";
+export const deleteSubscriptions = async(SQLClient, {idList}) => {
+  const query = `DELETE FROM subscription WHERE id = ANY($1)`;
   const idArray = idList.split(',').map(Number);
   return await SQLClient.query(query, [idArray]);
 }

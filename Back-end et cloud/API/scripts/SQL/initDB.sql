@@ -63,9 +63,9 @@ CREATE TABLE Person
     password                   VARCHAR(250) NOT NULL,
     role                       VARCHAR(10)  NOT NULL DEFAULT ('ROLE_USER'),
     birthday                   DATE         NOT NULL CHECK ( birthday <= CURRENT_DATE - INTERVAL '16 years' ),
-    balance                    DECIMAL DEFAULT 0,
-    has_car_licence            BOOLEAN DEFAULT FALSE,
-    has_motorbike_licence      BOOLEAN DEFAULT FALSE,
+    balance                    DECIMAL DEFAULT 0 NOT NULL,
+    has_car_licence            BOOLEAN DEFAULT FALSE NOT NULL,
+    has_motorbike_licence      BOOLEAN DEFAULT FALSE NOT NULLd,
     referral_code              VARCHAR(8) UNIQUE NOT NULL DEFAULT (
         UPPER(
                 SUBSTRING(MD5(RANDOM()::TEXT || CLOCK_TIMESTAMP()::TEXT) FROM 1 FOR 8)
@@ -74,10 +74,10 @@ CREATE TABLE Person
 
 CREATE TABLE Person_subscription
 (
-    person_id                  INT REFERENCES Person (id) ON DELETE SET NULL,
-    subscription_id            INT REFERENCES subscription (id) ON DELETE SET NULL,
+    id                         INT GENERATED ALWAYS AS IDENTITY,
+    person_id                  INT REFERENCES Person (id) ON DELETE CASCADE,
+    subscription_id            INT REFERENCES subscription (id) ON DELETE CASCADE,
     starting_subscription_date DATE DEFAULT (NOW()),
-    PRIMARY KEY (person_id, subscription_id)
 );
 
 CREATE TABLE Trip
@@ -86,10 +86,11 @@ CREATE TABLE Trip
     person_ID         INT       NOT NULL REFERENCES Person (id) ON DELETE SET NULL,
     vehicle_ID        INT       NOT NULL REFERENCES Vehicle (id) ON DELETE SET NULL,
     starting_date     TIMESTAMP NOT NULL,
-    ending_date       TIMESTAMP NOT NULL,
-    distance          DECIMAL   NOT NULL CHECK ( distance >= 0),
+    ending_date       TIMESTAMP,
+    distance          DECIMAL,
+    cost              DECIMAL,
     starting_location POINT     NOT NULL,
-    ending_location   POINT     NOT NULL
+    ending_location   POINT
 );
 -- !!!! attention, par rapport à google maps, il faut inverser latitude et longitude,
 -- comme ici ce sont les coordonnées d'un point, c'est d'abord longitude puis lattitude,
@@ -97,9 +98,9 @@ CREATE TABLE Trip
 
 CREATE TABLE Sponsoring
 (
-    sponsor  INT NOT NULL REFERENCES Person (id) ON DELETE SET NULL,
-    referred INT NOT NULL UNIQUE REFERENCES Person (id) ON DELETE SET NULL,
-    PRIMARY KEY (sponsor, referred)
+    referred INT PRIMARY KEY REFERENCES Person (id) ON DELETE CASCADE,
+
+    sponsor  INT NOT NULL REFERENCES Person (id) ON DELETE CASCADE,
 );
 
 CREATE OR REPLACE FUNCTION sponsor_limit()

@@ -1,28 +1,41 @@
-export const getAllCarKeys= async(SQLClient, {iPage}) => {
-    const {rows} = await SQLClient.query("WITH Car_key AS ( " +
-      "SELECT * FROM Car_key" +
-      "ORDER BY id LIMIT 10 OFFSET ($1 - 1) * 10) "+
-      "SELECT * FROM Car_key", [iPage]);
-    
-    return rows;
+export const getAllCarKeys= async(SQLClient, {iPage}, {column}) => {
+  const {rows} = await SQLClient.query(`WITH Car_key_page AS (
+    SELECT * FROM Car_key
+    ORDER BY id LIMIT 10 OFFSET ($1 - 1) * 10) 
+    SELECT c.*, v.model FROM Car_key_page c JOIN With_licence v ON v.id = c.car_id
+    ORDER BY $2`, [iPage, column]);
+  return rows;
+}
+
+export const keysCount = async(SQLClient) => {
+  return await SQLClient.query(`SELECT COUNT(*) FROM Car_key`);
+}
+
+export const getSearchCarKeys = async(SQLClient, {iPage}, {value}, {column}) => {
+  const {rows} = await SQLClient.query(
+    `WITH Car_key_page AS (SELECT * FROM Car_key
+    ORDER BY id LIMIT 10 OFFSET ($1 - 1) * 10) 
+    SELECT c.*, v.model FROM Car_key c JOIN With_licence v ON c.car_id = v.id
+    WHERE v.model ILIKE '%$2%'
+    ORDER BY $3`, 
+    [iPage, value, column]
+  );
+  return rows;
+}
+
+export const keysSearchCount = async(SQLClient, {value}) => {
+  return await SQLClient.query(`SELECT COUNT(*) FROM Car_key c JOIN With_licence v ON c.car_id = v.id WHERE v.model ILIKE %$1%`, [value]);
 }
 
 export const addCarKey = async(SQLClient, {carId}) => {
-    const {rows} = await SQLClient.query("INSERT INTO Car_key(car_id) VALUES ($1) RETURNING id", [carId]);
+    const {rows} = await SQLClient.query(`INSERT INTO Car_key(car_id) VALUES ($1) RETURNING id`, [carId]);
     return rows[0]?.id;
 }
 
 export const updateCarKey = async(SQLClient, {id, newCarId}) => {
-    if(newCarId){
-        return await SQLClient.query("UPDATE Car_key SET car_id = $1 WHERE id = $2", [id, newCarId]);
-    }
-    throw new Error("No filed given");
+  return await SQLClient.query(`UPDATE Car_key SET car_id = $1 WHERE id = $2`, [newCarId, id]);
 }
 
 export const deleteCarKeys = async(SQLClient, {idList}) => {
-  const query = "DELETE FROM Car_key WHERE id = ANY($1)";
-  const idArray = idList.split(',').map(Number);
-  return await SQLClient.query(query, [idArray]);
+  return await SQLClient.query(`DELETE FROM Car_key WHERE id = ANY($1)`, [idList]);
 }
-
-

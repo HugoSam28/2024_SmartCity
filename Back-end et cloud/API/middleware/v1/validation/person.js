@@ -47,7 +47,7 @@ const updatePersonSchema = vine.object({
 const updatePersonValidator = vine.compile(updatePersonSchema);
 export async function personUpdateValidatorMiddleware(req, res, next) {
   const data = {
-    id: req.session.id,
+    id: req.body.id,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
@@ -103,10 +103,6 @@ export async function personUpdateValidatorMiddlewareViaAdmin(req, res, next) {
     res.sendStatus(500);
   }
 }
-
-
-
-
 const loginSchema = vine.object({
   email: vine.string().email(),
   password: vine.string(),

@@ -19,7 +19,7 @@ export const pageValidatorMiddleware = async (req, res, next) => {
 }
 
 const deleteSchema = vine.object({
-  idList: vine.string().regex(/^[0-9]+(,([0-9]+))*$/),
+  idList: vine.array(vine.number().withoutDecimals().min(1))
 })
 const deleteValidator = vine.compile(deleteSchema);
 export async function deleteValidatorMiddleware(req, res, next) {
