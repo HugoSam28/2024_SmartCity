@@ -22,7 +22,7 @@ export const getAllVehiclesAndPagesCount = async(req, res) => {
         result.vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order);
         result.nbPagesVehicles = Math.ceil((await vehicleModel.vehiclesCount(pool))/10);
         if(result.vehicles && result.nbPagesVehicles){
-            res.sendStatus(200).send(result);
+            res.send(result);
         }
         else{
             res.sendStatus(404);
@@ -40,7 +40,7 @@ export const getSearchVehicles = async(req, res) => {
         result.vehicles = await vehicleModel.getSearchVehicles(pool, req.val.page, req.val.search, req.val.order);
         result.nbPagesVehicles = Math.ceil((await vehicleModel.vehiclesSearchCount(pool, req.val.search))/10);
         if(result.vehicles && result.nbPagesVehicles){
-            res.sendStatus(200).send(result);
+            res.send(result);
         }
         else{
             res.sendStatus(404);
@@ -56,7 +56,7 @@ export const getVehiclesAroundMe = async (req, res) => {
   try {
     const vehicles = await vehicleModel.getVehiclesAroundMe(pool, req.val);
     if(vehicles){
-        res.sendStatus(200).send(vehicles)
+        res.send(vehicles)
     }else{
         res.sendStatus(404);
     }
@@ -70,7 +70,7 @@ export const getVehicleById = async (req, res) => {
     try{
         const vehicle = await vehicleModel.getVehicleById(pool, req.val);
         if(vehicle){
-            res.sendStatus(200).send(vehicle)
+            res.send(vehicle)
         }else{
             res.sendStatus(404);
         }
@@ -103,7 +103,7 @@ export const updateInformations = async (req, res) => {
     try{
         await vehicleModel.updateInformations(pool, req.val);
         const vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order)
-        res.sendStatus(200).send(vehicles);
+        res.send(vehicles);
     }
     catch(e){
         console.error(e);
@@ -118,7 +118,7 @@ export const deleteVehicles = async (req, res) => {
         result.vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order);
         result.nbPagesVehicles = Math.ceil((await vehicleModel.vehiclesCount(pool))/10);
         if(result.vehicles && result.nbPagesVehicles){
-            res.sendStatus(200).send(result);
+            res.send(result);
         }
         else{
             res.sendStatus(404);

@@ -49,12 +49,13 @@ export const startTrip = async(SQLClient, {personId, vehicleId, startingDate, st
 }
 
 export const endTrip = async(SQLClient, {id, endingDate, endingLocationLon, endingLocationLat}) => {
-  await SQLClient.query(`UPDATE trip SET ending_date = $1, ending_location = point($2,$3), distance = 
+  const {rows} = await SQLClient.query(`UPDATE trip SET ending_date = $1, ending_location = point($2,$3), distance = 
     111195 * DEGREES(ACOS(
     COS(RADIANS($3)) * COS(RADIANS(starting_location[1])) *
     COS(RADIANS(starting_location[0]) - RADIANS($2)) +
     SIN(RADIANS($3)) * SIN(RADIANS(starting_location[1]))
     )) WHERE id = $4 RETURNING vehicle_id`, [endingDate, endingLocationLon, endingLocationLat, id]);
+  return rows[0]?.id;
 }
 
 export const addTrip = async(SQLClient, {personId, vehicleId, startingDate, endindDate, distance, cost, startingLocationLon, startingLocationLat, endingLocationLon, endingLocationLat}) => {

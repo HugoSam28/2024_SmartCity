@@ -41,7 +41,7 @@ router.get("/getSearchPersons", checkJWT, admin, PageVM, SVM, OVM, getSearchPers
 
 router.patch("/updateMySelf", checkJWT, PUVM, updateMySelf); //Modification de son propre compte
 router.patch("/update", checkJWT, admin, PUVMVA, updatePerson);
-router.patch("/updateBalance", updatePersonalBalance) //Ajout de crédits à notre balance
+router.patch("/updateBalance",checkJWT, updatePersonalBalance) //Ajout de crédits à notre balance
 
 router.delete("/delete", checkJWT, admin, DVM, PageVM, deletePersons);
 

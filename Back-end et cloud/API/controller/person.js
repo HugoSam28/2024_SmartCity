@@ -160,7 +160,7 @@ export const updatePerson = async(req, res) => {
   try{
     await personModel.updatePerson(pool, req.val);
     const people = await personModel.getAllPersons(pool, req.val.page, req.val.order)
-    res.sendStatus(200).send(people);
+    res.send(people);
   }
   catch(e){
       console.error(e);
@@ -172,7 +172,7 @@ export const updatePersonalBalance = async(req, res) =>{
   try{
     const balance = personModel.updatePersonalBalance(pool, req.val);
     if(balance){
-      res.sendStatus(200).send(balance);
+      res.send({balance});
     }
     else{
       res.sendStatus(404);
@@ -190,7 +190,7 @@ export const deletePersons = async(req, res) => {
     const result= {};
     result.persons = await personModel.getAllPersons(pool, req.val.page, req.val.order);
     result.nbPagesPersons = Math.ceil((await personModel.personsCount(pool))/10);
-    res.sendStatus(200).send(result);
+    res.send(result);
   }
   catch(e){
       console.error(e);

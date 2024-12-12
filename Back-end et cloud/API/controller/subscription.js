@@ -43,7 +43,7 @@ export const addSubscription = async (req, res) => {
 
 export const updateSubscription = async (req, res) => {
     try{
-        await subscriptionModel.updateSubscription(pool, req.session.id, req.val);
+        await subscriptionModel.updateSubscription(pool, req.val.id, req.val);
         res.sendStatus(204);
     } catch (e){
         console.error(e)

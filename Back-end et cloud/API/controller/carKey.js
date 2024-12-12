@@ -7,7 +7,7 @@ export const getAllCarKeys = async(req, res) => {
     try{
         const carKeys = await carKeyModel.getAllCarKeys(pool, req.val.page, req.val.order);
         if(carKeys){
-            res.sendStatus(200).send(carKeys);
+            res.send(carKeys);
         }
         else{
             res.sendStatus(404);
@@ -25,7 +25,7 @@ export const getAllCarKeysAndPagesCount = async(req, res) => {
         result.keys = await carKeyModel.getAllCarKeys(pool, req.val.page, req.val.order);
         result.nbPagesKeys = Math.ceil((await carKeyModel.keysCount(pool))/10);
         if(result.keys && result.nbPagesKeys){
-            res.sendStatus(200).send(result);
+            res.send(result);
         }
         else{
             res.sendStatus(404);
@@ -43,7 +43,7 @@ export const getSearchCarKeys = async(req, res) => {
         result.keys = await carKeyModel.getSearchCarKeys(pool, req.val.page, req.val.search, req.val.order);
         result.nbPagesKeys = Math.ceil((await carKeyModel.keysSearchCount(pool, req.val.search))/10);
         if(result.keys && result.nbPagesKeys){
-            res.sendStatus(200).send(result);
+            res.send(result);
         }
         else{
             res.sendStatus(404);
@@ -78,7 +78,7 @@ export const updateCarKey = async (req, res) => {
     try{
         await carKeyModel.updateCarKey(pool, req.val);
         const carKeys = await carKeyModel.getAllCarKeys(pool, req.val.page, req.val.order)
-        res.sendStatus(200).send(carKeys);
+        res.send(carKeys);
     }
     catch(e){
         console.error(e);
@@ -92,7 +92,7 @@ export const deleteCarKeys = async (req, res) => {
         const result= {};
         result.keys = await carKeyModel.getAllCarKeys(pool, req.val.page, req.val.order);
         result.nbPagesKeys = Math.ceil((await carKeyModel.keysCount(pool))/10);
-        res.sendStatus(200).send(result);
+        res.send(result);
     }
     catch(e){
         console.error(e);

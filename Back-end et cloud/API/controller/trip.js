@@ -105,7 +105,7 @@ export const endTrip = async(req, res) => {
     await vehicleModel.updateStatus(SQLClient, vehicleId);
     const vehicle = await vehicleModel.getVehicleById(SQLClient, vehicleId);
 
-    const cost = (trip.endingDate - trip.starting)
+    const cost = (trip.ending_date - trip.starting_date) * vehicle;
     await SQLClient.query("COMMIT");
     res.sendStatus(200);
   } catch (error) {
