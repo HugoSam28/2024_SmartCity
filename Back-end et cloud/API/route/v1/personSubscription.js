@@ -9,7 +9,7 @@ import {
     addPersonSubscription,
     updatePersonSubscription,
     deletePersonSubscription
-} from "../../controller/personSubscription.js";
+} from "../../controller/v1/personSubscription.js";
 
 import {checkJWT} from "../../middleware/v1/identification/jwt.js";
 import {admin} from '../../middleware/v1/authorization/mustBeAdmin.js';

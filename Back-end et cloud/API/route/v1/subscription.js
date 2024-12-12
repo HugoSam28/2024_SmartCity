@@ -8,7 +8,7 @@ import {
     updateSubscription,
     deleteSubscriptions
 
-} from "../../controller/subscription.js";
+} from "../../controller/v1/subscription.js";
 
 import {checkJWT} from "../../middleware/v1/identification/jwt.js";
 import {admin} from '../../middleware/v1/authorization/mustBeAdmin.js';

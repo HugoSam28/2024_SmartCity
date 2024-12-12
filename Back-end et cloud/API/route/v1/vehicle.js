@@ -9,7 +9,7 @@ import{
     addVehicle,
     updateInformations,
     deleteVehicles
-} from '../../controller/vehicle.js';
+} from '../../controller/v1/vehicle.js';
 
 import {admin} from '../../middleware/v1/authorization/mustBeAdmin.js';
 import {checkJWT} from '../../middleware/v1/identification/jwt.js';

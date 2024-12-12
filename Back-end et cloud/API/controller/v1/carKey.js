@@ -1,5 +1,5 @@
-import {pool} from "../database/database.js";
-import * as carKeyModel from "../model/carKey.js";
+import {pool} from "../../database/database.js";
+import * as carKeyModel from "../../model/v1/carKey.js";
 
 
 

@@ -1,6 +1,6 @@
-import {pool} from "../database/database.js";
-import * as tripModel from "../model/trip.js";
-import * as vehicleModel from "../model/vehicle.js";
+import {pool} from "../../database/database.js";
+import * as tripModel from "../../model/v1/trip.js";
+import * as vehicleModel from "../../model/v1/vehicle.js";
 
 export const getAllTrips = async (req, res) => {
   try{

@@ -1,5 +1,5 @@
-import {pool} from "../database/database.js";
-import * as subscriptionModel from "../model/subscription.js";
+import {pool} from "../../database/database.js";
+import * as subscriptionModel from "../../model/v1/subscription.js";
 
 
 

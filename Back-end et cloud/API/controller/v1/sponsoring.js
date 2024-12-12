@@ -1,5 +1,5 @@
-import {pool} from "../database/database.js";
-import * as sponsoringModel from "../model/sponsoring.js";
+import {pool} from "../../database/database.js";
+import * as sponsoringModel from "../../model/v1/sponsoring.js";
 
 export const getAllSponsorings = async (req, res) => {
     try{

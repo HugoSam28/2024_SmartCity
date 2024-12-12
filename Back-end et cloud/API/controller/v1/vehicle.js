@@ -1,5 +1,5 @@
-import {pool} from "../database/database.js";
-import * as vehicleModel from "../model/vehicle.js";
+import {pool} from "../../database/database.js";
+import * as vehicleModel from "../../model/v1/vehicle.js";
 
 export const getAllVehicles = async (req, res) => {
   try{

@@ -7,7 +7,7 @@ import {
     addSponsoring,
     updateSponsoring,
     deleteSponsorings
-} from "../../controller/sponsoring.js";
+} from "../../controller/v1/sponsoring.js";
 
 import {checkJWT} from "../../middleware/v1/identification/jwt.js";
 import {admin} from '../../middleware/v1/authorization/mustBeAdmin.js';

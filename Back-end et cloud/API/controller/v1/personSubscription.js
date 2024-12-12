@@ -1,6 +1,6 @@
-import {pool} from "../database/database.js";
-import * as personSubscriptionModel from "../model/personSubscription.js";
-import * as subscriptionModel from "../model/subscription.js"
+import {pool} from "../../database/database.js";
+import * as personSubscriptionModel from "../../model/v1/personSubscription.js";
+import * as subscriptionModel from "../../model/v1/subscription.js"
 
 
 
@@ -58,7 +58,7 @@ export const getSearchPersonSubscriptions = async(req, res) => {
 
 export const getOwnSubscription = async(req, res) => {
     try{
-        result = {};
+        const result = {};
         result.own = await personSubscriptionModel.getOwnSubscription(pool, req.val);
         result.others = await subscriptionModel.getOthersSubscription(pool, result.own);
         result.own = await subscriptionModel.getOwnSubscription(pool, result.own);

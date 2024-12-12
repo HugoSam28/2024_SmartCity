@@ -1,4 +1,4 @@
-import * as util from "../util/argon.js"
+import * as util from "../../util/argon.js"
 
 
 export const addPerson = async(SQLClient, {firstName, lastName, email, phoneNumber, password, birthday, hasCarLicence, hasMotorbikeLicence}) =>{

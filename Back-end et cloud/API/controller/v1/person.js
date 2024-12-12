@@ -1,9 +1,9 @@
-import {pool} from "../database/database.js";
+import {pool} from "../../database/database.js";
 
-import * as personModel from "../model/person.js";
+import * as personModel from "../../model/v1/person.js";
 import jwt from 'jsonwebtoken';
-import {addSponsoring} from "../model/sponsoring.js";
-import * as util from "../util/argon.js";
+import {addSponsoring} from "../../model/v1/sponsoring.js";
+import * as util from "../../util/argon.js";
 
 export const registration = async (req, res) => {
   try {

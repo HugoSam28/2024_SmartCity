@@ -7,7 +7,7 @@ import{
     addCarKey,
     updateCarKey,
     deleteCarKeys
-} from "../../controller/carKey.js"
+} from "../../controller/v1/carKey.js"
 
 import {checkJWT} from "../../middleware/v1/identification/jwt.js";
 import {admin} from '../../middleware/v1/authorization/mustBeAdmin.js';

@@ -12,7 +12,7 @@ const options = {
     // Path to the API docs
     apis: [
         "./controller/**/*.js",
-        "./middleware/**/*.js",
+        "./middleware/**/**/*.js",
         "./model/**/*.js",
         "./route/**/*.js",
     ],

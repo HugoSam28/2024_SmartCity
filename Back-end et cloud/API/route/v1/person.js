@@ -11,7 +11,7 @@ import {
   updatePerson,
   updatePersonalBalance,
   deletePersons
-} from "../../controller/person.js";
+} from "../../controller/v1/person.js";
 
 import {checkJWT} from "../../middleware/v1/identification/jwt.js";
 import {
