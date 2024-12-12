@@ -65,7 +65,7 @@ CREATE TABLE Person
     birthday                   DATE         NOT NULL CHECK ( birthday <= CURRENT_DATE - INTERVAL '16 years' ),
     balance                    DECIMAL DEFAULT 0 NOT NULL,
     has_car_licence            BOOLEAN DEFAULT FALSE NOT NULL,
-    has_motorbike_licence      BOOLEAN DEFAULT FALSE NOT NULLd,
+    has_motorbike_licence      BOOLEAN DEFAULT FALSE NOT NULL,
     referral_code              VARCHAR(8) UNIQUE NOT NULL DEFAULT (
         UPPER(
                 SUBSTRING(MD5(RANDOM()::TEXT || CLOCK_TIMESTAMP()::TEXT) FROM 1 FOR 8)
@@ -77,7 +77,7 @@ CREATE TABLE Person_subscription
     id                         INT GENERATED ALWAYS AS IDENTITY,
     person_id                  INT REFERENCES Person (id) ON DELETE CASCADE,
     subscription_id            INT REFERENCES subscription (id) ON DELETE CASCADE,
-    starting_subscription_date DATE DEFAULT (NOW()),
+    starting_subscription_date DATE DEFAULT (NOW())
 );
 
 CREATE TABLE Trip
@@ -100,7 +100,7 @@ CREATE TABLE Sponsoring
 (
     referred INT PRIMARY KEY REFERENCES Person (id) ON DELETE CASCADE,
 
-    sponsor  INT NOT NULL REFERENCES Person (id) ON DELETE CASCADE,
+    sponsor  INT NOT NULL REFERENCES Person (id) ON DELETE CASCADE
 );
 
 CREATE OR REPLACE FUNCTION sponsor_limit()

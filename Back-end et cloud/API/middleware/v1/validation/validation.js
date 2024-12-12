@@ -11,10 +11,11 @@ export const pageValidatorMiddleware = async (req, res, next) => {
     iPage: req.body.iPage,
   }
   try {
-    req.val.page = await pageValidatorMiddleware.validate(data);
+    req.val.page = await pageValidator.validate(data);
     next();
   } catch (e) {
     console.error(e);
+    res.sendStatus(500);
   }
 }
 

@@ -36,7 +36,8 @@ export const getSponsoringByID = async(SQLClient, {id}) => {
 }
 
 export const addSponsoring = async(SQLClient, sponsor, referred) =>{
-    await SQLClient.query(`INSERT INTO sponsoring (sponsor, referred) VALUES ($1, $2)`, [sponsor, referred]);
+    const {rows} = await SQLClient.query(`INSERT INTO sponsoring (sponsor, referred) VALUES ($1, $2) RETURNING referred`, [sponsor, referred]);
+    return rows[0]?.referred;
 }
 
 export const updateSponsoring = async(SQLClient, {idReferred, sponsor, referred}) =>{
@@ -61,5 +62,5 @@ export const updateSponsoring = async(SQLClient, {idReferred, sponsor, referred}
 }
 
 export const deleteSponsoring = async(SQLClient, {idList}) => {
-  return await SQLClient.query(`DELETE FROM Sponsoring WHERE id = ANY($1)`, [idList]);
+  return await SQLClient.query(`DELETE FROM Sponsoring WHERE referred = ANY($1)`, [idList]);
 }

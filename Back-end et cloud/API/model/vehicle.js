@@ -1,12 +1,35 @@
 
-export const getAllVehicles = async(SQLClient, {iPage}) => { // admin
+export const getAllVehicles = async(SQLClient, {iPage}, {value}) => { 
   
-  const {rows} = await SQLClient.query(`WITH vehicles AS ( 
-    SELECT * FROM vehicles 
-    ORDER BY id LIMIT 10 OFFSET (:$1 - 1) * 10) 
-    SELECT * FROM vehicles`, [iPage]);
+  const {rows} = await SQLClient.query(`WITH vehicles_pages AS (
+    SELECT * FROM vehicle
+    ORDER BY id LIMIT 10 OFFSET ($1 - 1) * 10) SELECT
+    v.*, wl.brand, wl.model, wl.chassis_number
+    FROM Vehicles_pages v
+    LEFT JOIN With_licence wl ON v.id = wl.id
+    order by $2`, [iPage, value]);
 
   return rows;
+}
+
+export const vehiclesCount = async(SQLClient) => {
+  return await SQLClient.query(`SELECT COUNT(*) FROM vehicles`);
+}
+
+export const getSearchVehicles = async(SQLClient, {iPage}, {value}, {column}) => {
+  const {rows} = await SQLClient.query(`WITH vehicles_pages AS (
+    SELECT * FROM vehicle
+    ORDER BY id LIMIT 10 OFFSET ($1 - 1) * 10) SELECT
+    v.*, wl.brand, wl.model, wl.chassis_number
+    FROM Vehicles_pages v
+    LEFT JOIN With_licence wl ON v.id = wl.id
+    WHERE v.type ILIKE '%$2%'
+    order by $3`, [iPage, value, column]);
+  return rows;
+}
+
+export const vehiclesSearchCount = async(SQLClient, {value}) => {
+  return await SQLClient.query(`SELECT COUNT(*) FROM vehicle WHERE type ILIKE %$1%`, [value]);
 }
 
 export const getVehiclesAroundMe = async(SQLClient, {lat, lon, distance}) => {
@@ -18,25 +41,20 @@ export const getVehiclesAroundMe = async(SQLClient, {lat, lon, distance}) => {
 }
 
 export const getVehicleById = async(SQLClient, {id}) => {
-  if (id % 2 === 0) {
-    const {rows} = await SQLClient.query(`SELECT * FROM  WHERE id = $1`, [id]);
-  }
-  else {
-    const {rows} = await SQLClient.query(`SELECT * FROM ${id % 2 === 0 ? 'with_licence' : 'vehicle' } WHERE id = $1`, [id]);
-  }
+  const {rows} = await SQLClient.query(`SELECT * FROM ${id % 2 === 0 ? 'with_licence' : 'vehicle' } WHERE id = $1`, [id]);
   return rows[0];
 }
 
-export const addVehicle = async(SQLClient, {lat, lon, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber}) => {
+export const addVehicle = async(SQLClient, {lon, lat, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber}) => {
   if (type === 'Voiture' || type === 'Scooter') {
     const {rows} = await SQLClient.query(
       `INSERT INTO With_licence (location, battery_level, type, price, is_available, fees, brand, model, chassis_number) VALUES 
-      (POINT($2,$1), $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`, [lat, lon, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber]);
+      (POINT($1, $2), $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`, [lon, lat, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber]);
     return rows[0]?.id;
   }
   const {rows} = await SQLClient.query(
     `INSERT INTO vehicle (location, battery_level, type, price, is_available, fees) VALUES 
-    (POINT($2,$1), $3, $4, $5, $6, $7) RETURNING id`, [lat, lon, batteryLevel, type, price, isAvailable, fees]);
+    (POINT($1, $2), $3, $4, $5, $6, $7) RETURNING id`, [lon, lat, batteryLevel, type, price, isAvailable, fees]);
   return rows[0]?.id;
 }
 
@@ -45,15 +63,15 @@ export const updateStatus = async(SQLClient, {id}) => {
   return await SQLClient.query(`UPDATE vehicle SET is_available = $1 WHERE id = $2`, [!is_available, id]);
 }
 
-export const updateInformations = async(SQLClient, {id, lat, lon, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber}) => {
+export const updateInformations = async(SQLClient, {id, lon, lat, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber}) => {
   let query = `UPDATE ${id%2===0 ? 'with_licence' : 'vehicle'} SET `;
   const querySet = [];
   const queryValues = [];
 
-  if (lat && lon) {
-    queryValues.push(lat);
+  if (lon && lat) {
     queryValues.push(lon);
-    querySet.push(`location = point($2,$1)`);
+    queryValues.push(lat);
+    querySet.push(`location = point($1,$2)`);
   }
   if (batteryLevel){
     queryValues.push(batteryLevel);
@@ -68,7 +86,7 @@ export const updateInformations = async(SQLClient, {id, lat, lon, batteryLevel, 
     querySet.push(`price = $${queryValues.length}`)
   }
   if (isAvailable !== undefined){
-    queryValues.push(isAvailable !== undefined);
+    queryValues.push(isAvailable);
     querySet.push(`is_available = $${queryValues.length}`)
   }
   if (fees){
@@ -99,7 +117,5 @@ export const updateInformations = async(SQLClient, {id, lat, lon, batteryLevel, 
 }
 
 export const deleteVehicles = async(SQLClient, {idList}) => {
-  const query = `DELETE FROM Vehicle WHERE id = ANY($1)`;
-  const idArray = idList.split(',').map(Number);
-  return await SQLClient.query(query, [idArray]);
+  return await SQLClient.query(`DELETE FROM Vehicle WHERE id = ANY($1)`, [idList]);
 }

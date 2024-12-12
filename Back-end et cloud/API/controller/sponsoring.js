@@ -89,7 +89,7 @@ export const deleteSponsorings = async (req, res) => {
         await sponsoringModel.deleteSponsoring(pool, req.val);
         const result= {};
         result.sponsorings = await sponsoringModel.getAllSponsorings(pool, req.val.page, req.val.order);
-        result.nbPagesSponsorings = Math.ceil((await carKeyModel.sponsoringsCount(pool))/10);
+        result.nbPagesSponsorings = Math.ceil((await sponsoringModel.sponsoringsCount(pool))/10);
         res.sendStatus(200).send(result);
     }
     catch(e){

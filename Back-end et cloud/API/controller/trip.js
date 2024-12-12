@@ -2,7 +2,7 @@ import {pool} from "../database/database.js";
 import * as tripModel from "../model/trip.js";
 import * as vehicleModel from "../model/vehicle.js";
 
-export const getAllTrips = async (req, res) => {//admin
+export const getAllTrips = async (req, res) => {
   try{
     const trips = await tripModel.getAllTrips(pool, req.val.page, req.val.order);
     if(trips){
@@ -29,11 +29,11 @@ export const getAllTripsAndPagesCount = async (req, res) => {
     else{
         res.sendStatus(404);
     }
-}
-catch(e){
-    console.error(e);
-    res.sendStatus(500);
-}
+  }
+  catch(e){
+      console.error(e);
+      res.sendStatus(500);
+  }
 }
 
 export const getSearchTrips = async (req, res) => {
@@ -47,11 +47,11 @@ export const getSearchTrips = async (req, res) => {
     else{
         res.sendStatus(404);
     }
-}
-catch(e){
-    console.error(e);
-    res.sendStatus(500);
-}
+  }
+  catch(e){
+      console.error(e);
+      res.sendStatus(500);
+  }
 }
 
 export const getOwnTrips = async (req, res) => {
@@ -100,8 +100,12 @@ export const endTrip = async(req, res) => {
   try{
     SQLClient = await pool.connect();
     await SQLClient.query("BEGIN");
-    await tripModel.endTrip(SQLClient, req.val); //
-    await vehicleModel.updateStatus(SQLClient, req.val);
+    const vehicleId = await tripModel.endTrip(SQLClient, req.val);
+    const trip = await tripModel.getTripById(SQLClient, req.val);
+    await vehicleModel.updateStatus(SQLClient, vehicleId);
+    const vehicle = await vehicleModel.getVehicleById(SQLClient, vehicleId);
+
+    const cost = (trip.endingDate - trip.starting)
     await SQLClient.query("COMMIT");
     res.sendStatus(200);
   } catch (error) {
@@ -125,10 +129,10 @@ export const endTrip = async(req, res) => {
 export const addTrip = async (req, res) => {
   try{
     const result= {};
-    result.id = await sponsoringModel.addSponsoring(pool, req.val);
-    result.sponsorings = await sponsoringModel.getAllSponsorings(pool, req.val.page, req.val.order);
-    result.nbPagesSponsorings = Math.ceil((await sponsoringModel.sponsoringsCount(pool))/10);
-    if(result.id && result.sponsorings && result.nbPagesSponsorings){
+    result.id = await tripModel.addTrip(pool, req.val);
+    result.trips = await tripModel.getAllTrips(pool, req.val.page, req.val.order);
+    result.nbPagesTrips = Math.ceil((await tripModel.tripsCount(pool))/10);
+    if(result.id && result.trips && result.nbPagesTrips){
         res.status(201).send(result);
     }
     else{
@@ -143,20 +147,26 @@ export const addTrip = async (req, res) => {
 
 export const updateTrip = async (req, res) => {
     try{
-        await tripModel.updateTrip(pool, req.session.id, req.val);
-        res.sendStatus(204);
-    } catch (e){
-        console.error(e)
+        await tripModel.updateTrip(pool, req.val);
+        const trips = await tripModel.getAllTrips(pool, req.val.page, req.val.order)
+        res.sendStatus(200).send(trips);
+    }
+    catch(e){
+        console.error(e);
         res.sendStatus(500);
     }
 }
 
 export const deleteTrips = async (req, res) => {
-    try {
-        await tripModel.deleteTrips(pool, req.val);
-        res.sendStatus(204);
-    } catch (e) {
-        console.error(e)
+    try{
+        await tripModel.deleteTrip(pool, req.val);
+        const result= {};
+        result.trips = await tripModel.getAllTrips(pool, req.val.page, req.val.order);
+        result.nbPagesTrips = Math.ceil((await tripModel.tripsCount(pool))/10);
+        res.sendStatus(200).send(result);
+    }
+    catch(e){
+        console.error(e);
         res.sendStatus(500);
     }
 }

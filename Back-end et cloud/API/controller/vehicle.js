@@ -3,12 +3,9 @@ import * as vehicleModel from "../model/vehicle.js";
 
 export const getAllVehicles = async (req, res) => {
     try{
-        const vehicles = await vehicleModel.getAllVehicles(pool, req.val);
+        const vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order);
         if(vehicles){
-            vehicles.forEach(v => {
-                v.distance = 111195 * DEGREES(ACOS(COS(RADIANS(req.val.lat)) * COS(RADIANS(v.location[1])) * COS(RADIANS(v.location[0]) - RADIANS(req.val.lon)) + SIN(RADIANS(req.val.lat)) * SIN(RADIANS(v.location[1]))))
-            });
-            res.send(vehicles)
+            res.sendStatus(200).send(vehicles)
         }else{
             res.sendStatus(404);
         }
@@ -18,11 +15,47 @@ export const getAllVehicles = async (req, res) => {
     }
 }
 
+export const getAllVehiclesAndPagesCount = async(req, res) => {
+      try{
+        const result = {};
+        result.vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order);
+        result.nbPagesVehicles = Math.ceil((await vehicleModel.vehiclesCount(pool))/10);
+        if(result.vehicles && result.nbPagesVehicles){
+            res.sendStatus(200).send(result);
+        }
+        else{
+            res.sendStatus(404);
+        }
+      }
+      catch(e){
+          console.error(e);
+          res.sendStatus(500);
+      }
+}
+
+export const getSearchVehicles = async(req, res) => {
+     try{
+        const result = {};
+        result.vehicles = await vehicleModel.getSearchVehicles(pool, req.val.page, req.val.search, req.val.order);
+        result.nbPagesVehicles = Math.ceil((await vehicleModel.vehiclesSearchCount(pool, req.val.search))/10);
+        if(result.vehicles && result.nbPagesVehicles){
+            res.sendStatus(200).send(result);
+        }
+        else{
+            res.sendStatus(404);
+        }
+      }
+      catch(e){
+          console.error(e);
+          res.sendStatus(500);
+      }
+}
+
 export const getVehiclesAroundMe = async (req, res) => {
   try {
     const vehicles = await vehicleModel.getVehiclesAroundMe(pool, req.val);
     if(vehicles){
-        res.send(vehicles)
+        res.sendStatus(200).send(vehicles)
     }else{
         res.sendStatus(404);
     }
@@ -34,9 +67,9 @@ export const getVehiclesAroundMe = async (req, res) => {
 
 export const getVehicleById = async (req, res) => {
     try{
-        const {rows} = await vehicleModel.getVehicleById(pool, req.session.id);
-        if(rows){
-            res.send(rows[0])
+        const vehicle = await vehicleModel.getVehicleById(pool, req.val);
+        if(vehicle){
+            res.sendStatus(200).send(vehicle)
         }else{
             res.sendStatus(404);
         }
@@ -47,12 +80,51 @@ export const getVehicleById = async (req, res) => {
 }
 
 export const addVehicle = async (req, res) => {
-  console.log(req.val);
-  try {
-        const id = await vehicleModel.addVehicle(pool, req.val);
-        res.send({id});
-    } catch (e) {
-        console.error(e)
+  try{
+    const result= {};
+    result.id = await vehicleModel.addVehicle(pool, req.val);
+    result.vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order);
+    result.nbPagesVehicles = Math.ceil((await vehicleModel.vehiclesCount(pool))/10);
+    if(result.id && result.vehicles && result.nbPagesVehicles){
+        res.status(201).send(result);
+    }
+    else{
+        res.sendStatus(404);
+    }
+  }
+  catch(e){
+      console.error(e);
+      res.sendStatus(500);
+  }
+}
+
+export const updateInformations = async (req, res) => {
+    try{
+        await vehicleModel.updateInformations(pool, req.val);
+        const vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order)
+        res.sendStatus(200).send(vehicles);
+    }
+    catch(e){
+        console.error(e);
+        res.sendStatus(500);
+    }
+}
+
+export const deleteVehicles = async (req, res) => {
+    try{
+        const result= {};
+        await vehicleModel.deleteVehicles(pool, req.val);
+        result.vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order);
+        result.nbPagesVehicles = Math.ceil((await vehicleModel.vehiclesCount(pool))/10);
+        if(result.vehicles && result.nbPagesVehicles){
+            res.sendStatus(200).send(result);
+        }
+        else{
+            res.sendStatus(404);
+        }
+    }
+    catch(e){
+        console.error(e);
         res.sendStatus(500);
     }
 }
@@ -66,24 +138,3 @@ export const updateStatus = async (req, res) => {
         res.sendStatus(500);
     }
 }
-
-export const updateInformations = async (req, res) => {
-    try{
-        await vehicleModel.updateInformations(pool, req.session.id, req.val);
-        res.sendStatus(204);
-    } catch (e){
-        console.error(e)
-        res.sendStatus(500);
-    }
-}
-
-export const deleteVehicles = async (req, res) => {
-    try {
-        await vehicleModel.deleteVehicles(pool, req.val);
-        res.sendStatus(204);
-    } catch (e) {
-        console.error(e)
-        res.sendStatus(500);
-    }
-}
-
