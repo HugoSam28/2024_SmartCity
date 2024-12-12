@@ -1,10 +1,10 @@
 export const getAllSponsorings = async(SQLClient, {iPage}, {value}) => {
-  const {rows} = await SQLClient.query(`WITH sponsorings_page AS (
-    SELECT * FROM sponsoring
-    ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
-    SELECT s.sponsor, pS.email, s.referred, pR.email FROM sponsorings_page s
-    JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
-    ORDER BY $2`, [iPage, value]);
+  const {rows} = await SQLClient.query(`
+    WITH sponsorings_page AS (
+      SELECT s.sponsor, pS.email, s.referred, pR.email FROM sponsoring s
+      JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
+      ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
+    SELECT * FROM sponsorings_page`, [iPage, value]);
   return rows;
 }
 
@@ -14,13 +14,13 @@ export const sponsoringsCount = async(SQLClient) => {
 }
 
 export const getSearchSponsorings = async(SQLClient, {iPage}, {value}, {column}) => {
-  const {rows} = await SQLClient.query(`WITH sponsorings_page AS (
-    SELECT * FROM sponsoring
-    ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) 
-    SELECT s.sponsor, pS.email, s.referred, pR.email FROM sponsorings_page s
-    JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
-    WHERE (pS.email ILIKE '%$2%' OR pR.email ILIKE '%$2%')
-    ORDER BY $3`, 
+  const {rows} = await SQLClient.query(`
+    WITH sponsorings_page AS (
+      SELECT s.sponsor, pS.email, s.referred, pR.email FROM sponsorings s
+      JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
+      WHERE (pS.email ILIKE '%$2%' OR pR.email ILIKE '%$2%')
+      ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) 
+    SELECT * FROM sponsoring_page`, 
     [iPage, value, column]
   );
   return rows;
@@ -62,6 +62,6 @@ export const updateSponsoring = async(SQLClient, {idReferred, sponsor, referred}
   }
 }
 
-export const deleteSponsoring = async(SQLClient, {idList}) => {
-  return await SQLClient.query(`DELETE FROM Sponsoring WHERE referred = ANY($1)`, [idList]);
+export const deleteSubscriptions = async(SQLClient, {idList}) => {
+  return await SQLClient.query(`DELETE FROM Subscription WHERE id = ANY($1)`, [idList]);
 }

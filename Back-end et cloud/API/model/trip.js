@@ -1,11 +1,11 @@
 
 export const getAllTrips = async(SQLClient, {iPage}, {column}) => {
-  const {rows} = await SQLClient.query(`WITH trips_page AS (
-    SELECT * FROM trips
-    ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
-    SELECT p.email, t.* FROM trips_page t
-    JOIN Person p ON t.person_id = p.id
-    ORDER BY $2`, [iPage, column]);
+  const {rows} = await SQLClient.query(`
+    WITH trips_page AS (
+      SELECT p.email, t.* FROM trips t
+      JOIN Person p ON t.person_id = p.id
+      ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
+    SELECT * FROM trips_page`, [iPage, column]);
   return rows;
 }
 
@@ -15,7 +15,8 @@ export const tripsCount = async(SQLClient) => {
 }
 
 export const getSearchTrips = async(SQLClient, {iPage}, {value}, {column}) => {
-  const {rows} = await SQLClient.query(`WITH trips_page AS (
+  const {rows} = await SQLClient.query(`
+    WITH trips_page AS (
     SELECT * FROM trip
     ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) 
     SELECT p.email, t.* FROM trips_page t

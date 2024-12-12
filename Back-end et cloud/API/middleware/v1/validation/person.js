@@ -41,18 +41,20 @@ const updatePersonSchema = vine.object({
   email: vine.string().email().optional(),
   password: vine.string().optional(),
   phoneNumber: vine.string().regex(/^\+[1-9][0-9]{7,14}$/).optional(),
+  balance: vine.number().optionnal(),
   hasCarLicence: vine.boolean().optional(),
   hasMotorbikeLicence: vine.boolean().optional()
 })
 const updatePersonValidator = vine.compile(updatePersonSchema);
 export async function personUpdateValidatorMiddleware(req, res, next) {
   const data = {
-    id: req.body.id,
+    id: req.session.id,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
     password: req.body.password,
     phoneNumber: req.body.phoneNumber,
+    balance: req.body.balance,
     hasCarLicence: req.body.hasCarLicence,
     hasMotorbikeLicence: req.body.hasMotorbikeLicence,
   };

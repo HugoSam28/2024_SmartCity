@@ -2,7 +2,8 @@ import Router from 'express-promise-router';
 
 import {
     getAllSubscriptions,
-    getSubscriptionById,
+    getAllSubscriptionsAndPagesCount,
+    getSearchSubscriptions,
     addSubscription,
     updateSubscription,
     deleteSubscriptions
@@ -18,18 +19,20 @@ import {
     orderValidatorMiddleware as OVM
 } from "../../middleware/v1/validation/validation.js";
 
+import {
+    addSubscriptionValidatorMiddleware as ASVM,
+    updateSubscriptionValidatorMiddleware as USVM
+} from "../../middleware/v1/validation/subscription.js"
+
 const router = Router();
 router.get("/getAllSubscriptions", checkJWT, admin, PageVM, OVM, getAllSubscriptions); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllSubscriptionsAndPagesCount", checkJWT, admin, PageVM, OVM, ) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
-router.get("/getSearchSubscriptions", checkJWT, admin, PageVM, SVM, OVM, ) //Champ de recherche sur les ligne
+router.get("/getAllSubscriptionsAndPagesCount", checkJWT, admin, PageVM, OVM, getAllSubscriptionsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
+router.get("/getSearchSubscriptions", checkJWT, admin, PageVM, SVM, OVM, getSearchSubscriptions) //Champ de recherche sur les ligne
 
-router.get("/getMySubscriptions", ) //Récupération tous les abonnements en distinguant les notres des autres
+router.post("/add", checkJWT, admin, ASVM, PageVM, OVM, addSubscription);
 
-router.post("/add", checkJWT, admin, addSubscription);
+router.patch("/update", checkJWT, admin, USVM, PageVM, OVM, updateSubscription);
 
-router.patch("/update", checkJWT, admin, updateSubscription);
-router.patch("/updateOwnSubscriptions", ) //Modification de nos abonnements
-
-router.delete("/delete", checkJWT, admin, DVM, PageVM, deleteSubscriptions);
+router.delete("/delete", checkJWT, admin, DVM, PageVM, OVM, deleteSubscriptions);
 
 export default router;

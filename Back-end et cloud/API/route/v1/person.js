@@ -34,15 +34,15 @@ router.post("/registration", PVM, registration); //OK + gestion du referral code
 router.post("/login", LVM, login); //OK
 
 router.get("/infos", checkJWT, getMyInfos); //Récupère toutes les infos du profil
-router.get("/porfile", getProfileInfos) //Récupérer les infos de bases concernant l'utilisateur pour le profil + le code de parrainage
+router.get("/porfile",checkJWT, getProfileInfos) //Récupérer les infos de bases concernant l'utilisateur pour le profil + le code de parrainage
 router.get("/getAllPersons", checkJWT, admin, PageVM, OVM, getAllPersons); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
 router.get("/getAllPersonsAndPagesCount",checkJWT, admin, PageVM, OVM, getAllPersonsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
 router.get("/getSearchPersons", checkJWT, admin, PageVM, SVM, OVM, getSearchPersons) //Champ de recherche sur les ligne
 
-router.patch("/updateMySelf", checkJWT, PUVM, updateMySelf); //Modification de son propre compte
-router.patch("/update", checkJWT, admin, PUVMVA, updatePerson);
-router.patch("/updateBalance",checkJWT, updatePersonalBalance) //Ajout de crédits à notre balance
+router.patch("/updateMySelf", checkJWT, PUVM, PageVM, OVM, updateMySelf); //Modification de son propre compte
+router.patch("/update", checkJWT, admin, PUVMVA, PageVM, OVM, updatePerson);
+router.patch("/updateBalance",checkJWT, PUVM, updatePersonalBalance) //Ajout de crédits à notre balance
 
-router.delete("/delete", checkJWT, admin, DVM, PageVM, deletePersons);
+router.delete("/delete", checkJWT, admin, DVM, PageVM, OVM, deletePersons);
 
 export default router;
