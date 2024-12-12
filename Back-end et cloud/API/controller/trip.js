@@ -6,7 +6,7 @@ export const getAllTrips = async (req, res) => {
   try{
     const trips = await tripModel.getAllTrips(pool, req.val.page, req.val.order);
     if(trips){
-        res.sendStatus(200).send(trips);
+        res.send(trips);
     }
     else{
         res.sendStatus(404);
@@ -24,7 +24,7 @@ export const getAllTripsAndPagesCount = async (req, res) => {
     result.trips = await tripModel.getAllTrips(pool, req.val.page, req.val.order);
     result.nbPagesTrips = Math.ceil((await tripModel.tripsCount(pool))/10);
     if(result.trips && result.nbPagesTrips){
-        res.sendStatus(200).send(result);
+        res.send(result);
     }
     else{
         res.sendStatus(404);
@@ -42,7 +42,7 @@ export const getSearchTrips = async (req, res) => {
     result.trips = await tripModel.getSearchTrips(pool, req.val.page, req.val.search, req.val.order);
     result.nbPagesTrips = Math.ceil((await tripModel.tripsSearchCount(pool, req.val.search))/10);
     if(result.trips && result.nbPagesTrips){
-        res.sendStatus(200).send(result);
+        res.send(result);
     }
     else{
         res.sendStatus(404);
@@ -58,7 +58,7 @@ export const getOwnTrips = async (req, res) => {
   try{
       const {rows} = await tripModel.getOwnTrips(pool, req.val);
       if(rows){
-          res.sendStatus(200).send(rows)
+          res.send(rows)
       }else{
           res.sendStatus(404);
       }
@@ -76,7 +76,7 @@ export const startTrip = async (req, res) => {
     const idTrip = await tripModel.startTrip(SQLClient, req.val);
     await vehicleModel.updateStatus(SQLClient, req.val);
     await SQLClient.query("COMMIT");
-    res.sendstatus(201).send(idTrip);
+    res.status(201).send(idTrip);
   } catch (error) {
     console.error(error);
     try {
@@ -105,9 +105,10 @@ export const endTrip = async(req, res) => {
     await vehicleModel.updateStatus(SQLClient, vehicleId);
     const vehicle = await vehicleModel.getVehicleById(SQLClient, vehicleId);
 
-    const cost = (trip.ending_date - trip.starting_date) * vehicle;
+    const cost = ((trip.ending_date - trip.starting_date) / 60000) * vehicle.price + vehicle.fees;
+    await tripModel.updateTrip(SQLClient, {cost});
     await SQLClient.query("COMMIT");
-    res.sendStatus(200);
+    res.sendStatus(204);
   } catch (error) {
     console.error(error);
     try {
@@ -149,7 +150,7 @@ export const updateTrip = async (req, res) => {
     try{
         await tripModel.updateTrip(pool, req.val);
         const trips = await tripModel.getAllTrips(pool, req.val.page, req.val.order)
-        res.sendStatus(200).send(trips);
+        res.send(trips);
     }
     catch(e){
         console.error(e);
@@ -163,7 +164,7 @@ export const deleteTrips = async (req, res) => {
         const result= {};
         result.trips = await tripModel.getAllTrips(pool, req.val.page, req.val.order);
         result.nbPagesTrips = Math.ceil((await tripModel.tripsCount(pool))/10);
-        res.sendStatus(200).send(result);
+        res.send(result);
     }
     catch(e){
         console.error(e);

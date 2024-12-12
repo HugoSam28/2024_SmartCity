@@ -1,7 +1,7 @@
 
 export const getAllTrips = async(SQLClient, {iPage}, {column}) => {
   const {rows} = await SQLClient.query(`WITH trips_page AS (
-    SELECT * FROM trips
+    SELECT * FROM trip
     ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
     SELECT p.email, t.* FROM trips_page t
     JOIN Person p ON t.person_id = p.id
