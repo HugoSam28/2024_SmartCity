@@ -3,7 +3,12 @@
   "login": "Log in",
   "password": "Password",
   "wrongPassword": "Wrong email or password",
-  "connectionApiError": "Error while connecting to API"
-
-
+  "connectionApiError": "Error while connecting to API",
+  "vehicles": "Vehicles",
+  "users": "Users",
+  "trips": "Trips",
+  "subscriptions": "Subscriptions",
+  "sponsorings": "Sponsoring",
+  "carKeys": "Car keys",
+  "personSubscriptions": "User subscriptions"
 }

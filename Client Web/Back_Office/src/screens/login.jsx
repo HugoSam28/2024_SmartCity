@@ -1,13 +1,11 @@
 import {useLanguageContext} from "../contexts/languageContext.jsx";
 import './css/login.css';
-import {useContext, useState} from "react";
-import TokenContext from "../contexts/tokenContext";
+import {useState} from "react";
 import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 
 export default function LoginScreen() {
   const {t} = useLanguageContext();
-  const {setToken} = useContext(TokenContext);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -38,8 +36,7 @@ export default function LoginScreen() {
       if (decodedToken.role !== "ROLE_ADMIN") {
         throw new Error(t("wrongPassword"));
       }
-      setToken(token);
-      navigate("/bidondon")
+      navigate("/dashboard");
     } catch(e) {
       console.error(e);
       setError(e.message);

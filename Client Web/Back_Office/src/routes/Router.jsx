@@ -4,6 +4,7 @@ import LoginScreen from "../screens/login.jsx";
 import Bidondon from "../screens/bidondon.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import Logout from "../components/logout.jsx";
+import {MainMenu} from "../components/MainMenu.jsx";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,7 @@ const router = createBrowserRouter([
     path: '/dashboard',
     element: (
       <ProtectedRoute>
-        <Bidondon />
+        <MainMenu />
       </ProtectedRoute>)
   },
   {

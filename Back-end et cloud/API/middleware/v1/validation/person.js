@@ -3,7 +3,7 @@ import vine from "@vinejs/vine";
 const personSchema = vine.object({
   firstName: vine.string(),
   lastName: vine.string(),
-  email: vine.string().email(),
+  email: vine.string().email().toLowerCase(),
   password: vine.string(),
   referralCode: vine.string().optional(),
   phoneNumber: vine.string().regex(/^\+[1-9][0-9]{7,14}$/),
@@ -38,10 +38,10 @@ const updatePersonSchema = vine.object({
   id: vine.number(),
   firstName: vine.string().optional(),
   lastName: vine.string().optional(),
-  email: vine.string().email().optional(),
+  email: vine.string().email().toLowerCase().optional(),
   password: vine.string().optional(),
   phoneNumber: vine.string().regex(/^\+[1-9][0-9]{7,14}$/).optional(),
-  balance: vine.number().optionnal(),
+  balance: vine.number().optional(),
   hasCarLicence: vine.boolean().optional(),
   hasMotorbikeLicence: vine.boolean().optional()
 })
@@ -73,7 +73,7 @@ const updatePersonSchemaViaAdmin = vine.object({
   id: vine.number(),
   firstName: vine.string().optional(),
   lastName: vine.string().optional(),
-  email: vine.string().email().optional(),
+  email: vine.string().email().toLowerCase().optional(),
   phoneNumber: vine.string().regex(/^\+[1-9][0-9]{7,14}$/).optional(),
   birthday: vine.date().optional(),
   referralCode: vine.string().optional(),
@@ -106,7 +106,7 @@ export async function personUpdateValidatorMiddlewareViaAdmin(req, res, next) {
   }
 }
 const loginSchema = vine.object({
-  email: vine.string().email(),
+  email: vine.string().email().toLowerCase(),
   password: vine.string(),
 })
 const loginValidator = vine.compile(loginSchema);

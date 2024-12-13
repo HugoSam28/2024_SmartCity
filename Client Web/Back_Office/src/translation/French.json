@@ -3,6 +3,11 @@
   "login": "Connexion",
   "password": "Mot de passe",
   "wrongPassword": "Email ou mot de passe incorrect",
-  "connectionApiError": "Erreur lors de la connexion à l'API"
-
+  "vehicles": "Véhicules",
+  "users": "Utilisateurs",
+  "trips": "Voyages",
+  "subscriptions": "Abonnements",
+  "sponsorings": "Parainnages",
+  "carKeys": "Clés de voiture",
+  "personSubscriptions": "Abonnements des utilisateurs"
 }
