@@ -3,8 +3,9 @@ import {createBrowserRouter} from 'react-router-dom';
 import LoginScreen from "../screens/login.jsx";
 import Bidondon from "../screens/bidondon.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
-import Logout from "../components/logout.jsx";
+import Logout from "../components/Logout.jsx";
 import {MainMenu} from "../components/MainMenu.jsx";
+import FormPopUp from "../components/FormPopUp.jsx";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
       <ProtectedRoute>
         <Bidondon />
       </ProtectedRoute>)
+  },
+  {
+    path:'/FormPopUp',
+    element: <FormPopUp></FormPopUp>
   }
 ])
 export default router;
