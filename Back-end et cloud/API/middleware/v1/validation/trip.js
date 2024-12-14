@@ -18,7 +18,7 @@ export const startTripValidatorMiddelware = async(req, res, next) => {
     next();
   } catch(e) {
     console.error(e);
-    res.sendStatus(500);
+    res.sendStatus(400);
   }
 }
 
@@ -39,6 +39,6 @@ export const endTripValidatorMiddelware = async(req, res, next) => {
     next();
   } catch(e) {
     console.error(e);
-    res.sendStatus(500);
+    res.sendStatus(400);
   }
 }

@@ -4,9 +4,13 @@ import vine from "@vinejs/vine";
  * @swagger
  * components:
  *  schemas:
- *    addSubscription
+ *    addSubscription:
  *      type: object
  *      properties:
+ *        iPage:
+ *          type: integer
+ *        column:
+ *          type: string
  *        label:
  *          type: string
  *        price:
@@ -15,16 +19,18 @@ import vine from "@vinejs/vine";
  *          type: number
  *          minimum: 0
  *          maximum: 1
- *        payment_recurrence:
+ *        paymentRecurrence:
  *          type: string
- *        vehicle_type:
+ *        vehicleType:
  *          type: string
  *      required:
+ *        - iPage
+ *        - column
  *        - label
  *        - price
  *        - discount
- *        - payment_recurrence
- *        - vehicle_type
+ *        - paymentRecurrence
+ *        - vehicleType
  */
 
 const addSchema = vine.object({
@@ -49,7 +55,7 @@ export const addSubscriptionValidatorMiddleware = async (req, res, next) => {
   }
   catch(e) {
     console.error(e);
-    res.sendStatus(500);
+    res.sendStatus(400);
   }
 }
 
@@ -57,9 +63,13 @@ export const addSubscriptionValidatorMiddleware = async (req, res, next) => {
  * @swagger
  * components:
  *  schemas:
- *    addSubscription:
+ *    updateSubscription:
  *      type: object
  *      properties:
+ *        iPage:
+ *          type: integer
+ *        column:
+ *          type: string
  *        id:
  *          type: integer
  *        label:
@@ -70,11 +80,13 @@ export const addSubscriptionValidatorMiddleware = async (req, res, next) => {
  *          type: number
  *          minimum: 0
  *          maximum: 1
- *        payment_recurrence:
+ *        paymentRecurrence:
  *          type: string
- *        vehicle_type:
+ *        vehicleType:
  *          type: string
  *      required:
+ *        - iPage
+ *        - column
  *        - id
  */
 
@@ -103,6 +115,6 @@ export const updateSubscriptionValidatorMiddleware = async (req, res, next) => {
   }
   catch(e) {
     console.error(e);
-    res.sendStatus(500);
+    res.sendStatus(400);
   }
 }

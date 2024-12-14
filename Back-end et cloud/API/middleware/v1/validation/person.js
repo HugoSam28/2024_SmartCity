@@ -30,7 +30,7 @@ export async function personValidatorMiddleware(req, res, next) {
   }
   catch(e) {
     console.error(e);
-    res.sendStatus(500);
+    res.sendStatus(400);
   }
 }
 
@@ -63,7 +63,7 @@ export async function personUpdateValidatorMiddleware(req, res, next) {
     next();
   } catch(e) {
     console.error(e);
-    res.sendStatus(500);
+    res.sendStatus(400);
   }
 }
 
@@ -102,7 +102,7 @@ export async function personUpdateValidatorMiddlewareViaAdmin(req, res, next) {
     next();
   } catch(e) {
     console.error(e);
-    res.sendStatus(500);
+    res.sendStatus(400);
   }
 }
 const loginSchema = vine.object({
@@ -120,6 +120,6 @@ export async function loginValidatorMiddleware(req, res, next) {
     next();
   } catch(e) {
     console.error(e);
-    res.sendStatus(500);
+    res.sendStatus(400);
   }
 }

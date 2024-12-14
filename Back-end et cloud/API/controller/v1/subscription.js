@@ -18,9 +18,9 @@ import * as subscriptionModel from "../../model/v1/subscription.js";
  *          type: number
  *          minimum: 0
  *          maximum: 1
- *        payment_recurrence:
+ *        paymentRecurrence:
  *          type: string
- *        vehicle_type:
+ *        vehicleType:
  *          type: string
  */
 
@@ -38,7 +38,7 @@ import * as subscriptionModel from "../../model/v1/subscription.js";
 export const getAllSubscriptions = async(req, res) => {
     try{
         const subscriptions = await subscriptionModel.getAllSubscriptions(pool, req.val.page, req.val.order);
-        if(subscriptions){
+        if(subscriptions[0]){
             res.send(subscriptions);
         }
         else{
@@ -57,13 +57,10 @@ export const getAllSubscriptions = async(req, res) => {
  *      getAllSubscriptionsAndPagesCount:
  *        type: object
  *        properties:
- *          result:
- *            type: object
- *            properties:
- *              subscriptions:
- *                $ref: '#/components/schemas/getAllSubscriptions'
- *              nbPagesSubscriptions:
- *                type: integer
+ *          subscriptions:
+ *            $ref: '#/components/schemas/getAllSubscriptions'
+ *          nbPagesSubscriptions:
+ *            type: integer
  */
 
 export const getAllSubscriptionsAndPagesCount = async(req, res) => {
@@ -71,7 +68,7 @@ export const getAllSubscriptionsAndPagesCount = async(req, res) => {
         const result = {};
         result.subscriptions = await subscriptionModel.getAllSubscriptions(pool, req.val.page, req.val.order);
         result.nbPagesSubscriptions = Math.ceil((await subscriptionModel.subscriptionsCount(pool))/10);
-        if(result.subscriptions && result.nbPagesSubscriptions){
+        if(result.subscriptions[0] && result.nbPagesSubscriptions){
             res.send(result);
         }
         else{
@@ -89,7 +86,7 @@ export const getSearchSubscriptions = async(req, res) => {
         const result = {};
         result.subscriptions = await subscriptionModel.getSearchSubscriptions(pool, req.val.page, req.val.search, req.val.order);
         result.nbPagesSubscriptions = Math.ceil((await subscriptionModel.subscriptionsSearchCount(pool, req.val.search))/10);
-        if(result.subscriptions && result.nbPagesSubscriptions){
+        if(result.subscriptions[0] && result.nbPagesSubscriptions){
             res.send(result);
         }
         else{
@@ -102,6 +99,28 @@ export const getSearchSubscriptions = async(req, res) => {
     }
 }
 
+/**
+ * @swagger
+ * components:
+ *  responses:
+ *    subscriptionAdded:
+ *      description: "Returns a JSON object result:<br>
+ *          .id: The id
+ *          .subscriptions: a JSON array of 10 subscriptions matching the search value, ordered by the column name chosen <br>
+ *          .nbPagesSubscriptions: The number of pages"
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              id:
+ *                type: integer
+ *              subscriptions:
+ *                $ref: '#/components/schemas/getAllSubscriptions'
+ *              nbPagesSubscriptions:
+ *                type: integer
+ */
+
 export const addSubscription = async(req, res) => {
     try{
         const result= {};
@@ -109,7 +128,7 @@ export const addSubscription = async(req, res) => {
         result.subscriptions = await subscriptionModel.getAllSubscriptions(pool, req.val.page, req.val.order);
         result.nbPagesSubscriptions = Math.ceil((await subscriptionModel.subscriptionsCount(pool))/10);
         if(result.id && result.subscriptions && result.nbPagesSubscriptions){
-            res.status(201).send(result);
+            res.send(result);
         }
         else{
             res.sendStatus(404);

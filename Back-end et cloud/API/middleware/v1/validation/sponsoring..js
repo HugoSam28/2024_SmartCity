@@ -16,6 +16,6 @@ export const sponsoringValidatorMiddleware = async (req, res, next) => {
   }
   catch(e) {
     console.error(e);
-    res.sendStatus(500);
+    res.sendStatus(400);
   }
 }

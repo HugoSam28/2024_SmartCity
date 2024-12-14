@@ -4,7 +4,7 @@ import * as subscriptionModel from "../../model/v1/subscription.js"
 
 
 
-export const getAllSubscrigetAllPersonSubscriptionsptions = async(req, res) => {
+export const getAllPersonSubscriptions = async(req, res) => {
     try{
         const personSubscriptions = await personSubscriptionModel.getAllPersonSubscriptions(pool, req.val.page, req.val.order);
         if(personSubscriptions){

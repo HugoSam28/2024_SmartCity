@@ -66,7 +66,7 @@ export const updateSubscription = async(SQLClient, {id, label, price, discount, 
   }
 }
 
-export const deleteCarKeys = async(SQLClient, {idList}) => {
+export const deleteSubscriptions = async(SQLClient, {idList}) => {
   return await SQLClient.query(`DELETE FROM Car_key WHERE id = ANY($1)`, [idList]);
 }
 

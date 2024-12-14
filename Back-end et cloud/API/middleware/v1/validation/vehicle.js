@@ -37,7 +37,7 @@ export const addVehicleValidatorMiddleware = async (req, res, next) => {
   }
   catch(e) {
     console.error(e);
-    res.sendStatus(500);
+    res.sendStatus(400);
   }
 }
 
@@ -75,6 +75,6 @@ export const updateVehicleValidatorMiddleware = async (req, res, next) => {
   }
   catch(e) {
     console.error(e);
-    res.sendStatus(500);
+    res.sendStatus(400);
   }
 }
