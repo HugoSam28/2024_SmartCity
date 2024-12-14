@@ -28,10 +28,10 @@ import * as subscriptionModel from "../../model/v1/subscription.js";
  *  @swagger
  *  components:
  *    schemas:
- *      getAllSubscription:
+ *      getAllSubscriptions:
  *        type: array
  *        items:
- *          $ref: #/components/schemas/Subscription
+ *          $ref: '#/components/schemas/Subscription'
  */
 
 
@@ -50,6 +50,21 @@ export const getAllSubscriptions = async(req, res) => {
         res.sendStatus(500);
     }
 }
+/**
+ *  @swagger
+ *  components:
+ *    schemas:
+ *      getAllSubscriptionsAndPagesCount:
+ *        type: object
+ *        properties:
+ *          result:
+ *            type: object
+ *            properties:
+ *              subscriptions:
+ *                $ref: '#/components/schemas/getAllSubscriptions'
+ *              nbPagesSubscriptions:
+ *                type: integer
+ */
 
 export const getAllSubscriptionsAndPagesCount = async(req, res) => {
     try{

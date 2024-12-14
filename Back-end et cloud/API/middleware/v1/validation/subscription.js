@@ -1,5 +1,32 @@
 import vine from "@vinejs/vine";
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    addSubscription
+ *      type: object
+ *      properties:
+ *        label:
+ *          type: string
+ *        price:
+ *          type: number
+ *        discount:
+ *          type: number
+ *          minimum: 0
+ *          maximum: 1
+ *        payment_recurrence:
+ *          type: string
+ *        vehicle_type:
+ *          type: string
+ *      required:
+ *        - label
+ *        - price
+ *        - discount
+ *        - payment_recurrence
+ *        - vehicle_type
+ */
+
 const addSchema = vine.object({
   label: vine.string(),
   price: vine.number().min(0),
@@ -25,6 +52,32 @@ export const addSubscriptionValidatorMiddleware = async (req, res, next) => {
     res.sendStatus(500);
   }
 }
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    addSubscription:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *        label:
+ *          type: string
+ *        price:
+ *          type: number
+ *        discount:
+ *          type: number
+ *          minimum: 0
+ *          maximum: 1
+ *        payment_recurrence:
+ *          type: string
+ *        vehicle_type:
+ *          type: string
+ *      required:
+ *        - id
+ */
+
 
 const updateSchema = vine.object({
   id: vine.number().withoutDecimals().min(1),

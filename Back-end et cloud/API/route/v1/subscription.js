@@ -37,6 +37,7 @@ router.delete("/delete", checkJWT, admin, DVM, PageVM, OVM, deleteSubscriptions)
 
 export default router;
 
+
 /**
  * @swagger
  * /subscription/getAllSubscriptions/{order}/{iPage}:
@@ -64,5 +65,92 @@ export default router;
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/getAllSubscription'
+ *              $ref: '#/components/schemas/getAllSubscriptions'
  */
+
+/**
+ * @swagger
+ * /subscription//getAllSubscriptionsAndPagesCount/{order}/{iPage}:
+ *  get:
+ *    security:
+ *      - bearerAuth: []
+ *    tags:
+ *      - Subscription
+ *    parameters:
+ *      - in: path
+ *        name: order
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The name of the column by which the array should be sorted
+ *      - in: path
+ *        name: iPage
+ *        schema:
+ *          type: integer
+ *        required: true
+ *        description: The page number
+ *    responses:
+ *      200:
+ *        description: "Returns a JSON object with<br>
+ *          .subscriptions: a JSON array of 10 subscriptions, ordered by the column name chosen <br>
+ *          .nbPagesSubscriptions: The number of pages"
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/getAllSubscriptionsAndPagesCount'
+ */
+
+/**
+ * @swagger
+ * /getSearchSubscriptions/{search}/{order}/{iPage}:
+ *  get:
+ *    security:
+ *      - bearerAuth: []
+ *    tags:
+ *      - Subscription
+ *    parameters:
+ *      - in: path
+ *        name: search
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The value of the research
+ *      - in: path
+ *        name: order
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The name of the column by which the array should be sorted
+ *      - in: path
+ *        name: iPage
+ *        schema:
+ *          type: integer
+ *        required: true
+ *        description: The page number
+ *    responses:
+ *      200:
+ *        description: "Returns a JSON object with<br>
+ *          .subscriptions: a JSON array of 10 subscriptions matching the search value, ordered by the column name chosen <br>
+ *          .nbPagesSubscriptions: The number of pages"
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/getAllSubscriptionsAndPagesCount'
+ */
+
+/**
+ * @swagger
+ * /subscription
+ *  post:
+ *    security:
+ *      - bearerAuth: []
+ *    tags:
+ *      - Subscription
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/addSubscription'
+ */
+
+
