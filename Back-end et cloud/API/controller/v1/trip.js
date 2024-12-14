@@ -13,8 +13,7 @@ export const getAllTrips = async (req, res) => {
     }
   }
   catch(e){
-      console.error(e);
-      res.sendStatus(500);
+    res.status(500).send(e.messages);
   }
 }
 
@@ -31,8 +30,7 @@ export const getAllTripsAndPagesCount = async (req, res) => {
     }
   }
   catch(e){
-      console.error(e);
-      res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
@@ -49,8 +47,7 @@ export const getSearchTrips = async (req, res) => {
     }
   }
   catch(e){
-      console.error(e);
-      res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
@@ -63,8 +60,7 @@ export const getOwnTrips = async (req, res) => {
           res.sendStatus(404);
       }
   } catch (e){
-      console.error(e)
-      res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
@@ -76,7 +72,7 @@ export const startTrip = async (req, res) => {
     const idTrip = await tripModel.startTrip(SQLClient, req.val);
     await vehicleModel.updateStatus(SQLClient, req.val);
     await SQLClient.query("COMMIT");
-    res.status(201).send(idTrip);
+    res.send(idTrip);
   } catch (error) {
     console.error(error);
     try {
@@ -134,15 +130,14 @@ export const addTrip = async (req, res) => {
     result.trips = await tripModel.getAllTrips(pool, req.val.page, req.val.order);
     result.nbPagesTrips = Math.ceil((await tripModel.tripsCount(pool))/10);
     if(result.id && result.trips && result.nbPagesTrips){
-        res.status(201).send(result);
+        res.send(result);
     }
     else{
         res.sendStatus(404);
     }
   }
   catch(e){
-      console.error(e);
-      res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
@@ -153,8 +148,7 @@ export const updateTrip = async (req, res) => {
         res.send(trips);
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }
 
@@ -167,8 +161,7 @@ export const deleteTrips = async (req, res) => {
         res.send(result);
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }
 

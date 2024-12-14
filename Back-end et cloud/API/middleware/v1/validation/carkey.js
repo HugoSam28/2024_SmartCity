@@ -13,8 +13,7 @@ export const addCarKeyValidatorMiddleware = async (req, res, next) => {
     next();
   }
   catch(e) {
-    console.error(e);
-    res.sendStatus(400);
+    res.status(400).send(e.messages);
   }
 }
 
@@ -33,7 +32,6 @@ export const updateCarKeyValidatorMiddleware = async (req, res, next) => {
     next();
   }
   catch(e) {
-    console.error(e);
-    res.sendStatus(400);
+    res.status(400).send(e.messages);
   }
 }

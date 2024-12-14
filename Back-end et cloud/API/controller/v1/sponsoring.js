@@ -12,8 +12,7 @@ export const getAllSponsorings = async (req, res) => {
         }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.messages);
     }
 }
 
@@ -30,8 +29,7 @@ export const getAllSponsoringsAndPagesCount = async(req, res) => {
         }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.messages);
     }
 }
 
@@ -48,8 +46,7 @@ export const getSearchSponsorings = async(req, res) => {
         }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.messages);
     }
 }
 
@@ -60,15 +57,14 @@ export const addSponsoring = async (req, res) => {
         result.sponsorings = await sponsoringModel.getAllSponsorings(pool, req.val.page, req.val.order);
         result.nbPagesSponsorings = Math.ceil((await sponsoringModel.sponsoringsCount(pool))/10);
         if(result.id && result.sponsorings && result.nbPagesSponsorings){
-            res.status(201).send(result);
+            res.send(result);
         }
         else{
             res.sendStatus(404);
         }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.messages);
     }
 }
 
@@ -79,8 +75,7 @@ export const updateSponsoring = async (req, res) => {
         res.send(sponsorings);
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+        cres.status(500).send(e.messages);
     }
 }
 
@@ -93,7 +88,6 @@ export const deleteSponsorings = async (req, res) => {
         res.send(result);
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.messages);
     }
 }

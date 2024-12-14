@@ -101,7 +101,6 @@ CREATE TABLE Trip
 CREATE TABLE Sponsoring
 (
     referred INT PRIMARY KEY REFERENCES Person (id) ON DELETE CASCADE,
-
     sponsor  INT NOT NULL REFERENCES Person (id) ON DELETE CASCADE
 );
 

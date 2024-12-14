@@ -12,10 +12,20 @@ export const pageValidatorMiddleware = async (req, res, next) => {
     req.val = {...req.val, page: await pageValidator.validate(data)}
     next();
   } catch (e) {
-    console.error(e);
-    res.sendStatus(400);
+    res.status(400).send(e.messages);
   }
 }
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      deleteSubscriptions:
+ *        type: array
+ *        items:
+ *          type: integer
+ */
+
 const deleteSchema = vine.object({
   idList: vine.array(vine.number().withoutDecimals().min(1))
 })
@@ -28,8 +38,7 @@ export async function deleteValidatorMiddleware(req, res, next) {
     req.val = { ...req.val, del: await deleteValidator.validate(data)}
     next();
   } catch(e) {
-    console.error(e);
-    res.sendStatus(400);
+    res.status(400).send(e.messages);
   }
 }
 
@@ -45,8 +54,7 @@ export const searchValidatorMiddleware = async (req, res, next) => {
     req.val = { ...req.val, search: await searchValidator.validate(data)}
     next();
   } catch (e) {
-    console.error(e);
-    res.sendStatus(400);
+    res.status(400).send(e.messages);
   }
 }
 
@@ -62,18 +70,22 @@ export const orderValidatorMiddleware = async (req, res, next) => {
     req.val = { ...req.val, order: await orderValidator.validate(data)};
     next();
   } catch (e) {
-    console.error(e);
-    res.sendStatus(400);
+    res.status(400).send(e.messages);
   }
 }
-
-/**
- * @swagger
- * components:
- *  schemas:
- *      deleteSubscriptions:
- *        type: array
- *        items:
- *          type: integer
- */
-
+const idSchema = vine.object({
+  id: vine.number().withoutDecimals().min(1)
+})
+const idValidator = vine.compile(idSchema);
+export const idValidatorMiddleware = async (req, res, next) => {
+  const data = {
+    id: req.params.id
+  }
+  try {
+    req.val = {id: await idValidator.validate(data)}
+    next();
+  }
+  catch(e) {
+    res.status(400).send(e.messages);
+  }
+}

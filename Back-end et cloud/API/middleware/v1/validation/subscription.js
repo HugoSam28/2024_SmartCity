@@ -54,8 +54,7 @@ export const addSubscriptionValidatorMiddleware = async (req, res, next) => {
     next();
   }
   catch(e) {
-    console.error(e);
-    res.sendStatus(400);
+    res.status(400).send(e.messages);
   }
 }
 
@@ -114,7 +113,6 @@ export const updateSubscriptionValidatorMiddleware = async (req, res, next) => {
     next();
   }
   catch(e) {
-    console.error(e);
-    res.sendStatus(400);
+    res.status(400).send(e.messages);
   }
 }

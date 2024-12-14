@@ -4,15 +4,13 @@ import * as vehicleModel from "../../model/v1/vehicle.js";
 export const getAllVehicles = async (req, res) => {
   try{
         const vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order);
-        if(vehicles){
-          console.log(vehicles);
+        if(vehicles[0]){
             res.send(vehicles)
         }else{
             res.sendStatus(404);
         }
     } catch (e){
-        console.error(e)
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }
 
@@ -21,7 +19,7 @@ export const getAllVehiclesAndPagesCount = async(req, res) => {
         const result = {};
         result.vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order);
         result.nbPagesVehicles = Math.ceil((await vehicleModel.vehiclesCount(pool))/10);
-        if(result.vehicles && result.nbPagesVehicles){
+        if(result.vehicles[0] && result.nbPagesVehicles){
             res.send(result);
         }
         else{
@@ -29,8 +27,7 @@ export const getAllVehiclesAndPagesCount = async(req, res) => {
         }
       }
       catch(e){
-          console.error(e);
-          res.sendStatus(500);
+        res.status(500).send(e.message);
       }
 }
 
@@ -39,7 +36,7 @@ export const getSearchVehicles = async(req, res) => {
         const result = {};
         result.vehicles = await vehicleModel.getSearchVehicles(pool, req.val.page, req.val.search, req.val.order);
         result.nbPagesVehicles = Math.ceil((await vehicleModel.vehiclesSearchCount(pool, req.val.search))/10);
-        if(result.vehicles && result.nbPagesVehicles){
+        if(result.vehicles[0] && result.nbPagesVehicles){
             res.send(result);
         }
         else{
@@ -47,36 +44,33 @@ export const getSearchVehicles = async(req, res) => {
         }
       }
       catch(e){
-          console.error(e);
-          res.sendStatus(500);
+        res.status(500).send(e.message);
       }
 }
 
 export const getVehiclesAroundMe = async (req, res) => {
   try {
     const vehicles = await vehicleModel.getVehiclesAroundMe(pool, req.val);
-    if(vehicles){
+    if(vehicles[0]){
         res.send(vehicles)
     }else{
         res.sendStatus(404);
     }
   }catch (e){
-    console.error(e)
-    res.sendStatus(500);
+    res.status(500).send(e.message);
 }
 }
 
 export const getVehicleById = async (req, res) => {
     try{
         const vehicle = await vehicleModel.getVehicleById(pool, req.val);
-        if(vehicle){
+        if(vehicle[0]){
             res.send(vehicle)
         }else{
             res.sendStatus(404);
         }
     } catch (e){
-        console.error(e)
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }
 
@@ -86,16 +80,10 @@ export const addVehicle = async (req, res) => {
     result.id = await vehicleModel.addVehicle(pool, req.val);
     result.vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order);
     result.nbPagesVehicles = Math.ceil((await vehicleModel.vehiclesCount(pool))/10);
-    if(result.id && result.vehicles && result.nbPagesVehicles){
-        res.status(201).send(result);
-    }
-    else{
-        res.sendStatus(404);
-    }
+    res.send(result);
   }
   catch(e){
-      console.error(e);
-      res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
@@ -106,8 +94,7 @@ export const updateInformations = async (req, res) => {
         res.send(vehicles);
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }
 
@@ -117,7 +104,7 @@ export const deleteVehicles = async (req, res) => {
         await vehicleModel.deleteVehicles(pool, req.val);
         result.vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order);
         result.nbPagesVehicles = Math.ceil((await vehicleModel.vehiclesCount(pool))/10);
-        if(result.vehicles && result.nbPagesVehicles){
+        if(result.vehicles[0] && result.nbPagesVehicles){
             res.send(result);
         }
         else{
@@ -125,8 +112,7 @@ export const deleteVehicles = async (req, res) => {
         }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }
 
@@ -135,7 +121,6 @@ export const updateStatus = async (req, res) => {
         await vehicleModel.updateStatus(pool, req.session.id);
         res.sendStatus(204);
     } catch (e){
-        console.error(e)
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }

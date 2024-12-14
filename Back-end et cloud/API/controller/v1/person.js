@@ -36,7 +36,7 @@ export const registration = async (req, res) => {
         }
       }
     }
-    res.status(201).send({idReferred});
+    res.send({idReferred});
   }
   catch (e) {
     console.error(e);
@@ -51,43 +51,40 @@ export const login = async (req,res) => {
     if (person?.id && await util.verify(req.val.password, person.password)){
       userDetails = {id: person.id, role: person.role};
     }
-    const token = jwt.sign({id: userDetails.id, role: userDetails.role}, process.env.JWTKEY, {expiresIn: "18h"} );
+    const token = jwt.sign(userDetails, process.env.JWTKEY, {expiresIn: "18h"} );
     res.send(token);
   } catch(e) {
-    console.error(e);
-    res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
 export const getMyInfos = async(req, res) => {
   try{
     const person = await personModel.getPersonById(pool, req.session.id); //session.id vu que CheckJWT met dans req.session.id
-    if(person){
-      res.sendStatus(200).send(person);
+    if(person[0]){
+      res.send(person);
     }
     else{
       res.sendStatus(404);
     }
   }
   catch(e){
-    console.error(e);
-    res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
 export const getProfileInfos = async(req, res) => {
   try{
     const person = await personModel.getProfileInfosById(pool, req.session.id); //session.id vu que CheckJWT met dans req.session.id
-    if(person){
-      res.sendStatus(200).send(person);
+    if(person[0]){
+      res.send(person);
     }
     else{
       res.sendStatus(404);
     }
   }
   catch(e){
-    console.error(e);
-    res.sendStatus(500)
+    res.status(500).send(e.message);
   }
 }
 
@@ -95,15 +92,14 @@ export const getAllPersons = async (req, res) => {
   try{
     const people = await personModel.getAllPersons(pool, req.val.page, req.val.order);
     if(people){
-      res.status(200).send(people);
+      res.send(people);
     }
     else{
       res.sendStatus(404);
     }
   }
   catch(e) {
-    console.error(e);
-    res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
@@ -114,15 +110,14 @@ export const getAllPersonsAndPagesCount = async(req, res) => {
     result.persons = await personModel.getAllPersons(pool, req.val.page, req.val.order);
     result.nbPagesPersons = Math.ceil((await personModel.personsCount(pool))/10);
     if(result.persons && result.nbPagesPersons){
-        res.sendStatus(200).send(result);
+        res.send(result);
     }
     else{
         res.sendStatus(404);
     }
   }
   catch(e){
-      console.error(e);
-      res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
@@ -132,15 +127,14 @@ export const getSearchPersons = async(req, res) => {
     result.persons = await personModel.getSearchPersons(pool, req.val.page, req.val.search, req.val.order);
     result.nbPagesPersons = Math.ceil((await personModel.personsSearchCount(pool, req.val.search))/10);
     if(result.persons && result.nbPagesPersons){
-        res.sendStatus(200).send(result);
+        res.send(result);
     }
     else{
         res.sendStatus(404);
     }
   }
   catch(e){
-      console.error(e);
-      res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
@@ -148,11 +142,10 @@ export const updateMySelf = async(req, res) => {
   try{
     await personModel.updateMySelf(pool, req.val);
     const people = await personModel.getAllPersons(pool, req.val.page, req.val.order)
-    res.sendStatus(200).send(people);
+    res.send(people);
   }
   catch(e){
-      console.error(e);
-      res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
@@ -163,8 +156,7 @@ export const updatePerson = async(req, res) => {
     res.send(people);
   }
   catch(e){
-      console.error(e);
-      res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
@@ -179,8 +171,7 @@ export const updatePersonalBalance = async(req, res) =>{
     }
   }
   catch(e){
-    console.error(e);
-    res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
@@ -193,8 +184,7 @@ export const deletePersons = async(req, res) => {
     res.send(result);
   }
   catch(e){
-      console.error(e);
-      res.sendStatus(500);
+    res.status(500).send(e.message);
   }
 }
 
