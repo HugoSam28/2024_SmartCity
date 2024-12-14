@@ -28,14 +28,15 @@ Nous proposons alors de créer une marque (fictive) qui va mettre en circulation
 ## Membres
 - Hugo Samray
 - Thomas Lambert
-- Danaé Charloteaux
 - Hugo Guebs
+- ~~Danaé Charloteaux~~
 
-## Langages
 
-**Client:** React, NodeJs, ReactMobile
+## Technologies utilisées:
 
-**Server:** Node, Vite
+**Client:** Vite, React, ReactNative
+
+**Server:** NodeJs, express
 
 ## Type de base de données
 
