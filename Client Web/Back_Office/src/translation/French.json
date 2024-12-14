@@ -9,5 +9,13 @@
   "subscriptions": "Abonnements",
   "sponsorings": "Parainnages",
   "carKeys": "Clés de voiture",
-  "personSubscriptions": "Abonnements des utilisateurs"
+  "personSubscriptions": "Abonnements des utilisateurs",
+  "firstName": "Prénom",
+  "lastName" : "Nom",
+  "submit" : "Soumettre",
+  "reset" : "Rénisaliser",
+  "number" : "Numéro",
+  "birthday" : "Anniversaire",
+  "hasCarLicence" : "Permis de conduire voiture",
+  "hasMotorbikeLicence" : "Permis de conduire moto"
 }

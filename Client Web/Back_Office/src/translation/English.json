@@ -10,5 +10,13 @@
   "subscriptions": "Subscriptions",
   "sponsorings": "Sponsoring",
   "carKeys": "Car keys",
-  "personSubscriptions": "User subscriptions"
+  "personSubscriptions": "User subscriptions",
+  "firstName": "First name",
+  "lastName" : "Last name",
+  "submit" : "Submit",
+  "reset" : "Reset",
+  "number" : "Number",
+  "birthday" : "Birthday",
+  "hasCarLicence" : "Has car licence",
+  "hasMotorbikeLicence" : "Has motorbike licence"
 }
