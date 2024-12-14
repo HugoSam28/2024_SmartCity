@@ -1,22 +1,22 @@
-export const getAllSponsorings = async(SQLClient, {iPage}, {value}) => {
+export const getAllSponsoring = async(SQLClient, {iPage}, {value}) => {
   const {rows} = await SQLClient.query(`
-    WITH sponsorings_page AS (
+    WITH sponsoring_page AS (
       SELECT s.sponsor, pS.email, s.referred, pR.email FROM sponsoring s
       JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
       ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
-    SELECT * FROM sponsorings_page`, [iPage, value]);
+    SELECT * FROM sponsoring_page`, [iPage, value]);
   return rows;
 }
 
-export const sponsoringsCount = async(SQLClient) => {
+export const sponsoringCount = async(SQLClient) => {
   const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Sponsoring`);
   return rows[0]?.count;
 }
 
-export const getSearchSponsorings = async(SQLClient, {iPage}, {value}, {column}) => {
+export const getSearchSponsoring = async(SQLClient, {iPage}, {value}, {column}) => {
   const {rows} = await SQLClient.query(`
-    WITH sponsorings_page AS (
-      SELECT s.sponsor, pS.email, s.referred, pR.email FROM sponsorings s
+    WITH sponsoring_page AS (
+      SELECT s.sponsor, pS.email, s.referred, pR.email FROM sponsoring s
       JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
       WHERE (pS.email ILIKE '%$2%' OR pR.email ILIKE '%$2%')
       ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) 
@@ -26,7 +26,7 @@ export const getSearchSponsorings = async(SQLClient, {iPage}, {value}, {column})
   return rows;
 }
 
-export const sponsoringsSearchCount = async(SQLClient, {value}) => {
+export const sponsoringSearchCount = async(SQLClient, {value}) => {
   return await SQLClient.query(`SELECT COUNT(*) FROM Sponsoring s JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
     WHERE (pS.email ILIKE '%$1%' OR pR.email ILIKE '%$1%')`, [value]);
 }
@@ -62,6 +62,6 @@ export const updateSponsoring = async(SQLClient, {idReferred, sponsor, referred}
   }
 }
 
-export const deleteSubscriptions = async(SQLClient, {idList}) => {
+export const deleteSponsoring = async(SQLClient, {idList}) => {
   return await SQLClient.query(`DELETE FROM Subscription WHERE id = ANY($1)`, [idList]);
 }

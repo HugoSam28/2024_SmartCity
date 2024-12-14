@@ -102,7 +102,7 @@ export const getSearchSubscriptions = async(req, res) => {
  *  responses:
  *    subscriptionAdded:
  *      description: "Returns a JSON object result:<br>
- *          .id: The id
+ *          .id: The id<id>
  *          .subscriptions: a JSON array of 10 subscriptions matching the search value, ordered by the column name chosen <br>
  *          .nbPagesSubscriptions: The number of pages"
  *      content:

@@ -1,5 +1,25 @@
 import vine from "@vinejs/vine";
-
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    addSponsoring:
+ *      type: object
+ *      properties:
+ *        iPage:
+ *          type: integer
+ *        column:
+ *          type: string
+ *        referred:
+ *          type: integer
+ *        sponsor:
+ *          type: integer
+ *      required:
+ *        - iPage
+ *        - column
+ *        - referred
+ *        - sponsor
+ */
 const addSchema = vine.object({
   sponsor: vine.number().withoutDecimals().min(1),
   referred: vine.number().withoutDecimals().min(1)
@@ -18,6 +38,27 @@ export const sponsoringValidatorMiddleware = async (req, res, next) => {
     res.status(400).send(e.messages);
   }
 }
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    updateSponsoring:
+ *      type: object
+ *      properties:
+ *        iPage:
+ *          type: integer
+ *        column:
+ *          type: string
+ *        referred:
+ *          type: integer
+ *        sponsor:
+ *          type: integer
+ *      required:
+ *        - iPage
+ *        - column
+ *        - referred
+ */
 
 const updateSchema = vine.object({
   sponsor: vine.number().withoutDecimals().min(1).optional(),

@@ -251,7 +251,7 @@ export default router;
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/deleteSubscriptions'
+ *            $ref: '#/components/schemas/deleteSchema'
  *    responses:
  *      200:
  *        description: Returns a JSON array of 10 subscriptions, ordered by the column name chosen.

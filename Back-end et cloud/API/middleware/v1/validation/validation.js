@@ -20,7 +20,7 @@ export const pageValidatorMiddleware = async (req, res, next) => {
  * @swagger
  * components:
  *  schemas:
- *      deleteSubscriptions:
+ *      deleteSchema:
  *        type: array
  *        items:
  *          type: integer
