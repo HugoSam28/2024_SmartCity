@@ -22,9 +22,9 @@ import {sponsoringValidatorMiddleware as SponsorVM} from "../../middleware/v1/va
 
 const router = Router();
 
-router.get("/getAllSponsorings", checkJWT, admin, PageVM, OVM, getAllSponsorings); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllSponsoringsAndPagesCount", checkJWT, admin, PageVM, OVM, getAllSponsoringsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
-router.get("/getSearchSponsorings", checkJWT, admin, PageVM, SVM, OVM, getSearchSponsorings) //Champ de recherche sur les ligne
+router.get("/getAllSponsorings/:order/:iPage", checkJWT, admin, PageVM, OVM, getAllSponsorings); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
+router.get("/getAllSponsoringsAndPagesCount/:order/:iPage", checkJWT, admin, PageVM, OVM, getAllSponsoringsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
+router.get("/getSearchSponsorings/:search/:order/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchSponsorings) //Champ de recherche sur les ligne
 
 router.post("/add", checkJWT, admin, SponsorVM, PageVM, addSponsoring);
 

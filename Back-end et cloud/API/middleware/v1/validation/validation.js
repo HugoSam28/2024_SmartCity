@@ -3,12 +3,10 @@ import vine from "@vinejs/vine";
 const pageSchema = vine.object({
   iPage: vine.number().withoutDecimals().min(1)
 });
-
 const pageValidator = vine.compile(pageSchema);
-
 export const pageValidatorMiddleware = async (req, res, next) => {
   let data = {
-    iPage: req.body.iPage,
+    iPage: req.params.iPage,
   }
   try {
     req.val = {...req.val, page: await pageValidator.validate(data)}
@@ -18,7 +16,6 @@ export const pageValidatorMiddleware = async (req, res, next) => {
     res.sendStatus(500);
   }
 }
-
 const deleteSchema = vine.object({
   idList: vine.array(vine.number().withoutDecimals().min(1))
 })
@@ -42,7 +39,7 @@ const searchSchema = vine.object({
 const searchValidator = vine.compile(searchSchema);
 export const searchValidatorMiddleware = async (req, res, next) => {
   const data = {
-    value: req.body.search
+    value: req.params.search
   }
   try {
     req.val = { ...req.val, search: await searchValidator.validate(data)}
@@ -59,7 +56,7 @@ const orderSchema = vine.object({
 const orderValidator = vine.compile(orderSchema);
 export const orderValidatorMiddleware = async (req, res, next) => {
   const data = {
-    column: req.body.column
+    column: req.params.order
   }
   try {
     req.val = { ...req.val, order: await orderValidator.validate(data)};
@@ -70,3 +67,18 @@ export const orderValidatorMiddleware = async (req, res, next) => {
     res.sendStatus(500);
   }
 }
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      deleteSchema:
+ *          type: object
+ *          properties:
+ *            idList:
+ *              type: array
+ *              items:
+ *                type: integer
+ *          example: "{idList: [1,3,8]}"
+ */
+

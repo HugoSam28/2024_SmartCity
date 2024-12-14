@@ -1,6 +1,38 @@
 import {pool} from "../../database/database.js";
 import * as subscriptionModel from "../../model/v1/subscription.js";
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Subscription:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *        label:
+ *          type: string
+ *        price:
+ *          type: number
+ *        discount:
+ *          type: number
+ *          minimum: 0
+ *          maximum: 1
+ *        payment_recurrence:
+ *          type: string
+ *        vehicle_type:
+ *          type: string
+ */
+
+/**
+ *  @swagger
+ *  components:
+ *    schemas:
+ *      getAllSubscription:
+ *        type: array
+ *        items:
+ *          $ref: #/components/schemas/Subscription
+ */
 
 
 export const getAllSubscriptions = async(req, res) => {

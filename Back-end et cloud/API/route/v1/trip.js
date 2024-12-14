@@ -27,9 +27,9 @@ import {
 
 const router = Router();
 
-router.get("/getAllTrips", checkJWT, admin, PageVM, OVM, getAllTrips); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllTripsAndPagesCount", checkJWT, admin, PageVM, OVM, getAllTripsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
-router.get("/getSearchTrips", checkJWT, admin, PageVM, SVM, OVM, getSearchTrips) //Champ de recherche sur les ligne
+router.get("/getAllTrips/:order/:iPage", checkJWT, admin, PageVM, OVM, getAllTrips); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
+router.get("/getAllTripsAndPagesCount/:order/:iPage", checkJWT, admin, PageVM, OVM, getAllTripsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
+router.get("/getSearchTrips/:search/:order/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchTrips) //Champ de recherche sur les ligne
 
 router.get("/getOwnTrips", checkJWT, getOwnTrips); //Récupération de nos voyages avec toutes les infos
 
