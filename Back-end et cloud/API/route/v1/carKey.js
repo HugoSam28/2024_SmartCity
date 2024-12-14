@@ -24,9 +24,9 @@ import {
 
 const router = Router();
 
-router.get("/getAllKeys/:order/:iPage", checkJWT, admin, PageVM, OVM, getAllCarKeys); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllKeysAndPagesCount/:order/:iPage", checkJWT, admin, PageVM, OVM, getAllCarKeysAndPagesCount); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
-router.get("/getSearchKeys/:search/:order/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchCarKeys); //Champ de recherche sur les clés
+router.get("/getAllKeys/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllCarKeys); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
+router.get("/getAllKeysAndPagesCount/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllCarKeysAndPagesCount); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
+router.get("/getSearchKeys/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchCarKeys); //Champ de recherche sur les clés
 
 router.post("/add", checkJWT, admin, ACKVM, PageVM, OVM, addCarKey); //Ajout d'une ligne avec les infos rentrée
 

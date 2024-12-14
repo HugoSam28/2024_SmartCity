@@ -6,7 +6,7 @@ import * as carKeyModel from "../../model/v1/carKey.js";
 export const getAllCarKeys = async(req, res) => {
     try{
         const carKeys = await carKeyModel.getAllCarKeys(pool, req.val.page, req.val.order);
-        if(carKeys){
+        if(carKeys[0]){
             res.send(carKeys);
         }
         else{
@@ -14,8 +14,7 @@ export const getAllCarKeys = async(req, res) => {
         }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.messages);
     }
 }
 
@@ -24,7 +23,7 @@ export const getAllCarKeysAndPagesCount = async(req, res) => {
         const result = {};
         result.keys = await carKeyModel.getAllCarKeys(pool, req.val.page, req.val.order);
         result.nbPagesKeys = Math.ceil((await carKeyModel.keysCount(pool))/10);
-        if(result.keys && result.nbPagesKeys){
+        if(result.keys[0] && result.nbPagesKeys){
             res.send(result);
         }
         else{
@@ -32,8 +31,7 @@ export const getAllCarKeysAndPagesCount = async(req, res) => {
         }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.messages);
     }
 }
 
@@ -42,7 +40,7 @@ export const getSearchCarKeys = async(req, res) => {
         const result = {};
         result.keys = await carKeyModel.getSearchCarKeys(pool, req.val.page, req.val.search, req.val.order);
         result.nbPagesKeys = Math.ceil((await carKeyModel.keysSearchCount(pool, req.val.search))/10);
-        if(result.keys && result.nbPagesKeys){
+        if(result.keys[0] && result.nbPagesKeys){
             res.send(result);
         }
         else{
@@ -50,8 +48,7 @@ export const getSearchCarKeys = async(req, res) => {
         }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+        cres.status(500).send(e.messages);
     }
 }
 
@@ -61,16 +58,10 @@ export const addCarKey = async(req, res) => {
         result.id = await carKeyModel.addCarKey(pool, req.val);
         result.keys = await carKeyModel.getAllCarKeys(pool, req.val.page, req.val.order);
         result.nbPagesKeys = Math.ceil((await carKeyModel.keysCount(pool))/10);
-        if(result.id && result.keys && result.nbPagesKeys){
-            res.status(201).send(result);
-        }
-        else{
-            res.sendStatus(404);
-        }
+        res.send(result);
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.messages);
     }
 }
 
@@ -81,8 +72,7 @@ export const updateCarKey = async (req, res) => {
         res.send(carKeys);
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.messages);
     }
 }
 
@@ -92,10 +82,14 @@ export const deleteCarKeys = async (req, res) => {
         const result= {};
         result.keys = await carKeyModel.getAllCarKeys(pool, req.val.page, req.val.order);
         result.nbPagesKeys = Math.ceil((await carKeyModel.keysCount(pool))/10);
-        res.send(result);
+        if(result.keys[0] && result.nbPagesKeys){
+          res.send(result);
+        }
+        else {
+          res.sendStatus(404);
+        }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+        cres.status(500).send(e.messages);
     }
 }

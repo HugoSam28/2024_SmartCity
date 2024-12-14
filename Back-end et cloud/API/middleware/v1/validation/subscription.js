@@ -1,5 +1,38 @@
 import vine from "@vinejs/vine";
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    addSubscription:
+ *      type: object
+ *      properties:
+ *        iPage:
+ *          type: integer
+ *        column:
+ *          type: string
+ *        label:
+ *          type: string
+ *        price:
+ *          type: number
+ *        discount:
+ *          type: number
+ *          minimum: 0
+ *          maximum: 1
+ *        paymentRecurrence:
+ *          type: string
+ *        vehicleType:
+ *          type: string
+ *      required:
+ *        - iPage
+ *        - column
+ *        - label
+ *        - price
+ *        - discount
+ *        - paymentRecurrence
+ *        - vehicleType
+ */
+
 const addSchema = vine.object({
   label: vine.string(),
   price: vine.number().min(0),
@@ -21,10 +54,41 @@ export const addSubscriptionValidatorMiddleware = async (req, res, next) => {
     next();
   }
   catch(e) {
-    console.error(e);
-    res.sendStatus(500);
+    res.status(400).send(e.messages);
   }
 }
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    updateSubscription:
+ *      type: object
+ *      properties:
+ *        iPage:
+ *          type: integer
+ *        column:
+ *          type: string
+ *        id:
+ *          type: integer
+ *        label:
+ *          type: string
+ *        price:
+ *          type: number
+ *        discount:
+ *          type: number
+ *          minimum: 0
+ *          maximum: 1
+ *        paymentRecurrence:
+ *          type: string
+ *        vehicleType:
+ *          type: string
+ *      required:
+ *        - iPage
+ *        - column
+ *        - id
+ */
+
 
 const updateSchema = vine.object({
   id: vine.number().withoutDecimals().min(1),
@@ -49,7 +113,6 @@ export const updateSubscriptionValidatorMiddleware = async (req, res, next) => {
     next();
   }
   catch(e) {
-    console.error(e);
-    res.sendStatus(500);
+    res.status(400).send(e.messages);
   }
 }

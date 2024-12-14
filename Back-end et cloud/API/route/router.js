@@ -6,7 +6,3 @@ const router = Router();
 router.use('/v1', r1);
 
 export default router;
-/**
- * @Swagger
- *
- */

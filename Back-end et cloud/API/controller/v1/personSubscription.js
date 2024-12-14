@@ -4,7 +4,7 @@ import * as subscriptionModel from "../../model/v1/subscription.js"
 
 
 
-export const getAllSubscrigetAllPersonSubscriptionsptions = async(req, res) => {
+export const getAllPersonSubscriptions = async(req, res) => {
     try{
         const personSubscriptions = await personSubscriptionModel.getAllPersonSubscriptions(pool, req.val.page, req.val.order);
         if(personSubscriptions){
@@ -15,8 +15,7 @@ export const getAllSubscrigetAllPersonSubscriptionsptions = async(req, res) => {
         }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }
 
@@ -33,8 +32,7 @@ export const getAllPersonSubscriptionsAndPagesCount = async(req, res) => {
         }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }
 
@@ -51,8 +49,7 @@ export const getSearchPersonSubscriptions = async(req, res) => {
         }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }
 
@@ -70,8 +67,7 @@ export const getOwnSubscription = async(req, res) => {
         }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }
 
@@ -79,8 +75,7 @@ export const addOwnSubscription = async(req, res) => {
     try{
         await personSubscriptionModel.addOwnSubscription(pool, req.val);
     }catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }
 
@@ -91,15 +86,14 @@ export const addPersonSubscription = async(req, res) => {
         result.personSubscriptions = await personSubscriptionModel.getSearchPersonSubscriptions(pool, req.val.page, req.val.search, req.val.order);
         result.nbPagesPersonSubscriptions = Math.ceil((await personSubscriptionModel.personSubscriptionsSearchCount(pool, req.val.search))/10);
         if(result.id && result.personSubscriptions && result.nbPagesPersonSubscriptions){
-            res.status(201).send(result);
+            res.send(result);
         }
         else{
             res.sendStatus(404);
         }
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }
 
@@ -110,8 +104,7 @@ export const updatePersonSubscription = async (req, res) => {
         res.send(personSubscriptions);
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }
 
@@ -124,7 +117,6 @@ export const deletePersonSubscription = async (req, res) => {
         res.send(result);
     }
     catch(e){
-        console.error(e);
-        res.sendStatus(500);
+      res.status(500).send(e.message);
     }
 }

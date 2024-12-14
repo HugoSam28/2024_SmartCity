@@ -17,27 +17,29 @@ export const addPersonSubscriptionValidatorMiddleware = async (req, res, next) =
     next();
   }
   catch(e) {
-    console.error(e);
-    res.sendStatus(500);
+    res.status(400).send(e.messages);
   }
 }
 
 const updateSchema = vine.object({
   id: vine.number().withoutDecimals().min(1),
-  carId: vine.number().withoutDecimals().min(1)
+  personId: vine.number().withoutDecimals().min(1).optional(),
+  subscriptionId: vine.number().withoutDecimals().min(1).optional(),
+  startingSubscriptionDate: vine.date().optional(),
 })
 const updateValidator = vine.compile(updateSchema);
-export const updateCarKeyValidatorMiddleware = async (req, res, next) => {
+export const updatePersonSubscriptionalidatorMiddleware = async (req, res, next) => {
   const data = {
     id: req.body.id,
-    carId: req.body.carId
+    personId: req.body.personId,
+    subscriptionId: req.body.subscriptionId,
+    startingSubscriptionDate: req.body.startingSubscriptionDate
   }
   try {
     req.val = await updateValidator.validate(data);
     next();
   }
   catch(e) {
-    console.error(e);
-    res.sendStatus(500);
+    res.status(400).send(e.messages);
   }
 }
