@@ -4,7 +4,7 @@ import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
 
-function AddTripForm() {
+function UpdateTripForm() {
     const [form] = Form.useForm();
     const {t} = useLanguageContext();
     const [error, setError] = useState("");
@@ -32,8 +32,8 @@ function AddTripForm() {
         values.startingLocation = [values.startingLocationLat, values.startingLocationLong]
         values.endingLocation = [values.endingLocationLat, values.endingLocationLong]
 
-        await fetch('http://localhost:3267/v1/trip/add', {
-            method: 'POST',
+        await fetch('http://localhost:3267/v1/trip/update', {
+            method: 'PATCH',
             headers: {
                 "authorization": `Bearer ${sessionStorage.getItem('token')}`,
                 "Content-Type": "application/json",
@@ -55,6 +55,7 @@ function AddTripForm() {
             })
             .catch (e => setError(e.message))
     };
+    const valeur = {id : 2}
     return (
         <div id="formContainer">
             <Form
@@ -63,6 +64,13 @@ function AddTripForm() {
                 form={form}
                 requiredMark={'optional'}
             >
+                <Form.Item
+                    name ='id'
+                    label="Id"
+                    disabled={true}>
+                    <Input defaultValue = {valeur.id}/>
+                </Form.Item>
+
                 <Form.Item
                     name='personId'
                     label={t('personId')}
@@ -172,4 +180,4 @@ function AddTripForm() {
         </div>
     )
 }
-export default AddTripForm;
+export default UpdateTripForm;

@@ -30,5 +30,14 @@
   "referred": "Id du parrainé",
   "batteryLevel": "Niveau de batterie",
   "fees": "Frais",
-  "isAvailable": "Est disponnible"
+  "isAvailable": "Est disponnible",
+  "personId" : "Id de la personne",
+  "vehicleId" : "Id du vehicule ",
+  "startingDate" : "Date de debut",
+  "endingDate" : "Date de fin",
+  "cost" : "Coût",
+  "startingLocationLat" : "Latitude de l’emplacement de départ",
+  "startingLocationLong" : "Longitude de l’emplacement de départ",
+  "endingLocationLat" : "Latitude de l’emplacement de fin",
+  "endingLocationLong" : "Longitude de l’emplacement de fin"
 }
