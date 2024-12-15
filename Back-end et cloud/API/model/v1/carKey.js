@@ -34,8 +34,8 @@ export const addCarKey = async(SQLClient, {carId}) => {
     return rows[0]?.id;
 }
 
-export const updateCarKey = async(SQLClient, {id, newCarId}) => {
-  return await SQLClient.query(`UPDATE Car_key SET car_id = $1 WHERE id = $2`, [newCarId, id]);
+export const updateCarKey = async(SQLClient, {id, carId}) => {
+  return await SQLClient.query(`UPDATE Car_key SET car_id = $1 WHERE id = $2`, [carId, id]);
 }
 
 export const deleteCarKeys = async(SQLClient, {idList}) => {

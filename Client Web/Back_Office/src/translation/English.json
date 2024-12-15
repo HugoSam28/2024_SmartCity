@@ -31,5 +31,14 @@
   "referred": "Referred id",
   "batteryLevel": "Battery level",
   "fees": "Fees",
-  "isAvailable": "Is available"
+  "isAvailable": "Is available",
+  "personId" : "Person id",
+  "vehicleId" : "Vehicle id",
+  "startingDate" : "Starting Date",
+  "endingDate" : "Ending Date",
+  "cost" : "Cost",
+  "startingLocationLat" : "Starting location latitude",
+  "startingLocationLong" : "Starting location longitude",
+  "endingLocationLat" : "Ending location latitude",
+  "endingLocationLong" : "Ending location longitude"
 }
