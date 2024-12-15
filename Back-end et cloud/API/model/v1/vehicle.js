@@ -3,7 +3,7 @@ export const getAllVehicles = async(SQLClient, {iPage}, {column}) => {
   
   const {rows} = await SQLClient.query(`
     WITH vehicles_page AS (
-      SELECT v.*, wl.brand, wl.model, wl.chassis_number FROM Vehicles v
+      SELECT v.*, wl.brand, wl.model, wl.chassis_number FROM Vehicle v
       LEFT JOIN With_licence wl ON v.id = wl.id
       ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10)
       SELECT * FROM vehicles_page`, [iPage, column]);
@@ -11,7 +11,7 @@ export const getAllVehicles = async(SQLClient, {iPage}, {column}) => {
 }
 
 export const vehiclesCount = async(SQLClient) => {
-  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM vehicles`);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM vehicle`);
   return rows[0]?.count;
 }
 

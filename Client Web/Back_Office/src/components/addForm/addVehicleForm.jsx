@@ -12,6 +12,19 @@ function AddVehicleForm() {
     { value: 'Velo', label: 'Velo' },
     { value: 'Trotinette', label: 'Trotinette' },
   ];
+  const additionalFields = {
+    Voiture: [
+      { name: "brand", label: t("brand"), placeholder: "Volvo" },
+      { name: "model", label: t("model"), placeholder: "XC90-2024" },
+      { name: "chassisNumber", label: t("chassisNumber"), placeholder: "dgge53Gsi9zegh0Z2" },
+    ],
+    Scooter: [
+      { name: "brand", label: t("brand"), placeholder: "Piaggio" },
+      { name: "model", label: t("model"), placeholder: "Vespa LX" },
+      { name: "chassisNumber", label: t("chassisNumber"), placeholder: "dgge53Gsi9zegh0Z2" },
+    ],
+  };
+  const [vehicle, setVehicle] = useState("");
   const [isAvailable, setIsAvailable] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -28,6 +41,7 @@ function AddVehicleForm() {
     values.lat = parseFloat(values.lat);
     values.lon = parseFloat(values.lon);
     values.price = parseFloat(values.price);
+    values.type = vehicle;
     values.iPage = 1;
     values.column = "id";
     console.log(values);
@@ -97,7 +111,9 @@ function AddVehicleForm() {
           ]}>
           <Select
             defaultValue=""
-            options={vehicleOptions}/>
+            options={vehicleOptions}
+            onChange={(selected) => setVehicle(selected)}
+          />
         </Form.Item>
         <Form.Item
           name="price"
@@ -121,6 +137,18 @@ function AddVehicleForm() {
         >
           <Switch defaultChecked onChange={ () => {setIsAvailable((isAvailable) => !isAvailable)}} />
         </Form.Item>
+        {additionalFields[vehicle] &&
+          additionalFields[vehicle].map((field) => (
+            <Form.Item
+              key={field.name}
+              name={field.name}
+              label={field.label}
+              rules={[{ required: true }]}
+            >
+              <Input placeholder={field.placeholder} />
+            </Form.Item>
+          ))
+        }
         {error && <p style={{color: "red"}}>{error}</p>}
         <Form.Item>
           <Space>
@@ -130,7 +158,6 @@ function AddVehicleForm() {
         </Form.Item>
       </Form>
     </div>
-
   )
 }
 export default AddVehicleForm;

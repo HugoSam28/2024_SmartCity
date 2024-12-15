@@ -14,6 +14,7 @@ const addSchema = vine.object({
 })
 const addValidator = vine.compile(addSchema)
 export const addVehicleValidatorMiddleware = async (req, res, next) => {
+  console.log(req.body);
   const data = {
     lat: req.body.lat,
     lon: req.body.lon,
@@ -28,7 +29,7 @@ export const addVehicleValidatorMiddleware = async (req, res, next) => {
   }
   try {
     if(data.type === 'Voiture' || data.type === 'Scooter') {
-      if(!data.brand || data.model || data.chassisNumber) {
+      if(!(data.brand && data.model && data.chassisNumber)) {
         throw Error("Ce type de vehicle doit avoir les champs : brand, model et chassisNumber");
       }
     }
