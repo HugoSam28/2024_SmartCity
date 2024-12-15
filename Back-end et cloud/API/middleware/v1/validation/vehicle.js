@@ -14,7 +14,6 @@ const addSchema = vine.object({
 })
 const addValidator = vine.compile(addSchema)
 export const addVehicleValidatorMiddleware = async (req, res, next) => {
-  console.log(req.body);
   const data = {
     lat: req.body.lat,
     lon: req.body.lon,

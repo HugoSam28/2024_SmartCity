@@ -22,7 +22,9 @@ import {
 } from '../../middleware/v1/validation/validation.js';
 import {
     startTripValidatorMiddelware as STVM,
-    endTripValidatorMiddelware as ETVM
+    endTripValidatorMiddelware as ETVM,
+    addTripValidatorMiddelware as ATVM,
+    updateTripValidatorMiddelware as UTVM
  } from '../../middleware/v1/validation/trip.js';
 
 const router = Router();
@@ -36,8 +38,8 @@ router.get("/getOwnTrips", checkJWT, getOwnTrips); //Récupération de nos voyag
 router.post("/startTrip", checkJWT, STVM, startTrip); //creer trip, vehicleNotavailable
 router.patch("/endTrip", checkJWT, ETVM, endTrip); // faire la fin du trip
 
-router.post("/add", checkJWT, addTrip);
-router.patch("/update", checkJWT, admin, updateTrip);
+router.post("/add", checkJWT, admin, ATVM, addTrip);
+router.patch("/update", checkJWT, admin, UTVM, updateTrip);
 router.delete("/delete", checkJWT, admin, DVM, PageVM, deleteTrips);
 
 export default router;
