@@ -1,3 +1,4 @@
+
 SET TIME ZONE 'Europe/Brussels';
 
 DROP TABLE IF EXISTS Trip CASCADE;

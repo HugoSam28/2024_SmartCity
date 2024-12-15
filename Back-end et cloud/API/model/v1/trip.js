@@ -2,7 +2,7 @@
 export const getAllTrips = async(SQLClient, {iPage}, {column}) => {
   const {rows} = await SQLClient.query(`
     WITH trips_page AS (
-      SELECT p.email, t.* FROM trips t
+      SELECT p.email, t.* FROM trip t
       JOIN Person p ON t.person_id = p.id
       ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
     SELECT * FROM trips_page`, [iPage, column]);
@@ -17,7 +17,7 @@ export const tripsCount = async(SQLClient) => {
 export const getSearchTrips = async(SQLClient, {iPage}, {value}, {column}) => {
   const {rows} = await SQLClient.query(`
     WITH trips_page AS (
-      SELECT p.email, t.* FROM trips t
+      SELECT p.email, t.* FROM trip t
       JOIN Person p ON t.person_id = p.id
       WHERE p.email ILIKE '%$2%'
       ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) 
@@ -58,13 +58,13 @@ export const endTrip = async(SQLClient, {id, endingDate, endingLocationLon, endi
   return rows[0]?.id;
 }
 
-export const addTrip = async(SQLClient, {personId, vehicleId, startingDate, endindDate, distance, cost, startingLocationLon, startingLocationLat, endingLocationLon, endingLocationLat}) => {
-  const {rows} = await SQLClient.query(`INSERT INTO trip (person_id, vehicle_id, starting_date, endind_date, distance, cost, starting_location, ending_location) 
-      VALUES ($1, $2, $3, $4, $5, $6, point($7, $8), point($9, $10)) RETURNING id`, [personId, vehicleId, startingDate, endindDate, distance, cost, startingLocationLon, startingLocationLat, endingLocationLon, endingLocationLat]);
+export const addTrip = async(SQLClient, {personId, vehicleId, startingDate, endingDate, distance, cost, startingLocation, endingLocation}) => {
+  const {rows} = await SQLClient.query(`INSERT INTO trip (person_id, vehicle_id, starting_date, ending_date, distance, cost, starting_location, ending_location) 
+      VALUES ($1, $2, $3, $4, $5, $6, point($7, $8), point($9, $10)) RETURNING id`, [personId, vehicleId, startingDate, endingDate, distance, cost, startingLocation[1], startingLocation[0], endingLocation[1], endingLocation[0]]);
   return rows[0]?.id;
 }
 
-export const updateTrip = async(SQLClient, {id, personId, vehicleId, startingDate, endindDate, distance, cost, startingLocationLon, startingLocationLat, endingLocationLon, endingLocationLat}) => {
+export const updateTrip = async(SQLClient, {id, personId, vehicleId, startingDate, endingDate, distance, cost, startingLocation, endingLocation}) => {
   let query = `UPDATE trip SET `;
   const querySet = [];
   const queryValues = [];
@@ -81,21 +81,21 @@ export const updateTrip = async(SQLClient, {id, personId, vehicleId, startingDat
     querySet.push(`startingate = $${queryValues.length}`);
   }
   if(endindDate){
-    queryValues.push(endindDate);
+    queryValues.push(endingDate);
     querySet.push(`endindDate = $${queryValues.length}`);
   }
   if(distance){
     queryValues.push(distance);
     querySet.push(`distance = $${queryValues.length}`);
   }
-  if(startingLocationLon && startingLocationLat){
-    queryValues.push(startingLocationLon);
-    queryValues.push(startingLocationLat);
+  if(startingLocation){
+    queryValues.push(startingLocation[1]);
+    queryValues.push(startingLocation[0]);
     querySet.push(`starting_location = point($${queryValues.length - 1},$${queryValues.length})`);
   }
-  if(endingLocationLon && endingLocationLat){
-    queryValues.push(endingLocationLon);
-    queryValues.push(endingLocationLat);
+  if(endingLocation){
+    queryValues.push(endingLocation[1]);
+    queryValues.push(endingLocation[0]);
     querySet.push(`ending_location = point($${queryValues.length - 1},$${queryValues.length})`);
   }
   if(cost){

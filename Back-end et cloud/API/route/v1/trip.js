@@ -38,8 +38,8 @@ router.get("/getOwnTrips", checkJWT, getOwnTrips); //Récupération de nos voyag
 router.post("/startTrip", checkJWT, STVM, startTrip); //creer trip, vehicleNotavailable
 router.patch("/endTrip", checkJWT, ETVM, endTrip); // faire la fin du trip
 
-router.post("/add", checkJWT, admin, ATVM, addTrip);
-router.patch("/update", checkJWT, admin, UTVM, updateTrip);
+router.post("/add", checkJWT, admin, ATVM, PageVM, OVM, addTrip);
+router.patch("/update", checkJWT, admin, UTVM, PageVM, OVM, updateTrip);
 router.delete("/delete", checkJWT, admin, DVM, PageVM, deleteTrips);
 
 export default router;

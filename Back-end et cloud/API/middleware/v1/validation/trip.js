@@ -47,6 +47,7 @@ const addSchema = vine.object({
   personId: vine.number().withoutDecimals().min(1),
   startingDate: vine.date(),
   distance: vine.number().min(0),
+  cost: vine.number().min(0),
   endingDate: vine.date(),
   startingLocation: vine.array(vine.number()),
   endingLocation: vine.array(vine.number())
@@ -58,6 +59,7 @@ export const addTripValidatorMiddelware = async(req, res, next) => {
     personId: req.body.personId,
     startingDate: req.body.startingDate,
     distance: req.body.distance,
+    cost: req.body.cost,
     endingDate: req.body.endingDate,
     startingLocation: req.body.startingLocation,
     endingLocation: req.body.endingLocation
@@ -77,6 +79,7 @@ const updateSchema = vine.object({
   personId: vine.number().withoutDecimals().min(1).optional(),
   startingDate: vine.date().optional(),
   distance: vine.number().min(0).optional(),
+  cost: vine.number().min(0).optional(),
   endingDate: vine.date().optional(),
   startingLocation: vine.array(vine.number()).optional(),
   endingLocation: vine.array(vine.number()).optional()
@@ -89,6 +92,7 @@ export const updateTripValidatorMiddelware = async(req, res, next) => {
     personId: req.body.personId,
     startingDate: req.body.startingDate,
     distance: req.body.distance,
+    cost: req.body.cost,
     endingDate: req.body.endingDate,
     startingLocation: req.body.startingLocation,
     endingLocation: req.body.endingLocation
