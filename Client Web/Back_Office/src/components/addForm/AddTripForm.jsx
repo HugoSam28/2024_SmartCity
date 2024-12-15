@@ -1,4 +1,4 @@
-import {Button, Form, Input, Space, DatePicker} from "antd";
+import {Button, Form, Input, Space, DatePicker, InputNumber} from "antd";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -29,8 +29,8 @@ function AddTripForm() {
         values.column = "id";
         values.startingDate = startingDate;
         values.endingDate = endingDate;
-        values.startingLocation = [values.startingLocationLat, values.startingLocationLong]
-        values.endingLocation = [values.endingLocationLat, values.endingLocationLong]
+        values.startingLocation = [values.startingLocationLat, values.startingLocationLon]
+        values.endingLocation = [values.endingLocationLat, values.endingLocationLon]
 
         await fetch('http://localhost:3267/v1/trip/add', {
             method: 'POST',
@@ -69,7 +69,7 @@ function AddTripForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="21"/>
+                    <InputNumber placeholder="21" style={{width: '100%'}} min={1} />
                 </Form.Item>
 
                 <Form.Item
@@ -78,7 +78,7 @@ function AddTripForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="21"/>
+                  <InputNumber placeholder="8" style={{width: '100%'}} min={1} />
                 </Form.Item>
 
                 <Form.Item
@@ -90,6 +90,8 @@ function AddTripForm() {
                     <DatePicker
                         showTime
                         onChange={onChangeStart}
+                        maxDate={dayjs()}
+                        style={{width: '100%'}}
                     />
                 </Form.Item>
 
@@ -103,6 +105,7 @@ function AddTripForm() {
                         showTime
                         onChange={onChangeEnd}
                         maxDate={dayjs()}
+                        style={{width: '100%'}}
                     />
                 </Form.Item>
 
@@ -112,7 +115,7 @@ function AddTripForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="2000"/>
+                  <InputNumber placeholder="346 (in meters)" style={{width: '100%'}} min={1} />
                 </Form.Item>
 
                 <Form.Item
@@ -121,7 +124,7 @@ function AddTripForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="2.2"/>
+                  <InputNumber placeholder="4.5" style={{width: '100%'}} min={0} />
                 </Form.Item>
 
                 <Form.Item
@@ -130,16 +133,16 @@ function AddTripForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="50.342326"/>
+                    <InputNumber placeholder="50.342326" style={{width: '100%'}}/>
                 </Form.Item>
 
                 <Form.Item
-                    name='startingLocationLong'
-                    label={t('startingLocationLong')}
+                    name='startingLocationLon'
+                    label={t('startingLocationLon')}
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="20.389483"/>
+                    <InputNumber placeholder="20.389483" style={{width: '100%'}}/>
                 </Form.Item>
 
                 <Form.Item
@@ -148,16 +151,16 @@ function AddTripForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="50.342326"/>
+                    <InputNumber placeholder="50.342326" style={{width: '100%'}}/>
                 </Form.Item>
 
                 <Form.Item
-                    name='endingLocationLong'
-                    label={t('endingLocationLong')}
+                    name='endingLocationLon'
+                    label={t('endingLocationLon')}
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="20.389483"/>
+                    <InputNumber placeholder="20.389483" style={{width: '100%'}}/>
                 </Form.Item>
 
                 {error && <p style={{color: "red"}}>{error}</p>}
@@ -165,7 +168,7 @@ function AddTripForm() {
                 <Form.Item>
                     <Space>
                         <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-                        <Button type="primary" htmlType='submit'>{t('submit')}</Button>
+                        <Button type="primary" htmlType='submit'>{t('add')}</Button>
                     </Space>
                 </Form.Item>
             </Form>

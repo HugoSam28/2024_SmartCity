@@ -1,9 +1,9 @@
-import {Button, Form, Input, Space} from "antd";
+import {Button, Form, InputNumber, Space} from "antd";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-function AddSponsoringForm() {
+function AddCarKeyForm() {
   const [form] = Form.useForm();
   const {t} = useLanguageContext();
   const [error, setError] = useState("");
@@ -16,7 +16,7 @@ function AddSponsoringForm() {
     setError("");
     values.iPage = 1;
     values.column = "id";
-    await fetch('http://localhost:3267/v1/sponsoring/add', {
+    await fetch('http://localhost:3267/v1/carKey/add', {
       method: 'POST',
       headers: {
         "authorization": `Bearer ${sessionStorage.getItem('token')}`,
@@ -48,30 +48,22 @@ function AddSponsoringForm() {
         requiredMark={'optional'}
       >
         <Form.Item
-          name='sponsor'
-          label={t('sponsor')}
+          name='carId'
+          label={t('carId')}
           rules={[
             {required: true,},
           ]}>
-          <Input placeholder="21"/>
-        </Form.Item>
-        <Form.Item
-          name='referred'
-          label={t('referred')}
-          rules={[
-            {required: true,},
-          ]}>
-          <Input placeholder="37"/>
+          <InputNumber placeholder="21" min={1}/>
         </Form.Item>
         {error && <p style={{color: "red"}}>{error}</p>}
         <Form.Item>
           <Space>
             <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-            <Button type="primary" htmlType='submit'>{t('submit')}</Button>
+            <Button type="primary" htmlType='submit'>{t('add')}</Button>
           </Space>
         </Form.Item>
       </Form>
     </div>
   )
 }
-export default AddSponsoringForm
+export default AddCarKeyForm;

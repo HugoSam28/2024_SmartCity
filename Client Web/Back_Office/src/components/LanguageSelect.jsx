@@ -9,6 +9,9 @@ const LanguageSelect = () => {
         top: 10,
         left: 10,
         height: "40px",
+        borderRadius: 9,
+        zIndex: 1,
+        id: "languageSelect",
       }}
       onChange={onClickLanguageChange}
     >

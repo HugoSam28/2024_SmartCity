@@ -35,7 +35,7 @@ export default function LoginScreen() {
         throw new Error(t("wrongPassword"));
       }
       sessionStorage.setItem('token', token);
-      navigate("/addCarKeyForm");
+      navigate("/dashboard");
     } catch (e) {
       setError(e.message);
     }

@@ -4,20 +4,8 @@ import LoginScreen from "../screens/Login.jsx";
 import Bidondon from "../screens/Bidondon.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import Logout from "../components/Logout.jsx";
-import {MainMenu} from "../components/MainMenu.jsx";
-import AddPersonForm from "../components/addForm/addPersonForm.jsx";
-import AddCarKeyForm from "../components/addForm/addCarKeyForm.jsx";
-import AddSubscriptionForm from "../components/addForm/addSubscriptionForm.jsx";
-import AddSponsoringForm from "../components/addForm/addSponsoringForm.jsx";
-import AddVehicleForm from "../components/addForm/addVehicleForm.jsx";
-import UpdateCarKeyForm from "../components/updateForm/UpdateCarKeyForm.jsx";
-import UpdatePersonForm from "../components/updateForm/UpdatePersonForm.jsx";
-import UpdatePersonSubscriptionForm from "../components/updateForm/UpdatePersonSubscription.jsx";
-import UpdateSponsoringForm from "../components/updateForm/UpdateSponsoringForm.jsx";
-import UpdateSubscriptionForm from "../components/updateForm/UpdateSubscriptionForm.jsx";
-import UpdateVehicleForm from "../components/updateForm/UpdateVehicleForm.jsx";
-import AddTripForm from "../components/addForm/addTripForm.jsx";
-import UpdateTripForm from "../components/updateForm/UpdateTripForm.jsx";
+
+import Dashboard from "../screens/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -32,93 +20,72 @@ const router = createBrowserRouter([
     path: '/dashboard',
     element: (
       <ProtectedRoute>
-        <MainMenu />
+        <Dashboard/>
       </ProtectedRoute>)
   },
   {
-    path: '/persons',
+    path: '/person',
     element: (
       <ProtectedRoute>
-        <Bidondon />
+        <Dashboard >
+          <Bidondon />
+        </Dashboard>
       </ProtectedRoute>)
   },
   {
-    path: '/vehicles',
+    path: '/vehicle',
     element: (
       <ProtectedRoute>
-        <Bidondon />
+        <Dashboard >
+          <Bidondon />
+        </Dashboard>
       </ProtectedRoute>)
   },
   {
-    path: '/carkeys',
+    path: '/carKey',
     element: (
       <ProtectedRoute>
-        <Bidondon />
+        <Dashboard >
+          <Bidondon />
+        </Dashboard>
       </ProtectedRoute>)
   },
   {
-    path: '/subscriptions',
+    path: '/subscription',
     element: (
       <ProtectedRoute>
-        <Bidondon />
+        <Dashboard >
+          <Bidondon />
+        </Dashboard>
       </ProtectedRoute>)
   },
   {
     path: '/sponsoring',
     element: (
       <ProtectedRoute>
-        <Bidondon />
+        <Dashboard >
+          <Bidondon />
+        </Dashboard>
       </ProtectedRoute>)
   },
   {
-    path: '/trips',
+    path: '/trip',
     element: (
       <ProtectedRoute>
-        <Bidondon />
+        <Dashboard >
+          <Bidondon />
+        </Dashboard>
       </ProtectedRoute>)
   },
   {
-    path: '/bidondon',
+    path: '/personSubscription',
     element: (
       <ProtectedRoute>
-        <Bidondon />
-      </ProtectedRoute>)
-  },
-  {
-    path:'/AddTripForm',
-    element: <AddTripForm/>
-  },
-  {
-    path:'/AddVehicleForm',
-    element: <AddVehicleForm/>
-  },
-  {
-    path:'/UpdateCarKeyForm',
-    element: <UpdateCarKeyForm/>
-  },
-  {
-    path:'/UpdatePersonForm',
-    element: <UpdatePersonForm/>
-  },
-  {
-    path:'/UpdatePersonSubscriptionForm',
-    element: <UpdatePersonSubscriptionForm/>
-  },
-  {
-    path:'/UpdateSponsoringForm',
-    element: <UpdateSponsoringForm/>
-  },
-  {
-    path:'/UpdateSubscriptionForm',
-    element: <UpdateSubscriptionForm/>
-  },
-  {
-    path:'/UpdateVehicleForm',
-    element: <UpdateVehicleForm/>
-  },
-  {
-    path:'/UpdateTripForm',
-    element: <UpdateTripForm/>
+        <Dashboard >
+          <Bidondon />
+        </Dashboard>
+      </ProtectedRoute>
+    )
   }
 ])
 export default router;

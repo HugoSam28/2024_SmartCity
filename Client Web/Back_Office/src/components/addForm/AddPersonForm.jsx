@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Form, Input, Space , Select, DatePicker, Switch} from 'antd';
+import {Button, Form, Input, Space, Select, DatePicker, Switch, InputNumber} from 'antd';
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import dayjs from 'dayjs';
 
@@ -117,8 +117,9 @@ function AddPersonForm() {
               rules={[
                 {required: true,},
               ]}
+
             >
-                <Input addonBefore={prefixesSelect}/>
+                <InputNumber addonBefore={prefixesSelect} min={1} style={{width: '100%'}}/>
             </Form.Item>
 
             <Form.Item
@@ -156,7 +157,7 @@ function AddPersonForm() {
             <Form.Item>
                 <Space>
                     <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-                    <Button type="primary" htmlType='submit'>{t('submit')}</Button>
+                    <Button type="primary" htmlType='submit'>{t('add')}</Button>
                 </Space>
             </Form.Item>
         </Form>

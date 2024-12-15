@@ -68,7 +68,7 @@ function UpdateTripForm() {
                     name ='id'
                     label="Id"
                     disabled={true}>
-                    <Input defaultValue = {valeur.id}/>
+                    <Input defaultValue = {valeur.id} disabled />
                 </Form.Item>
 
                 <Form.Item

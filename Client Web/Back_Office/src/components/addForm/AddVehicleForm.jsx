@@ -1,5 +1,5 @@
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
-import {Button, Form, Input, Select, Space, Switch} from "antd";
+import {Button, Form, Input, InputNumber, Select, Space, Switch} from "antd";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
@@ -85,7 +85,7 @@ function AddVehicleForm() {
             {required:true}
           ]}
         >
-          <Input type="number" placeholder={50.35468} />
+          <InputNumber placeholder={50.35468} style={{width: '100%'}} />
         </Form.Item>
         <Form.Item
           name="lon"
@@ -93,7 +93,7 @@ function AddVehicleForm() {
           rules={[
             {required:true}
           ]}>
-          <Input type="number" placeholder={4.45793} />
+          <InputNumber placeholder={4.45793} style={{width: '100%'}}/>
         </Form.Item>
         <Form.Item
           name="batteryLevel"
@@ -101,7 +101,7 @@ function AddVehicleForm() {
           rules={[
             {required:true}
           ]}>
-          <Input type="number" placeholder={`0 < ${t("discount")} <= 1`} />
+          <InputNumber placeholder={70} style={{width: '100%'}} min={1} />
         </Form.Item>
         <Form.Item
           name="type"
@@ -121,7 +121,7 @@ function AddVehicleForm() {
           rules={[
             {required:true}
           ]}>
-          <Input type="number" placeholder="20" />
+          <InputNumber  placeholder="20" style={{width: '100%'}} min={1} />
         </Form.Item>
         <Form.Item
           name="fees"
@@ -129,7 +129,7 @@ function AddVehicleForm() {
           rules={[
             {required:true}
           ]}>
-          <Input type="number" placeholder="1.5" />
+          <InputNumber placeholder="1.5" style={{width: '100%'}} min={1} />
         </Form.Item>
         <Form.Item
           name='isAvailable'
@@ -153,7 +153,7 @@ function AddVehicleForm() {
         <Form.Item>
           <Space>
             <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-            <Button type="primary" htmlType='submit'>{t('submit')}</Button>
+            <Button type="primary" htmlType='submit'>{t('add')}</Button>
           </Space>
         </Form.Item>
       </Form>

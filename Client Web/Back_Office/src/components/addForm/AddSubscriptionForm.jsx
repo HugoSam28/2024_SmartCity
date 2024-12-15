@@ -1,5 +1,5 @@
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
-import {Button, Form, Input, Select, Space} from "antd";
+import {Button, Form, InputNumber, Select, Space} from "antd";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
@@ -71,7 +71,6 @@ function AddSubscriptionForm() {
             {required:true}
           ]}>
           <Select
-            defaultValue="Gold"
             options={labelOptions}
           />
         </Form.Item>
@@ -81,7 +80,7 @@ function AddSubscriptionForm() {
           rules={[
             {required:true}
           ]}>
-          <Input type="number" placeholder="20" />
+          <InputNumber placeholder="20" style={{width: '100%'}} min={1} />
         </Form.Item>
         <Form.Item
           name="discount"
@@ -89,7 +88,7 @@ function AddSubscriptionForm() {
           rules={[
             {required:true}
           ]}>
-          <Input type="number" placeholder={`0 < ${t("discount")} <= 1`} />
+          <InputNumber placeholder={`0 < ${t("discount")} <= 1`} style={{width: '100%'}} min={1} />
         </Form.Item>
         <Form.Item
           name="paymentRecurrence"
@@ -115,7 +114,7 @@ function AddSubscriptionForm() {
         <Form.Item>
           <Space>
             <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-            <Button type="primary" htmlType='submit'>{t('submit')}</Button>
+            <Button type="primary" htmlType='submit'>{t('add')}</Button>
           </Space>
         </Form.Item>
       </Form>
