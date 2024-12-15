@@ -1,4 +1,4 @@
-import {useLanguageContext} from "../contexts/languageContext.jsx";
+import {useLanguageContext} from "../contexts/LanguageContext.jsx";
 //import {useNavigate} from "react-router-dom";
 import { MdOutlineBikeScooter } from "react-icons/md";
 import { FiUser, FiUsers } from "react-icons/fi";

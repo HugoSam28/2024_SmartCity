@@ -1,4 +1,4 @@
-import { useLanguageContext } from "../contexts/languageContext.jsx";
+import { useLanguageContext } from "../contexts/LanguageContext.jsx";
 const LanguageSelect = () => {
   const { languages, onClickLanguageChange } = useLanguageContext();
   return (

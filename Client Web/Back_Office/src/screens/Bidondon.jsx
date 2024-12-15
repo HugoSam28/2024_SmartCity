@@ -2,6 +2,6 @@
 export default function Bidondon() {
 
   return (
-    <p>token</p>
+    <p>{sessionStorage.getItem('token')}</p>
   )
 }

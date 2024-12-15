@@ -17,5 +17,7 @@
   "number" : "Numéro",
   "birthday" : "Anniversaire",
   "hasCarLicence" : "Permis de conduire voiture",
-  "hasMotorbikeLicence" : "Permis de conduire moto"
+  "hasMotorbikeLicence" : "Permis de conduire moto",
+  "referralCode" : "Code de parrainage",
+  "httpError": "Erreur http"
 }

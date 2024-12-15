@@ -1,11 +1,11 @@
 import {createBrowserRouter} from 'react-router-dom';
 
-import LoginScreen from "../screens/login.jsx";
-import Bidondon from "../screens/bidondon.jsx";
+import LoginScreen from "../screens/Login.jsx";
+import Bidondon from "../screens/Bidondon.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import Logout from "../components/Logout.jsx";
 import {MainMenu} from "../components/MainMenu.jsx";
-import FormPopUp from "../components/FormPopUp.jsx";
+import AddPersonForm from "../components/addForm/addPersonForm.jsx";
 
 const router = createBrowserRouter([
   {
@@ -73,8 +73,8 @@ const router = createBrowserRouter([
       </ProtectedRoute>)
   },
   {
-    path:'/FormPopUp',
-    element: <FormPopUp></FormPopUp>
+    path:'/AddPersonForm',
+    element: <AddPersonForm></AddPersonForm>
   }
 ])
 export default router;
