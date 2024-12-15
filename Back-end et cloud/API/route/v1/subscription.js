@@ -82,7 +82,7 @@ export default router;
 
 /**
  * @swagger
- * /subscription//getAllSubscriptionsAndPagesCount/{order}/{iPage}:
+ * /subscription/getAllSubscriptionsAndPagesCount/{order}/{iPage}:
  *  get:
  *    security:
  *      - bearerAuth: []
