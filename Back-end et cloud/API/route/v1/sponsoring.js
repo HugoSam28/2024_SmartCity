@@ -17,7 +17,10 @@ import {
     deleteValidatorMiddleware as DVM,
     orderValidatorMiddleware as OVM,
 } from '../../middleware/v1/validation/validation.js';
-import {sponsoringValidatorMiddleware as SponsorVM} from "../../middleware/v1/validation/sponsoring..js";
+import {
+  addSponsoringValidatorMiddleware as ASVM,
+  updateSponsoringValidatorMiddleware as USVM
+} from "../../middleware/v1/validation/sponsoring..js";
 
 
 const router = Router();
@@ -26,9 +29,9 @@ router.get("/getAllSponsoring/:column/:iPage", checkJWT, admin, PageVM, OVM, get
 router.get("/getAllSponsoringAndPagesCount/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllSponsoringAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
 router.get("/getSearchSponsoring/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchSponsoring) //Champ de recherche sur les ligne
 
-router.post("/add", checkJWT, admin, SponsorVM, PageVM, OVM, addSponsoring);
+router.post("/add", checkJWT, admin, ASVM, PageVM, OVM, addSponsoring);
 
-router.patch("/update", checkJWT, admin, SponsorVM, PageVM, OVM, updateSponsoring);
+router.patch("/update", checkJWT, admin, USVM, PageVM, OVM, updateSponsoring);
 
 router.delete("/delete", checkJWT, admin, DVM, PageVM, OVM, deleteSponsoring);
 

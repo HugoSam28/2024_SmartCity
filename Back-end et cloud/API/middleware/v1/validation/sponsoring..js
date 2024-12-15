@@ -25,7 +25,7 @@ const addSchema = vine.object({
   referred: vine.number().withoutDecimals().min(1)
 })
 const addValidator = vine.compile(addSchema);
-export const sponsoringValidatorMiddleware = async (req, res, next) => {
+export const addSponsoringValidatorMiddleware = async (req, res, next) => {
   const data = {
     sponsor: req.body.sponsor,
     referred: req.body.referred
