@@ -36,7 +36,7 @@ export const getSponsoringByID = async(SQLClient, {id}) => {
     return rows[0];
 }
 
-export const addSponsoring = async(SQLClient, sponsor, referred) =>{
+export const addSponsoring = async(SQLClient, {sponsor, referred}) =>{
     const {rows} = await SQLClient.query(`INSERT INTO sponsoring (sponsor, referred) VALUES ($1, $2) RETURNING referred`, [sponsor, referred]);
     return rows[0]?.referred;
 }

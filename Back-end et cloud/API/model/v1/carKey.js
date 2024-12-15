@@ -1,7 +1,8 @@
 export const getAllCarKeys= async(SQLClient, {iPage}, {column}) => {
-  const {rows} = await SQLClient.query(`WITH Car_key_page AS (
-    SELECT c.*, v.model FROM Car_key c JOIN With_licence v ON v.id = c.car_id FROM Car_key
-    ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
+  const {rows} = await SQLClient.query(`
+    WITH Car_key_page AS (
+      SELECT c.*, v.model FROM Car_key c JOIN With_licence v ON v.id = c.car_id
+      ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
     SELECT * FROM Car_key_page`, [iPage, column]);
   return rows;
 }

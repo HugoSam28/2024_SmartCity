@@ -48,7 +48,7 @@ export const getSearchCarKeys = async(req, res) => {
         }
     }
     catch(e){
-        cres.status(500).send(e.messages);
+        res.status(500).send(e.messages);
     }
 }
 

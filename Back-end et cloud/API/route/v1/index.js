@@ -6,7 +6,7 @@ import {default as tripRouter} from "./trip.js"
 import {default as vehicleRouter} from "./vehicle.js"
 import {default as carKeyRouter} from "./carKey.js"
 import {default as subscriptionRouter} from "./subscription.js"
-//import {default as personSubscriptionRouter} from "./personSubscription.js"
+import {default as personSubscriptionRouter} from "./personSubscription.js"
 
 const router = Router();
 
@@ -16,5 +16,6 @@ router.use("/trip", tripRouter);
 router.use("/vehicle", vehicleRouter);
 router.use("/carKey", carKeyRouter);
 router.use("/subscription", subscriptionRouter);
-//router.use("/personSubscription", personSubscriptionRouter);
+router.use("/personSubscription", personSubscriptionRouter);
+
 export default router
