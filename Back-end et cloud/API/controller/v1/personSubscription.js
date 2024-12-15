@@ -56,10 +56,10 @@ export const getSearchPersonSubscriptions = async(req, res) => {
 export const getOwnSubscription = async(req, res) => {
     try{
         const result = {};
-        result.own = await personSubscriptionModel.getOwnSubscription(pool, req.val);
+        result.own = await personSubscriptionModel.getOwnSubscription(pool, req.session); //a cause du JWT
         result.others = await subscriptionModel.getOthersSubscription(pool, result.own);
         result.own = await subscriptionModel.getOwnSubscription(pool, result.own);
-        if(result.own && result.others){
+        if(result.own[0] || result.others[0]){
             res.send(result);
         }
         else{

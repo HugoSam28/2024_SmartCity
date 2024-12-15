@@ -29,8 +29,8 @@ router.get("/getAllPersonSubscriptions/:column/:iPage", checkJWT, admin, PageVM,
 router.get("/getAllPersonSubscriptionsAndPagesCount/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllPersonSubscriptionsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
 router.get("/getSearchPersonSubscriptions/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchPersonSubscriptions) //Champ de recherche sur les ligne
 
-router.get("/getOwnSubscription", checkJWT, admin, PageVM, SVM, OVM, getOwnSubscription) //Différencier nos abonnements de ceux qu'on a pas 
-router.post("/addOwnSubscription", checkJWT, admin, PageVM, SVM, OVM, addOwnSubscription) //Nous ajouter un abonnements
+router.get("/getOwnSubscription", checkJWT, getOwnSubscription) //Différencier nos abonnements de ceux qu'on a pas
+router.post("/addOwnSubscription", checkJWT, APSVM, addOwnSubscription) //Nous ajouter un abonnements
 
 router.post("/add", checkJWT, admin, APSVM, PageVM, OVM, addPersonSubscription);
 router.patch("/update", checkJWT, admin, UPSVM, PageVM, OVM, updatePersonSubscription);
