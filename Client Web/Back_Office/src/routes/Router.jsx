@@ -6,6 +6,10 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 import Logout from "../components/Logout.jsx";
 import {MainMenu} from "../components/MainMenu.jsx";
 import AddPersonForm from "../components/addForm/addPersonForm.jsx";
+import AddCarKeyForm from "../components/addForm/addCarKeyForm.jsx";
+import AddSubscriptionForm from "../components/addForm/addSubscriptionForm.jsx";
+import AddSponsoringForm from "../components/addForm/addSponsoringForm.jsx";
+import AddVehicleForm from "../components/addForm/addVehicleForm.jsx";
 
 const router = createBrowserRouter([
   {
@@ -73,8 +77,8 @@ const router = createBrowserRouter([
       </ProtectedRoute>)
   },
   {
-    path:'/AddPersonForm',
-    element: <AddPersonForm></AddPersonForm>
+    path:'/AddVehicleForm',
+    element: <AddVehicleForm/>
   }
 ])
 export default router;

@@ -20,5 +20,16 @@
   "hasCarLicence" : "Has car licence",
   "hasMotorbikeLicence" : "Has motorbike licence",
   "referralCode": "Referral dode",
-  "httpError": "Http error"
+  "httpError": "Http error",
+  "carId": "Car Id",
+  "label": "Label",
+  "price": "Price",
+  "discount": "Discount",
+  "paymentRecurrence": "Payment recurrence",
+  "vehicleType": "Vehicle type",
+  "sponsor": "Sponsor id",
+  "referred": "Referred id",
+  "batteryLevel": "Battery level",
+  "fees": "Fees",
+  "isAvailable": "Is available"
 }

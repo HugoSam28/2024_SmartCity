@@ -2,9 +2,6 @@ import { useState } from 'react';
 import { Button, Form, Input, Space , Select, DatePicker, Switch} from 'antd';
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-dayjs.extend(customParseFormat);
-
 
 function AddPersonForm() {
     const [form] = Form.useForm();
@@ -48,7 +45,6 @@ function AddPersonForm() {
       await fetch('http://localhost:3267/v1/person/registration', {
         method: 'POST',
         headers: {
-          "Authorization": `Bearer ${sessionStorage.getItem('token')}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(values),
@@ -63,7 +59,7 @@ function AddPersonForm() {
         .then(data => {
           console.log(data);
         })
-        .catch (e => setError(e.messages))
+        .catch (e => setError(e.message))
     };
 
 
@@ -73,7 +69,8 @@ function AddPersonForm() {
             onFinish={onFinish}
             layout={"vertical"}
             form={form}
-            requiredMark={'optional'}
+            requiredMark={false}
+            style={{ width: '100%' }}
         >
             <Form.Item
               name='firstName'
@@ -143,14 +140,12 @@ function AddPersonForm() {
           <Form.Item name='referralCode' label={t('referralCode')}>
             <Input placeholder="8404B98D" />
           </Form.Item>
-
             <Form.Item
               name='hasCarLicence'
               label={t('hasCarLicence')}
             >
                 <Switch onChange={() => {setCarDisabled((carDisabled) => !carDisabled)}}/>
             </Form.Item>
-
             <Form.Item
               name='hasMotorbikeLicence'
               label={t('hasMotorbikeLicence')}
@@ -159,9 +154,9 @@ function AddPersonForm() {
             </Form.Item>
             {error && <p style={{color: "red"}}>{error}</p>}
             <Form.Item>
-                <Space style={{width: '100%'}}>
-                    <Button onClick={onReset} style={{width: '100%'}}>{t('reset')}</Button>
-                    <Button type="primary" htmlType='submit' style={{width: '100%'}}>{t('submit')}</Button>
+                <Space>
+                    <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
+                    <Button type="primary" htmlType='submit'>{t('submit')}</Button>
                 </Space>
             </Form.Item>
         </Form>

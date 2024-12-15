@@ -19,5 +19,16 @@
   "hasCarLicence" : "Permis de conduire voiture",
   "hasMotorbikeLicence" : "Permis de conduire moto",
   "referralCode" : "Code de parrainage",
-  "httpError": "Erreur http"
+  "httpError": "Erreur http",
+  "carId": "Id de la voiture",
+  "label": "Nom",
+  "price": "Prix",
+  "discount": "Réduction",
+  "paymentRecurrence": "Recurrence de paiement",
+  "vehicleType": "Type de véhicle",
+  "sponsor": "Id du sponsor",
+  "referred": "Id du parrainé",
+  "batteryLevel": "Niveau de batterie",
+  "fees": "Frais",
+  "isAvailable": "Est disponnible"
 }

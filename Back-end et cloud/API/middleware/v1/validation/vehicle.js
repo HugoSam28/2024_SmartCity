@@ -3,7 +3,7 @@ import vine from "@vinejs/vine";
 const addSchema = vine.object({
   lat: vine.number(),
   lon: vine.number(),
-  batteryLevel: vine.number(),
+  batteryLevel: vine.number().min(0).max(100),
   type: vine.enum(['Voiture', 'Scooter', 'Trotinette', 'Velo']),
   price: vine.number().min(0),
   isAvailable: vine.boolean(),
