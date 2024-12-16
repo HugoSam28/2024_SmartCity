@@ -154,7 +154,7 @@ export const updateTrip = async (req, res) => {
 
 export const deleteTrips = async (req, res) => {
     try{
-        await tripModel.deleteTrip(pool, req.val);
+        await tripModel.deleteTrip(pool, req.val.del);
         const result= {};
         result.trips = await tripModel.getAllTrips(pool, req.val.page, req.val.order);
         result.nbPagesTrips = Math.ceil((await tripModel.tripsCount(pool))/10);

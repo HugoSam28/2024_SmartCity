@@ -177,7 +177,7 @@ export const updatePersonalBalance = async(req, res) =>{
 
 export const deletePersons = async(req, res) => {
   try{
-    await personModel.deletePersons(pool, req.val);
+    await personModel.deletePersons(pool, req.val.del);
     const result= {};
     result.persons = await personModel.getAllPersons(pool, req.val.page, req.val.order);
     result.nbPagesPersons = Math.ceil((await personModel.personsCount(pool))/10);

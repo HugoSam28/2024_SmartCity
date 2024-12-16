@@ -110,7 +110,7 @@ export const updatePersonSubscription = async (req, res) => {
 
 export const deletePersonSubscription = async (req, res) => {
     try{
-        await subscriptionModel.deleteSubscriptions(pool, req.val);
+        await subscriptionModel.deleteSubscriptions(pool, req.val.del);
         const result= {};
         result.personSubscriptions = await personSubscriptionModel.getSearchPersonSubscriptions(pool, req.val.page, req.val.search, req.val.order);
         result.nbPagesPersonSubscriptions = Math.ceil((await personSubscriptionModel.personSubscriptionsSearchCount(pool, req.val.search))/10);

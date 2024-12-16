@@ -140,7 +140,7 @@ export const updateSponsoring = async (req, res) => {
 
 export const deleteSponsoring = async (req, res) => {
     try{
-        await sponsoringModel.deleteSponsoring(pool, req.val);
+        await sponsoringModel.deleteSponsoring(pool, req.val.del);
         const result= {};
         result.sponsoring = await sponsoringModel.getAllSponsoring(pool, req.val.page, req.val.order);
         result.nbPagesSponsoring = Math.ceil((await sponsoringModel.sponsoringCount(pool))/10);
