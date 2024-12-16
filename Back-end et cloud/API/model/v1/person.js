@@ -61,14 +61,14 @@ export const getSearchPersons = async(SQLClient, {iPage}, {value}, {column}) => 
   const {rows} = await SQLClient.query(`
     WITH Person_page AS (
       SELECT id, first_name, last_name, email, phone_number, role, balance, has_car_licence, has_motorbike_licence, referral_code FROM Person
-      WHERE (first_name ILIKE '%$2%' OR last_name ILIKE '%$2%')
+      WHERE (first_name ILIKE '%'||$2||'%' OR last_name ILIKE '%'||$2||'%')
       ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10)
     SELECT * FROM Person_page`, [iPage, value, column]);
-  return rows;
+  console.log(rows);
 }
 
 export const personsSearchCount = async(SQLClient, {value}) => {
-  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Person WHERE (first_name ILIKE '%$1%' OR last_name ILIKE '%$1%')`, [value]);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Person WHERE (first_name ILIKE '%'||$1||'%' OR last_name ILIKE '%'||$1||'%')`, [value]);
   return rows[0]?.count;
 }
 
