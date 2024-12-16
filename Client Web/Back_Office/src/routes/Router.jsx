@@ -6,7 +6,7 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 import Logout from "../components/Logout.jsx";
 
 import Dashboard from "../screens/Dashboard.jsx";
-import TablesCarKey from "../components/Tables/TablesCarKey.jsx";
+import TestTable from "../components/Tables/TestTable.jsx";
 
 const router = createBrowserRouter([
   {
@@ -92,7 +92,7 @@ const router = createBrowserRouter([
         element: (
             <ProtectedRoute>
                 <Dashboard >
-                    <TablesCarKey />
+                    <TestTable />
                 </Dashboard>
             </ProtectedRoute>
         )

@@ -1,32 +1,42 @@
 import {useState, useEffect} from "react";
 import { Table } from 'antd';
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
+import {useNavigate} from "react-router-dom";
 
 function TablesCarKey() {
 
+    const navigate = useNavigate();
     const { t } = useLanguageContext();
     const columns = [
         {
             title: 'Id',
-            dataIndex: 'Id',
+            dataIndex: 'id',
         },
         {
-            title: 'car Id',
+            title: t('carId'),
             dataIndex: 'carId',
         },
+        {
+            title: t('model'),
+            dataIndex: 'model',
+        }
     ];
     const [values, setValues] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const fetchData =async ()=>{
-        await fetch('http://localhost:3267/v1/getAllKeysAndPagesCount/id/1', {
+    const fetchData = async ()=>{
+        await fetch('http://localhost:3267/v1/carKey/getAllKeysAndPagesCount/id/1', {
             method: 'GET',
             headers: {
+                "authorization": `Bearer ${sessionStorage.getItem('token')}`,
                 "Content-Type": "application/json",
-            },
+              },
         })
             .then(response => {
                 if (!response?.ok) {
+                    if(response.status === 401) {
+                        navigate("/logout", {replace:true});
+                    }
                     throw new Error(`${t('httpError')} : ${response.status}, ${response.statusText}`);
                 }
                 return response.json();
@@ -39,9 +49,6 @@ function TablesCarKey() {
             .catch (e => console.error(e));
     };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
 
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -89,7 +96,7 @@ function TablesCarKey() {
         ],
     };
     return(
-        <Table rowSelection={rowSelection} columns={columns} dataSource={values} loading={loading}/>
+        <Table rowSelection={rowSelection} columns={columns} dataSource={values.carKeys} loading={loading}/>
     );
 
 };
