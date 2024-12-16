@@ -67,7 +67,6 @@ export function MainMenu({children}) {
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
-        paddingTop: "auto",
         width: "257px",
       }}>
         <Menu
@@ -81,9 +80,8 @@ export function MainMenu({children}) {
       </div>
       <div style={{
         height: "100%",
-        width: "100%",
+        width: "100%-257px",
         marginLeft: "257px",
-        border: "1px solid red",
       }}>
         {children}
       </div>
