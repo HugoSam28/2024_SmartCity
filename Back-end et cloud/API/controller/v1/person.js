@@ -52,7 +52,7 @@ export const login = async (req,res) => {
       userDetails = {id: person.id, role: person.role};
     }
     const token = jwt.sign(userDetails, process.env.JWTKEY, {expiresIn: "18h"} );
-    res.send(token);
+    res.status(201).send(token);
   } catch(e) {
     res.status(500).send(e.message);
   }
