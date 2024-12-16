@@ -3,46 +3,34 @@ SET TIME ZONE 'Europe/Brussels';
 
 DROP TABLE IF EXISTS Trip CASCADE;
 DROP TABLE IF EXISTS Vehicle CASCADE;
-DROP TABLE IF EXISTS With_licence CASCADE;
 DROP TABLE IF EXISTS Person CASCADE;
 DROP TABLE IF EXISTS Subscription CASCADE;
 DROP TABLE IF EXISTS Car_key CASCADE;
 DROP TABLE IF EXISTS Sponsoring CASCADE;
 DROP TABLE IF EXISTS Person_subscription;
 
-DROP SEQUENCE IF EXISTS Vehicle_id_seq;
-CREATE SEQUENCE Vehicle_id_seq
-    AS INT
-    START WITH 1 INCREMENT BY 2;
-
-DROP SEQUENCE IF EXISTS With_licence_id_seq;
-CREATE SEQUENCE With_licence_id_seq
-    AS INT
-    START WITH 2 INCREMENT BY 2;
-
 CREATE TABLE Vehicle
 (
-    id            INT PRIMARY KEY DEFAULT NEXTVAL('Vehicle_id_seq'),
-    location      POINT       NOT NULL,
-    battery_level DECIMAL     NOT NULL CHECK ( battery_level <= 100 AND battery_level >= 0 ),
-    type          VARCHAR(15) NOT NULL,
-    price         DECIMAL     NOT NULL CHECK ( price >= 0 ),
-    is_available  BOOLEAN     NOT NULL DEFAULT FALSE,
-    fees          DECIMAL     NOT NULL CHECK ( fees >= 0 )
+    id             INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY ,
+    location       POINT       NOT NULL,
+    battery_level  DECIMAL     NOT NULL CHECK ( battery_level <= 100 AND battery_level >= 0 ),
+    type           VARCHAR(15) NOT NULL,
+    price          DECIMAL     NOT NULL CHECK ( price >= 0 ),
+    is_available   BOOLEAN     NOT NULL DEFAULT FALSE,
+    fees           DECIMAL     NOT NULL CHECK ( fees >= 0 ),
+    brand          VARCHAR(30) DEFAULT(NULL),
+    model          VARCHAR(20) DEFAULT(NULL),
+    chassis_number VARCHAR(20) DEFAULT(NULL)
 );
 
-CREATE TABLE With_licence
-(
-    id             INT PRIMARY KEY DEFAULT NEXTVAL('With_licence_id_seq'),
-    brand          VARCHAR(30) NOT NULL,
-    model          VARCHAR(20) NOT NULL,
-    chassis_number VARCHAR(20) NOT NULL UNIQUE
-) inherits (Vehicle);
+CREATE UNIQUE INDEX unique_trigger_value_not_null
+    ON Vehicle (chassis_number)
+    WHERE chassis_number IS NOT NULL;
 
 CREATE TABLE Car_key
 (
     id     INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    car_id INT REFERENCES With_licence (id) ON DELETE SET NULL
+    car_id INT REFERENCES Vehicle (id) ON DELETE SET NULL
 );
 
 CREATE TABLE Subscription
@@ -129,6 +117,7 @@ VALUES (point(4.91336, 50.41501),
         0.5,
         TRUE,
         1);
+
 INSERT INTO Vehicle (location, battery_level, type, price, is_available, fees)
 VALUES (point(4.91536, 50.41501),
         60.4,
@@ -136,6 +125,7 @@ VALUES (point(4.91536, 50.41501),
         0.5,
         FALSE,
         1);
+
 INSERT INTO Vehicle (location, battery_level, type, price, is_available, fees)
 VALUES (point(4.91326, 50.41501),
         10.4,
@@ -143,6 +133,7 @@ VALUES (point(4.91326, 50.41501),
         0.3,
         TRUE,
         1);
+
 INSERT INTO Vehicle (location, battery_level, type, price, is_available, fees)
 VALUES (point(4.91320, 50.41501),
         100,
@@ -151,7 +142,7 @@ VALUES (point(4.91320, 50.41501),
         FALSE,
         1);
 
-INSERT INTO With_licence (location, battery_level, type, brand, price, is_available, fees, model, chassis_number)
+INSERT INTO Vehicle (location, battery_level, type, brand, price, is_available, fees, model, chassis_number)
 VALUES (point(4.91138, 50.41592),
         87,
         'Voiture',
@@ -161,7 +152,8 @@ VALUES (point(4.91138, 50.41592),
         50,
         'Tiguan-2018',
         'FTAU7258TIGUS82JS822');
-INSERT INTO With_licence (location, battery_level, type, brand, price, is_available, fees, model, chassis_number)
+
+INSERT INTO Vehicle (location, battery_level, type, brand, price, is_available, fees, model, chassis_number)
 VALUES (point(4.90997, 50.41512),
         100,
         'Voiture',
@@ -195,6 +187,7 @@ VALUES ('root',
         '$argon2id$v=19$m=65536,t=3,p=4$WPgpXYFThjZ6IxA5LZRJqA$Tq3kF0FwFkGHmrfA3LHeFSwgtiXvDq5b9TECM7VfvhA',
         'ROLE_ADMIN',
         '2004-05-28');
+
 INSERT INTO Person (first_name, last_name, email, phone_number, password, role, birthday)
 VALUES ('user',
         'user',
