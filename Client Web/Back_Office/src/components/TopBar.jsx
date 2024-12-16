@@ -27,7 +27,7 @@ function TopBar({children}) {
           <Title id={"titleLabel"} level={3} >{Model()}</Title>
         </span>
         <Divider type="vertical"
-                 style={{height: '80px', backgroundColor: 'rgba(154,154,153,0.44)'}}/>
+                 style={{height: '80px', backgroundColor: '#9A9A9970'}}/>
         <div style={{display: "flex", alignItems: "center", width:'100%', justifyContent: "flex-end", paddingRight: 15}}>
           <Input prefix={<IoSearch/>} size="large" style={{margin: '0 10px 0 10px'}} placeholder={"Search..."}/>
           <UpdateButton />
@@ -38,13 +38,12 @@ function TopBar({children}) {
         <div style={{
           position: 'fixed',
           top: 80,
-          left: 257,
+          left: 289,
           width: '100%',
           height: '100%',
           padding: 20,
         }}>
           {children}
-
       </div>
     </>
   )

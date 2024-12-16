@@ -6,8 +6,8 @@ const LanguageSelect = () => {
       style={{
         width: "125px",
         position: "absolute",
-        top: 10,
-        left: 10,
+        top: 20,
+        left: 20,
         height: "40px",
         borderRadius: 9,
         zIndex: 5,
