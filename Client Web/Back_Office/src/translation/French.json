@@ -43,5 +43,6 @@
   "endingLocationLat" : "Latitude de l’emplacement de fin",
   "endingLocationLon" : "Longitude de l’emplacement de fin",
   "startingSubscriptionDate": "Date de début d'abonnement",
-  "dashboard": "Tableau de bord"
+  "dashboard": "Tableau de bord",
+  "badRequestError": "Mauvaise requête"
 }

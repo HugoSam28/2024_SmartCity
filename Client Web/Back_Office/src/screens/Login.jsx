@@ -18,30 +18,53 @@ export default function LoginScreen() {
   const handleLogin = async (values) => {
     setError(""); // Reset error
 
-    try {
-      const response = await fetch('http://localhost:3267/v1/person/login', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-      if (!response.ok) {
-        throw new Error(t("connectionApiError"))
-      }
-      const token = await response.text();
-      const decodedToken = jwt_decode(token);
-      if (decodedToken.role !== "ROLE_ADMIN") {
-        throw new Error(t("wrongPassword"));
-      }
-      sessionStorage.setItem('token', token);
-      console.log(token);
-      navigate("/dashboard");
-    } catch (e) {
-      setError(e.message);
-    }
-  }
+    const maxRetries = 5; // Nombre maximum de retries
+    let retryCount = 0; // Compteur de retries
 
+    const loginWithRetry = async () => {
+      try {
+        const response = await fetch('http://localhost:3267/v1/person/login', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
+
+        // Gérer les réponses 400 et autres erreurs client
+        if (response.status === 400) {
+          throw new Error(t("badRequestError")); // Message d'erreur utilisateur
+        }
+        if (!response.ok) {
+          throw new Error(t("connectionApiError")); // Autres erreurs génériques
+        }
+        const token = await response.text();
+        const decodedToken = jwt_decode(token);
+
+        if (decodedToken.role !== "ROLE_ADMIN") {
+          throw new Error(t("wrongPassword"));
+        }
+        sessionStorage.setItem('token', token);
+        console.log("Token:", token);
+        navigate("/dashboard");
+      } catch (error) {
+        if (retryCount < maxRetries && error.message !== t("badRequestError") && error.message !== t("wrongPassword")) {
+          retryCount++;
+          const waitTime = Math.pow(2, retryCount) * 100; // Backoff exponentiel
+          console.log(`Retrying... (${retryCount}) after ${waitTime}ms`);
+          await new Promise(resolve => setTimeout(resolve, waitTime));
+          return loginWithRetry();
+        } else {
+          throw error;
+        }
+      }
+    };
+    try {
+      await loginWithRetry();
+    } catch (e) {
+      setError(e.message); // Afficher l'erreur finale
+    }
+  };
   return (
     <div id="formContainer">
       <Form

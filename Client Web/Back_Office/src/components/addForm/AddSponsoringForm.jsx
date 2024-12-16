@@ -27,7 +27,7 @@ function AddSponsoringForm() {
     })
       .then(response => {
         if (!response?.ok) {
-          if(response.status === 401) {
+          if(response.status === 401 || response.status === 403) {
             navigate("/logout", {replace:true});
           }
           throw new Error(`${t('httpError')} : ${response.status}, ${response.statusText}`);

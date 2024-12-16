@@ -43,5 +43,7 @@
   "endingLocationLat" : "Ending location latitude",
   "endingLocationLon" : "Ending location longitude",
   "startingSubscriptionDate": "Starting subscription date",
-  "dashboard": "Dashboard"
+  "dashboard": "Dashboard",
+  "badRequestError": "Bad request error"
+
 }
