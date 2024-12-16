@@ -42,5 +42,6 @@
   "startingLocationLon" : "Longitude de l’emplacement de départ",
   "endingLocationLat" : "Latitude de l’emplacement de fin",
   "endingLocationLon" : "Longitude de l’emplacement de fin",
-  "startingSubscriptionDate": "Date de début d'abonnement"
+  "startingSubscriptionDate": "Date de début d'abonnement",
+  "dashboard": "Tableau de bord"
 }

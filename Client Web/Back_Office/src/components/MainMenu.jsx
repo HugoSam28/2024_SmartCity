@@ -44,7 +44,7 @@ export function MainMenu({children}) {
     },
     {
       key:'sponsoring',
-      label:t('sponsorings'),
+      label:t('sponsoring'),
       icon: <FiUsers />,
       onClick: () =>{navigate('/sponsoring', {replace:true})}
     },
@@ -62,7 +62,7 @@ export function MainMenu({children}) {
         left: 0,
         top: 0,
         position: "fixed",
-        zIndex: 0,
+        zIndex: 4,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -74,6 +74,7 @@ export function MainMenu({children}) {
           id="menu"
           items={items}
           style={{
+            border: "none",
           }}
         />
         <a style={{position: "fixed", bottom:35}} href={"/logout"}>{t('logout')}</a>
@@ -81,11 +82,8 @@ export function MainMenu({children}) {
       <div style={{
         height: "100%",
         width: "100%",
-        position: "fixed",
-        top: 0,
-        left: 0,
         marginLeft: "257px",
-        zIndex: 0,
+        border: "1px solid red",
       }}>
         {children}
       </div>

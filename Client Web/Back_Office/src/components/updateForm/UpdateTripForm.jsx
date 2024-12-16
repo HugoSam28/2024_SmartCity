@@ -1,4 +1,4 @@
-import {Button, Form, Input, Space, DatePicker} from "antd";
+import {Button, Form, Input, Space, DatePicker, InputNumber} from "antd";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -29,8 +29,8 @@ function UpdateTripForm() {
         values.column = "id";
         values.startingDate = startingDate;
         values.endingDate = endingDate;
-        values.startingLocation = [values.startingLocationLat, values.startingLocationLong]
-        values.endingLocation = [values.endingLocationLat, values.endingLocationLong]
+        values.startingLocation = [values.startingLocationLat, values.startingLocationLon]
+        values.endingLocation = [values.endingLocationLat, values.endingLocationLon]
 
         await fetch('http://localhost:3267/v1/trip/update', {
             method: 'PATCH',
@@ -62,7 +62,7 @@ function UpdateTripForm() {
                 onFinish={onFinish}
                 layout={"vertical"}
                 form={form}
-                requiredMark={'optional'}
+                requiredMark={false}
             >
                 <Form.Item
                     name ='id'
@@ -77,7 +77,7 @@ function UpdateTripForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="21"/>
+                    <InputNumber placeholder="21" min={1} style={{width:'100%'}} />
                 </Form.Item>
 
                 <Form.Item
@@ -86,7 +86,7 @@ function UpdateTripForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="21"/>
+                    <InputNumber placeholder="21" min={1} style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
@@ -98,6 +98,8 @@ function UpdateTripForm() {
                     <DatePicker
                         showTime
                         onChange={onChangeStart}
+                        maxDate={dayjs()}
+                        style={{width:'100%'}}
                     />
                 </Form.Item>
 
@@ -111,6 +113,7 @@ function UpdateTripForm() {
                         showTime
                         onChange={onChangeEnd}
                         maxDate={dayjs()}
+                        style={{width:'100%'}}
                     />
                 </Form.Item>
 
@@ -120,7 +123,7 @@ function UpdateTripForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="2000"/>
+                    <InputNumber min={0} placeholder="2000" style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
@@ -129,7 +132,7 @@ function UpdateTripForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="2.2"/>
+                    <InputNumber placeholder="2.2" min={0} style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
@@ -138,16 +141,16 @@ function UpdateTripForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="50.342326"/>
+                    <InputNumber placeholder="50.342326" style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
-                    name='startingLocationLong'
-                    label={t('startingLocationLong')}
+                    name='startingLocationLon'
+                    label={t('startingLocationLon')}
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="20.389483"/>
+                    <InputNumber placeholder="20.389483" style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
@@ -156,7 +159,7 @@ function UpdateTripForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="50.342326"/>
+                    <InputNumber placeholder="50.342326" style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
@@ -165,7 +168,7 @@ function UpdateTripForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="20.389483"/>
+                    <InputNumber placeholder="20.389483" style={{width:'100%'}}/>
                 </Form.Item>
 
                 {error && <p style={{color: "red"}}>{error}</p>}
@@ -173,7 +176,7 @@ function UpdateTripForm() {
                 <Form.Item>
                     <Space>
                         <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-                        <Button type="primary" htmlType='submit'>{t('submit')}</Button>
+                        <Button type="primary" htmlType='submit'>{t('update')}</Button>
                     </Space>
                 </Form.Item>
             </Form>

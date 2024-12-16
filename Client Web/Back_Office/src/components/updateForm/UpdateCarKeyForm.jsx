@@ -1,4 +1,4 @@
-import {Button, Form, Input, Space} from "antd";
+import {Button, Form, Input, InputNumber, Space} from "antd";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -47,7 +47,7 @@ function UpdateCarKeyForm() {
                 onFinish={onFinish}
                 layout={"vertical"}
                 form={form}
-                requiredMark={'optional'}
+                requiredMark={false}
             >
                 <Form.Item
                     name ='id'
@@ -62,13 +62,13 @@ function UpdateCarKeyForm() {
                     rules={[
                         {required: true,},
                     ]}>
-                    <Input placeholder="21"/>
+                    <InputNumber placeholder="21" min={1} style={{width:'100%'}} />
                 </Form.Item>
                 {error && <p style={{color: "red"}}>{error}</p>}
                 <Form.Item>
                     <Space>
                         <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-                        <Button type="primary" htmlType='submit'>{t('submit')}</Button>
+                        <Button type="primary" htmlType='submit'>{t('update')}</Button>
                     </Space>
                 </Form.Item>
             </Form>

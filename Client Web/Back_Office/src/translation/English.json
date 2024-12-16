@@ -42,5 +42,6 @@
   "startingLocationLon" : "Starting location longitude",
   "endingLocationLat" : "Ending location latitude",
   "endingLocationLon" : "Ending location longitude",
-  "startingSubscriptionDate": "Starting subscription date"
+  "startingSubscriptionDate": "Starting subscription date",
+  "dashboard": "Dashboard"
 }
