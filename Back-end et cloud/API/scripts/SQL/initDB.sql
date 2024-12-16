@@ -188,21 +188,21 @@ VALUES ('Gold',
         0.15);
 
 INSERT INTO Person (first_name, last_name, email, phone_number, password, role, birthday)
-VALUES ('Hugo',
-        'Samray',
-        'etu51688@henallux.be',
-        '+32471740915',
-        'my strong password',
-        'ROLE_USER',
+VALUES ('root',
+        'root',
+        'root@mail.be',
+        '+32123456789',
+        '$argon2id$v=19$m=65536,t=3,p=4$WPgpXYFThjZ6IxA5LZRJqA$Tq3kF0FwFkGHmrfA3LHeFSwgtiXvDq5b9TECM7VfvhA',
+        'ROLE_ADMIN',
         '2004-05-28');
 INSERT INTO Person (first_name, last_name, email, phone_number, password, role, birthday)
-VALUES ('Thoams',
-        'Lambert',
-        'thomas.lambert@gmail.com',
-        '+3343434343',
-        'Hugo est incroyable vrm',
-        'ROLE_ADMIN',
-        '2006-08-09');
+VALUES ('user',
+        'user',
+        'user@mail.be',
+        '+35742748284',
+        '$argon2id$v=19$m=65536,t=3,p=4$WPgpXYFThjZ6IxA5LZRJqA$Tq3kF0FwFkGHmrfA3LHeFSwgtiXvDq5b9TECM7VfvhA',
+        'ROLE_USER',
+        '2004-04-12');
 
 INSERT INTO Person_subscription(person_id, subscription_id)
 VALUES (2,
@@ -210,4 +210,4 @@ VALUES (2,
        );
 
 INSERT INTO Sponsoring (sponsor, referred)
-VALUES (1, 2);
+VALUES (2, 1);
