@@ -38,8 +38,8 @@ export const getPersonById = async(SQLClient,id) => {
   return rows[0];
 }
 
-export const getProfileInfosById = async(SQLClient, {id}) =>{
-  const {rows} = await SQLClient.query(`SELECT first_name, last_name, balance, referral_code WHERE id = $1`, [id]);
+export const getProfileInfosById = async(SQLClient, id) =>{
+  const {rows} = await SQLClient.query(`SELECT first_name, last_name, balance, referral_code FROM Person WHERE id = $1`, [id]);
   return rows[0];
 }
 

@@ -61,7 +61,7 @@ export const login = async (req,res) => {
 export const getMyInfos = async(req, res) => {
   try{
     const person = await personModel.getPersonById(pool, req.session.id); //session.id vu que CheckJWT met dans req.session.id
-    if(person ){
+    if(person){
       res.send(person);
     }
     else{
@@ -76,7 +76,7 @@ export const getMyInfos = async(req, res) => {
 export const getProfileInfos = async(req, res) => {
   try{
     const person = await personModel.getProfileInfosById(pool, req.session.id); //session.id vu que CheckJWT met dans req.session.id
-    if(person[0]){
+    if(person){
       res.send(person);
     }
     else{
