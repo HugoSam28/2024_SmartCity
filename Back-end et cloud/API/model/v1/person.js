@@ -33,7 +33,7 @@ export const getPersonByEmail = async(SQLClient, email) =>{
 }
 
 
-export const getPersonById = async(SQLClient,{id}) => {
+export const getPersonById = async(SQLClient,id) => {
   const {rows} = await SQLClient.query(`SELECT first_name, last_name, email, phone_number, birthday, has_car_licence, has_motorbike_licence FROM Person WHERE id = $1`, [id]);
   return rows[0];
 }

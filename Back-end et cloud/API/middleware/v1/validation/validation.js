@@ -35,7 +35,7 @@ export async function deleteValidatorMiddleware(req, res, next) {
     idList: req.body.idList
   }
   try {
-    req.val = { ...req.val, del: await deleteValidator.validate(data)}
+    req.val = { ...req.val, del:await deleteValidator.validate(data)}
     next();
   } catch(e) {
     res.status(400).send(e.messages);

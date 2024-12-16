@@ -36,7 +36,7 @@ export const registration = async (req, res) => {
         }
       }
     }
-    res.send({idReferred});
+    res.status(201).send({idReferred});
   }
   catch (e) {
     console.error(e);
@@ -61,7 +61,7 @@ export const login = async (req,res) => {
 export const getMyInfos = async(req, res) => {
   try{
     const person = await personModel.getPersonById(pool, req.session.id); //session.id vu que CheckJWT met dans req.session.id
-    if(person[0]){
+    if(person ){
       res.send(person);
     }
     else{
@@ -177,7 +177,7 @@ export const updatePersonalBalance = async(req, res) =>{
 
 export const deletePersons = async(req, res) => {
   try{
-    await personModel.deletePersons(pool, req.val);
+    await personModel.deletePersons(pool, req.val.del);
     const result= {};
     result.persons = await personModel.getAllPersons(pool, req.val.page, req.val.order);
     result.nbPagesPersons = Math.ceil((await personModel.personsCount(pool))/10);

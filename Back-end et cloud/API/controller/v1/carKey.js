@@ -78,7 +78,7 @@ export const updateCarKey = async (req, res) => {
 
 export const deleteCarKeys = async (req, res) => {
     try{
-        await carKeyModel.deleteCarKeys(pool, req.val);
+        await carKeyModel.deleteCarKeys(pool, req.val.del);
         const result= {};
         result.keys = await carKeyModel.getAllCarKeys(pool, req.val.page, req.val.order);
         result.nbPagesKeys = Math.ceil((await carKeyModel.keysCount(pool))/10);
