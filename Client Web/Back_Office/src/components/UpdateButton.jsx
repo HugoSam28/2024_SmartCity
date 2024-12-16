@@ -11,6 +11,7 @@ import UpdatePersonSubscriptionForm from "./updateForm/UpdatePersonSubscription.
 import UpdateCarKeyForm from "./updateForm/UpdateCarKeyForm.jsx";
 import UpdateTripForm from "./updateForm/UpdateTripForm.jsx";
 import UpdateSubscriptionForm from "./updateForm/UpdateSubscriptionForm.jsx";
+import Model from "./Model.jsx";
 
 
 function AddButton() {
@@ -38,27 +39,6 @@ function AddButton() {
         return null;
     }
   };
-  const model = () => {
-    switch (location.pathname) {
-      case "/vehicle":
-        return t("vehicles");
-      case "/subscription":
-        return t("subscriptions");
-      case "/sponsoring":
-        return t("sponsoring");
-      case "/carKey":
-        return t("carKeys");
-      case "/personSubscription":
-        return t("personSubscriptions");
-      case "/trip":
-        return t("trips");
-      case "/person":
-        return t("persons");
-      default:
-        return null;
-    }
-  };
-
 
   const [modalOpen, setModalOpen] = useState(false);
   return (
@@ -70,7 +50,7 @@ function AddButton() {
         style={{border: "1px solid grey" }}
       >{t('update')}</Button>
       <Modal
-        title={model()}
+        title={Model()}
         centered
         open={modalOpen}
         onOk={() => setModalOpen(false)}

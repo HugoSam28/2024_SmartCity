@@ -1,5 +1,5 @@
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
-import {Button, Form, Input, Select, Space} from "antd";
+import {Button, Form, Input, InputNumber, Select, Space} from "antd";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
@@ -64,7 +64,7 @@ function UpdateSubscriptionForm() {
                 onFinish={onFinish}
                 layout={"vertical"}
                 form={form}
-                requiredMark={'optional'}
+                requiredMark={false}
             >
                 <Form.Item
                     name ='id'
@@ -72,7 +72,6 @@ function UpdateSubscriptionForm() {
                     disabled={true}>
                     <Input defaultValue = {valeur.id} disabled />
                 </Form.Item>
-
                 <Form.Item
                     name="label"
                     label={t("label")}
@@ -90,7 +89,7 @@ function UpdateSubscriptionForm() {
                     rules={[
                         {required:true}
                     ]}>
-                    <Input type="number" placeholder="20" />
+                    <InputNumber placeholder="20" min={0} style={{width:'100%'}} />
                 </Form.Item>
                 <Form.Item
                     name="discount"
@@ -98,7 +97,7 @@ function UpdateSubscriptionForm() {
                     rules={[
                         {required:true}
                     ]}>
-                    <Input type="number" placeholder={`0 < ${t("discount")} <= 1`} />
+                    <InputNumber placeholder={`0 < ${t("discount")} <= 1`} style={{width:'100%'}} />
                 </Form.Item>
                 <Form.Item
                     name="paymentRecurrence"
@@ -124,7 +123,7 @@ function UpdateSubscriptionForm() {
                 <Form.Item>
                     <Space>
                         <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-                        <Button type="primary" htmlType='submit'>{t('submit')}</Button>
+                        <Button type="primary" htmlType='submit'>{t('update')}</Button>
                     </Space>
                 </Form.Item>
             </Form>

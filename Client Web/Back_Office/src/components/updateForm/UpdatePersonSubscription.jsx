@@ -52,7 +52,7 @@ function AddPersonSubscriptionForm() {
         onFinish={onFinish}
         layout={"vertical"}
         form={form}
-        requiredMark={'optional'}
+        requiredMark={false}
       >
         <Form.Item
           name='id'
@@ -96,7 +96,7 @@ function AddPersonSubscriptionForm() {
         <Form.Item>
           <Space>
             <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-            <Button type="primary" htmlType='submit'>{t('add')}</Button>
+            <Button type="primary" htmlType='submit'>{t('update')}</Button>
           </Space>
         </Form.Item>
       </Form>

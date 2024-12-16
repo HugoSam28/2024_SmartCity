@@ -1,12 +1,15 @@
 :root {
-  --background-color-light: #FAF9F6;
-  --background-color-dark: #242424;
+  --menu-background-color-light: #FAF9F6;
+  --menu-background-color-dark: #2d2d2d;
+  --background-color-between: #8f8f8d;
+  --border-dark: #484848;
+  --border-light: #CECECE;
   --color-light: #242424;
   --color-dark: #FAF9F6;
 }
 #menuContainer {
-  background-color: var(--background-color-dark);
-  border-right: 1px solid #484848;
+  background-color: var(--menu-background-color-dark);
+  border-right: 1px solid var(--border-dark);
 }
 #menuContainer a {
   color: #476de0;
@@ -14,7 +17,7 @@
   font-size: 19px;
 }
 #menu {
-  background-color: var(--background-color-dark);
+  background-color: var(--menu-background-color-dark);
 }
 #menu .ant-menu-title-content, #menu .ant-menu-item-icon {
   color: var(--color-dark);
@@ -24,6 +27,10 @@
 }
 #menu .ant-menu-item-selected {
   background-color: rgba(0, 90, 255, 0.2);
+}
+#topBar {
+  background-color: var(--menu-background-color-dark);
+  border-bottom: 1px solid ;
 }
 
 #formContainer {
@@ -45,17 +52,23 @@
 #loginForm p {
   margin:0 0 20px;
 }
+#titleIcon, #titleLabel {
+  color: var(--color-dark);
+}
+#titleLabel {
+  margin-top: 13px;
+}
 
 @media(prefers-color-scheme: light) {
   #loginForm label {
     color: #011042;
   }
   #menuContainer {
-    background-color: var(--background-color-light);
-    border-right: 1px solid #CECECE;
+    background-color: var(--menu-background-color-light);
+    border-right: 1px solid var(--border-light);
   }
   #menu {
-    background-color: var(--background-color-light);
+    background-color: var(--menu-background-color-light);
   }
   #menu .ant-menu-title-content, #menu .ant-menu-item-icon {
     color: var(--color-light);
@@ -65,5 +78,13 @@
   }
   #menu .ant-menu-item-selected {
     background-color: rgb(213, 234, 255);
+  }
+  #topBar {
+    background-color: var(--menu-background-color-light);
+    border-bottom: 1px solid var(--border-light);
+    z-index: 0;
+  }
+  #titleIcon, #titleLabel {
+    color: var(--color-light);
   }
 }
