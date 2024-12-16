@@ -48,7 +48,7 @@ export const getAllPersons = async(SQLClient, {iPage}, {column}) => {
     WITH Person_page AS (
       SELECT id, first_name, last_name, email, phone_number, birthday, role, balance, has_car_licence, has_motorbike_licence, referral_code FROM Person
       ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10)
-    SELECT * FROM Person_page;`, [iPage, column]);
+    SELECT * FROM Person_page`, [iPage, column]);
   return rows;
 }
 
