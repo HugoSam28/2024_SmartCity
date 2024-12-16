@@ -25,7 +25,7 @@ export const checkJWT = async (req, res, next) => {
         }
         catch(e){
             res.status(401).send(e.message);
-        }
+        }   
     }
     else{
         res.status(401).send('No JWT');
