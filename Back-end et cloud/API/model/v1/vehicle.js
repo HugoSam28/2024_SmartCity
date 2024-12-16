@@ -4,7 +4,7 @@ export const getAllVehicles = async(SQLClient, {iPage}, {column}) => {
   const {rows} = await SQLClient.query(`
     WITH vehicles_page AS (
       SELECT v.*, wl.brand, wl.model, wl.chassis_number FROM Vehicle v
-      LEFT JOIN With_licence wl ON v.id = wl.id
+      LEFT JOIN Vehicle wl ON v.id = wl.id
       ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10)
       SELECT * FROM vehicles_page`, [iPage, column]);
   return rows;
@@ -19,7 +19,7 @@ export const getSearchVehicles = async(SQLClient, {iPage}, {value}, {column}) =>
   const {rows} = await SQLClient.query(`
     WITH vehicles_pages AS (
       SELECT v.*, wl.brand, wl.model, wl.chassis_number FROM vehicle v
-      LEFT JOIN With_licence wl ON v.id = wl.id
+      LEFT JOIN Vehicle wl ON v.id = wl.id
       WHERE v.type ILIKE '%$2%'
       ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10)
     SELECT FROM Vehicles_pages`, [iPage, value, column]);
@@ -40,20 +40,14 @@ export const getVehiclesAroundMe = async(SQLClient, {lat, lon, distance}) => {
 }
 
 export const getVehicleById = async(SQLClient, {id}) => {
-  const {rows} = await SQLClient.query(`SELECT * FROM ${id % 2 === 0 ? 'with_licence' : 'vehicle' } WHERE id = $1`, [id]);
+  const {rows} = await SQLClient.query(`SELECT * FROM vehicle WHERE id = $1`, [id]);
   return rows[0];
 }
 
 export const addVehicle = async(SQLClient, {lon, lat, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber}) => {
-  if (type === 'Voiture' || type === 'Scooter') {
-    const {rows} = await SQLClient.query(
-      `INSERT INTO With_licence (location, battery_level, type, price, is_available, fees, brand, model, chassis_number) VALUES 
-      (POINT($1, $2), $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`, [lon, lat, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber]);
-    return rows[0]?.id;
-  }
   const {rows} = await SQLClient.query(
-    `INSERT INTO vehicle (location, battery_level, type, price, is_available, fees) VALUES 
-    (POINT($1, $2), $3, $4, $5, $6, $7) RETURNING id`, [lon, lat, batteryLevel, type, price, isAvailable, fees]);
+    `INSERT INTO vehicle (location, battery_level, type, price, is_available, fees, brand, model, chassisNumber) VALUES 
+    (POINT($1, $2), $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`, [lon, lat, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber]);
   return rows[0]?.id;
 }
 
@@ -63,7 +57,7 @@ export const updateStatus = async(SQLClient, {id}) => {
 }
 
 export const updateInformations = async(SQLClient, {id, lon, lat, batteryLevel, type, price, isAvailable, fees, brand, model, chassisNumber}) => {
-  let query = `UPDATE ${id%2===0 ? 'with_licence' : 'vehicle'} SET `;
+  let query = `UPDATE vehicle SET `;
   const querySet = [];
   const queryValues = [];
 
