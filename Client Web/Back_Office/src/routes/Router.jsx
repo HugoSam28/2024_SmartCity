@@ -6,6 +6,7 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 import Logout from "../components/Logout.jsx";
 
 import Dashboard from "../screens/Dashboard.jsx";
+import TablesCarKey from "../components/Tables/TablesCarKey.jsx";
 
 const router = createBrowserRouter([
   {
@@ -86,6 +87,15 @@ const router = createBrowserRouter([
         </Dashboard>
       </ProtectedRoute>
     )
-  }
+  },{
+        path: '/TablesCarKey',
+        element: (
+            <ProtectedRoute>
+                <Dashboard >
+                    <TablesCarKey />
+                </Dashboard>
+            </ProtectedRoute>
+        )
+    }
 ])
 export default router;
