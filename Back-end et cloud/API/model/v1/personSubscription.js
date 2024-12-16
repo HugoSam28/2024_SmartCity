@@ -18,7 +18,7 @@ export const getSearchPersonSubscriptions = async(SQLClient, {iPage}, {value}, {
     WITH Subscription_page AS (
       SELECT pS.*, p.mail, s.label FROM personSubscription_page pS JOIN Person p ON p.id = pS.person_id
       JOIN subscription s ON pS.subscription_id = s.id
-      WHERE (p.email ILIKE '%$2%' OR s.label ILIKE '%$2%')
+      WHERE (p.email ILIKE '%'||$2||'%' OR s.label ILIKE '%'||$2||'%')
       ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
     SELECT * FROM PersonSubscription_page`, [iPage, value, column]);
   return rows;
@@ -26,7 +26,7 @@ export const getSearchPersonSubscriptions = async(SQLClient, {iPage}, {value}, {
 
 export const personSubscriptionsSearchCount = async(SQLClient, {value}) => {
   const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM personSubscription_page pS JOIN Person p ON p.id = pS.person_id
-    JOIN subscription s ON pS.subscription_id = s.id WHERE (p.email ILIKE '%$1%' OR s.label ILIKE '%$1%')`, [value]);
+    JOIN subscription s ON pS.subscription_id = s.id WHERE (p.email ILIKE '%'||$1||'%' OR s.label ILIKE '%'||$1||'%')`, [value]);
   return rows[0]?.count;
 }
 

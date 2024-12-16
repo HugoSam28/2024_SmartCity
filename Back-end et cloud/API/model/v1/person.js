@@ -1,6 +1,5 @@
 import * as util from "../../util/argon.js"
 
-
 export const addPerson = async(SQLClient, {firstName, lastName, email, phoneNumber, password, birthday, hasCarLicence, hasMotorbikeLicence}) =>{
   const hashedPassword = await util.hash(password)
   const {rows} = await SQLClient.query(

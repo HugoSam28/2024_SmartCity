@@ -16,7 +16,7 @@ export const getSearchSubscriptions = async(SQLClient, {iPage}, {value}, {column
   const {rows} = await SQLClient.query(`
     WITH Subscription_page AS (
       SELECT * FROM Subscription
-      WHERE (label ILIKE '%$2%' OR vehicle_type ILIKE '%$2%')
+      WHERE (label ILIKE '%'||$2||'%' OR vehicle_type ILIKE '%'||$2||'%')
       ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) 
     SELECT * FROM Subscription_page`, [iPage, value, column]
   );
@@ -24,7 +24,7 @@ export const getSearchSubscriptions = async(SQLClient, {iPage}, {value}, {column
 }
 
 export const subscriptionsSearchCount = async(SQLClient, {value}) => {
-  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Subscription WHERE (label ILIKE '%$1%' OR vehicle_type ILIKE '%$1%')`, [value]);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Subscription WHERE (label ILIKE '%'||$1||'%' OR vehicle_type ILIKE '%'||$1||'%')`, [value]);
   return rows[0]?.count;
 }
 

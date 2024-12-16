@@ -20,14 +20,14 @@ export const getSearchVehicles = async(SQLClient, {iPage}, {value}, {column}) =>
     WITH vehicles_pages AS (
       SELECT v.*, wl.brand, wl.model, wl.chassis_number FROM vehicle v
       LEFT JOIN Vehicle wl ON v.id = wl.id
-      WHERE v.type ILIKE '%$2%'
+      WHERE v.type ILIKE '%'||$2||'%'
       ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10)
     SELECT FROM Vehicles_pages`, [iPage, value, column]);
   return rows;
 }
 
 export const vehiclesSearchCount = async(SQLClient, {value}) => {
-  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM vehicle WHERE type ILIKE %$1%`, [value]);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM vehicle WHERE type ILIKE '%'||$1||'%'`, [value]);
   return rows[0]?.count;
 }
 

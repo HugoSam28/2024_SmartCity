@@ -79,8 +79,8 @@ export const getAllSubscriptionsAndPagesCount = async(req, res) => {
     }
 }
 
-export const getSearchSubscriptions = async(req, res) => {
-    try{
+export const  getSearchSubscriptions = async(req, res) => {
+  try{
         const result = {};
         result.subscriptions = await subscriptionModel.getSearchSubscriptions(pool, req.val.page, req.val.search, req.val.order);
         result.nbPagesSubscriptions = Math.ceil((await subscriptionModel.subscriptionsSearchCount(pool, req.val.search))/10);

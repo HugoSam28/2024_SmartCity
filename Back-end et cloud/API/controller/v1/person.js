@@ -126,7 +126,6 @@ export const getSearchPersons = async(req, res) => {
     const result = {};
     result.persons = await personModel.getSearchPersons(pool, req.val.page, req.val.search, req.val.order);
     result.nbPagesPersons = Math.ceil((await personModel.personsSearchCount(pool, req.val.search))/10);
-    console.log(result.persons[0]);
     if(result.persons[0] && result.nbPagesPersons){
         res.send(result);
     }
