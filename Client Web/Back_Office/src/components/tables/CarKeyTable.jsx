@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import fetchWithRetry from "../../API/fetchWithRetry.jsx";
-import {Table, Divider} from "antd";
+import {Table, Divider, Pagination } from "antd";
 
 function CarKeyTable() {
   const [carKeys, setCarKeys] = useState([]);
@@ -29,8 +29,7 @@ function CarKeyTable() {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     },
     getCheckboxProps: (record) => ({
-      disabled: record.name === 'Disabled User',
-      // Column configuration not to be checked
+      disabled: record.name === 'Disabled User', // Column configuration not to be checked
       name: record.name,
     }),
   };
@@ -53,11 +52,12 @@ function CarKeyTable() {
     };
     fetchData();
   }, [])
-  console.log(carKeys)
+  console.log(nbPages);
   return (
       <div>
         <Divider />
         <Table
+            rowKey="id"
             rowSelection={{
               type: "checkbox",
               ...rowSelection,
@@ -65,7 +65,10 @@ function CarKeyTable() {
             columns={columns}
             dataSource={carKeys}
         />
+
+        <Pagination align="end" defaultCurrent={1} total={nbPages*10} />
       </div>
+
   );
 };
 export default CarKeyTable;
