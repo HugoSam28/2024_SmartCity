@@ -138,6 +138,15 @@ function UpdatePersonForm() {
                         }}
                     />
                 </Form.Item>
+              <Form.Item
+                name='password'
+                label={t('password')}
+                rules={[
+                  {required: true,},
+                ]}
+              >
+                <Input placeholder="Strong.Passw0rd" />
+              </Form.Item>
                 <Form.Item name='referralCode' label={t('referralCode')}>
                     <Input placeholder="8404B98D" />
                 </Form.Item>

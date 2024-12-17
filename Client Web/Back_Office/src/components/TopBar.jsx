@@ -33,15 +33,10 @@ function TopBar({children}) {
           <UpdateButton />
           <AddButton />
         </div>
-
       </div>
         <div style={{
-          position: 'fixed',
-          top: 80,
-          left: 289,
-          width: '100%',
           height: '100%',
-          padding: 20,
+          padding: '20px',
         }}>
           {children}
       </div>
