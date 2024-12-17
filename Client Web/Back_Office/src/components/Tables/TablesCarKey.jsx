@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import { Table } from 'antd';
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import {useNavigate} from "react-router-dom";
