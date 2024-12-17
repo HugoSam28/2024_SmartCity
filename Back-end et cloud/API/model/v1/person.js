@@ -195,12 +195,11 @@ export async function updatePerson(SQLClient, {id, firstName, lastName, email, p
   }
 }
 
-export const updatePersonalBalance = async(SQLClient, {id, value}) => {
-  return await SQLClient.query(`UPDATE Person SET balance = balance + $1 WHERE id = $2 RETURNING balance`, [(value > 0 ? value : value * -1), id]);
+export const updatePersonalBalance = async(SQLClient, {id, balance}) => {
+  const {rows} =  await SQLClient.query(`UPDATE Person SET balance = balance + $1 WHERE id = $2 RETURNING balance`, [balance, id]);
+  return rows[0]?.balance;
 }
 
 export const deletePersons = async(SQLClient, {idList}) => {
   return await SQLClient.query(`DELETE FROM Person WHERE id = ANY($1)`, [idList]);
 }
-
-
