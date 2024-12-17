@@ -74,7 +74,7 @@ export const getSearchSponsoring = async(req, res) => {
         const result = {};
         result.sponsoring = await sponsoringModel.getSearchSponsoring(pool, req.val.page, req.val.search, req.val.order);
         result.nbPagesSponsoring = Math.ceil((await sponsoringModel.sponsoringSearchCount(pool, req.val.search))/10);
-        if(result.sponsoring && result.nbPagesSponsoring){
+        if(result.sponsoring[0] && result.nbPagesSponsoring){
             res.send(result);
         }
         else{
@@ -115,8 +115,8 @@ export const addSponsoring = async (req, res) => {
         result.id = await sponsoringModel.addSponsoring(pool, req.val);
         result.sponsoring = await sponsoringModel.getAllSponsoring(pool, req.val.page, req.val.order);
         result.nbPagesSponsoring = Math.ceil((await sponsoringModel.sponsoringCount(pool))/10);
-        if(result.id && result.sponsoring && result.nbPagesSponsoring){
-            res.send(result);
+        if(result.id && result.sponsoring[0] && result.nbPagesSponsoring){
+            res.status(201).send(result);
         }
         else{
             res.sendStatus(404);
@@ -134,7 +134,7 @@ export const updateSponsoring = async (req, res) => {
         res.send(sponsoring);
     }
     catch(e){
-        cres.status(500).send(e.messages);
+        res.status(500).send(e.messages);
     }
 }
 

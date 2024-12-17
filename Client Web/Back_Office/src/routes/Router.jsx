@@ -6,7 +6,8 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 import Logout from "../components/Logout.jsx";
 
 import Dashboard from "../screens/Dashboard.jsx";
-import CarKeyTable from "../components/Tables/CarKeyTable.jsx";
+import CarKeyTable from "../components/tables/CarKeyTable.jsx";
+import TextDashBoard from "../components/TextDashBoard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +22,9 @@ const router = createBrowserRouter([
     path: '/dashboard',
     element: (
       <ProtectedRoute>
-        <Dashboard/>
+        <Dashboard>
+          <TextDashBoard/>
+        </Dashboard>
       </ProtectedRoute>)
   },
   {
