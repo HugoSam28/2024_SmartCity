@@ -96,10 +96,10 @@ export const endTrip = async(req, res) => {
   try{
     SQLClient = await pool.connect();
     await SQLClient.query("BEGIN");
-    const vehicleId = await tripModel.endTrip(SQLClient, req.val);
+    const id = await tripModel.endTrip(SQLClient, req.val);
     const trip = await tripModel.getTripById(SQLClient, req.val);
-    await vehicleModel.updateStatus(SQLClient, vehicleId);
-    const vehicle = await vehicleModel.getVehicleById(SQLClient, vehicleId);
+    await vehicleModel.updateStatus(SQLClient, id);
+    const vehicle = await vehicleModel.getVehicleById(SQLClient, {id});
 
     const cost = ((trip.ending_date - trip.starting_date) / 60000) * vehicle.price + vehicle.fees;
     await tripModel.updateTrip(SQLClient, {cost, id:req.val.id});

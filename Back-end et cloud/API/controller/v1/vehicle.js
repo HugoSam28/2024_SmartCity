@@ -64,7 +64,7 @@ export const getVehiclesAroundMe = async (req, res) => {
 export const getVehicleById = async (req, res) => {
     try{
         const vehicle = await vehicleModel.getVehicleById(pool, req.val);
-        if(vehicle[0]){
+        if(vehicle){
             res.send(vehicle)
         }else{
             res.sendStatus(404);
