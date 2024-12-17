@@ -80,7 +80,7 @@ export const addVehicle = async (req, res) => {
     result.id = await vehicleModel.addVehicle(pool, req.val);
     result.vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order);
     result.nbPagesVehicles = Math.ceil((await vehicleModel.vehiclesCount(pool))/10);
-    res.send(result);
+    res.status(201).send(result);
   }
   catch(e){
     res.status(500).send(e.message);

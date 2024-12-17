@@ -66,16 +66,16 @@ CREATE TABLE Person
 CREATE TABLE Person_subscription
 (
     id                         INT GENERATED ALWAYS AS IDENTITY,
-    person_id                  INT REFERENCES Person (id) ON DELETE CASCADE,
-    subscription_id            INT REFERENCES subscription (id) ON DELETE CASCADE,
+    person_id                  INT REFERENCES Person (id) ON DELETE SET NULL,
+    subscription_id            INT REFERENCES subscription (id) ON DELETE SET NULL,
     starting_subscription_date DATE DEFAULT (NOW())
 );
 
 CREATE TABLE Trip
 (
     id                INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    person_ID         INT       NOT NULL REFERENCES Person (id) ON DELETE SET NULL,
-    vehicle_ID        INT       NOT NULL REFERENCES Vehicle (id) ON DELETE SET NULL,
+    person_ID         INT REFERENCES Person (id) ON DELETE SET NULL,
+    vehicle_ID        INT REFERENCES Vehicle (id) ON DELETE SET NULL,
     starting_date     TIMESTAMP NOT NULL,
     ending_date       TIMESTAMP,
     distance          DECIMAL,
@@ -90,7 +90,7 @@ CREATE TABLE Trip
 CREATE TABLE Sponsoring
 (
     referred INT PRIMARY KEY REFERENCES Person (id) ON DELETE CASCADE,
-    sponsor  INT NOT NULL REFERENCES Person (id) ON DELETE CASCADE CHECK ( sponsor > referred )
+    sponsor  INT REFERENCES Person (id) ON DELETE SET NULL CHECK ( sponsor > referred )
 );
 
 CREATE OR REPLACE FUNCTION sponsor_limit()
@@ -165,11 +165,11 @@ VALUES (point(4.90997, 50.41512),
         'BE53782939727293H2');
 
 INSERT INTO Car_key (car_id)
-VALUES (2);
+VALUES (5);
 INSERT INTO Car_key (car_id)
-VALUES (4);
+VALUES (6);
 INSERT INTO Car_key (car_id)
-VALUES (4);
+VALUES (6);
 
 
 INSERT INTO Subscription (label, price, payment_recurrence, vehicle_type, discount)

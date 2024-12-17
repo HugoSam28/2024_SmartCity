@@ -85,8 +85,8 @@ export const addPersonSubscription = async(req, res) => {
         result.id = await personSubscriptionModel.addPersonSubscription(pool, req.val);
         result.personSubscriptions = await personSubscriptionModel.getSearchPersonSubscriptions(pool, req.val.page, req.val.search, req.val.order);
         result.nbPagesPersonSubscriptions = Math.ceil((await personSubscriptionModel.personSubscriptionsSearchCount(pool, req.val.search))/10);
-        if(result.id && result.personSubscriptions && result.nbPagesPersonSubscriptions){
-            res.send(result);
+        if(result.id && result.personSubscriptions[0] && result.nbPagesPersonSubscriptions){
+            res.status(201).send(result);
         }
         else{
             res.sendStatus(404);

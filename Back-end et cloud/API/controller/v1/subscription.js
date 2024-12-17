@@ -125,7 +125,7 @@ export const addSubscription = async(req, res) => {
         result.subscriptions = await subscriptionModel.getAllSubscriptions(pool, req.val.page, req.val.order);
         result.nbPagesSubscriptions = Math.ceil((await subscriptionModel.subscriptionsCount(pool))/10);
         if(result.id && result.subscriptions && result.nbPagesSubscriptions){
-            res.send(result);
+            res.status(201).send(result);
         }
         else{
             res.sendStatus(404);

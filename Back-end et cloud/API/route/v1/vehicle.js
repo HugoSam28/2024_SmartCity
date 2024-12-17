@@ -29,10 +29,10 @@ const router = Router();
 
 router.get("/getAllVehicles/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllVehicles); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
 router.get("/getAllVehiclesAndPagesCount/:column/:iPage",checkJWT, admin, PageVM, OVM, getAllVehiclesAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
-router.get("/getSearchVehicles/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, getSearchVehicles) //Champ de recherche sur les ligne
+router.get("/getSearchVehicles/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchVehicles) //Champ de recherche sur les ligne
 
-router.get('/getAroundMe', getVehiclesAroundMe); //renvoie tout (map/list) --> tri par vehicle dans l'app
-router.get('/getById', getVehicleById); //scan & click on map/list
+router.get('/getAroundMe', checkJWT, getVehiclesAroundMe); //renvoie tout (map/list) --> tri par vehicle dans l'app
+router.get('/getById', checkJWT, getVehicleById); //scan & click on map/list
 
 router.post('/add', checkJWT, admin, AVVM, PageVM, OVM, addVehicle);
 

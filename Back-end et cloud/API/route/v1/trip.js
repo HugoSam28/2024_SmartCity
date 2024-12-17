@@ -40,6 +40,6 @@ router.patch("/endTrip", checkJWT, ETVM, endTrip); // faire la fin du trip
 
 router.post("/add", checkJWT, admin, ATVM, PageVM, OVM, addTrip);
 router.patch("/update", checkJWT, admin, UTVM, PageVM, OVM, updateTrip);
-router.delete("/delete", checkJWT, admin, DVM, PageVM, deleteTrips);
+router.delete("/delete", checkJWT, admin, DVM, PageVM, OVM, deleteTrips);
 
 export default router;

@@ -58,7 +58,7 @@ export const addCarKey = async(req, res) => {
         result.id = await carKeyModel.addCarKey(pool, req.val);
         result.keys = await carKeyModel.getAllCarKeys(pool, req.val.page, req.val.order);
         result.nbPagesKeys = Math.ceil((await carKeyModel.keysCount(pool))/10);
-        res.send(result);
+        res.status(201).send(result);
     }
     catch(e){
       res.status(500).send(e.messages);
