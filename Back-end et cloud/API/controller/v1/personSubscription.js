@@ -41,7 +41,7 @@ export const getSearchPersonSubscriptions = async(req, res) => {
         const result = {};
         result.personSubscriptions = await personSubscriptionModel.getSearchPersonSubscriptions(pool, req.val.page, req.val.search, req.val.order);
         result.nbPagesPersonSubscriptions = Math.ceil((await personSubscriptionModel.personSubscriptionsSearchCount(pool, req.val.search))/10);
-        if(result.personSubscriptions && result.nbPagesPersonSubscriptions){
+        if(result.personSubscriptions[0] && result.nbPagesPersonSubscriptions){
             res.send(result);
         }
         else{
