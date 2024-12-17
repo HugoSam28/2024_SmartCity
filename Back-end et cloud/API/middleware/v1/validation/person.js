@@ -76,7 +76,7 @@ const updatePersonSchemaViaAdmin = vine.object({
   birthday: vine.date().optional(),
   referralCode: vine.string().optional(),
   balance: vine.number().optional(),
-  role: vine.string().optional(),
+  role: vine.enum(['ROLE_ADMIN', 'ROLE_USER']),
   hasCarLicence: vine.boolean().optional(),
   hasMotorbikeLicence: vine.boolean().optional()
 })
