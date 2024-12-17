@@ -32,6 +32,30 @@ CREATE TABLE Car_key
     id     INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     car_id INT REFERENCES Vehicle (id) ON DELETE SET NULL
 );
+CREATE OR REPLACE FUNCTION check_vehicle_type()
+    RETURNS TRIGGER AS $$
+BEGIN
+    -- Si vehicle_id est NULL, aucune vérification n'est nécessaire
+    IF NEW.car_id IS NOT NULL THEN
+        -- Vérifier le type du véhicule
+        PERFORM 1 FROM vehicle
+        WHERE id = NEW.car_id
+          AND type IN ('Voiture', 'Scooter');
+
+        -- Si aucun résultat n'est trouvé, lever une exception
+        IF NOT FOUND THEN
+            RAISE EXCEPTION 'Le type de véhicule doit être "Voiture" ou "Scooter".';
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER car_key_check
+    BEFORE INSERT OR UPDATE ON car_key
+    FOR EACH ROW
+EXECUTE FUNCTION check_vehicle_type();
+
 
 CREATE TABLE Subscription
 (
