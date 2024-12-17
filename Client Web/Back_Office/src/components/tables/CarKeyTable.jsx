@@ -6,13 +6,25 @@ import {Table, Divider, Pagination } from "antd";
 function CarKeyTable() {
   const [carKeys, setCarKeys] = useState([]);
   const [nbPages, setNbPages] = useState(0);
+  const [orderBy, setOrderBy] = useState('id');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lookingFor, setLookingFor] = useState(0);
+  const [searchValue, setSearchValue] = useState("guan");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const {t} = useLanguageContext();
+
+  const fetchUrls= [
+    '/getAllKeysAndPagesCount',
+    `/getSearchKeys/${searchValue}`,
+  ];
 
   const columns = [
     {
       title: 'Id',
       dataIndex: 'id',
+      fixed: 'left',
+      sorter: true,
     },
     {
       title: t('carId'),
@@ -23,7 +35,6 @@ function CarKeyTable() {
       dataIndex: 'model',
     }
   ];
-
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -33,25 +44,26 @@ function CarKeyTable() {
       name: record.name,
     }),
   };
+  const fetchData = async () => {
+    try {
+      const data = await fetchWithRetry(`http://localhost:3267/v1/carKey/${fetchUrls[lookingFor]}/${orderBy}/${currentPage}`,{
+        method: 'GET',
+        headers: {
+          "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setCarKeys(data.keys);
+      setNbPages(data.nbPagesKeys)
+    } catch (e) {
+      setError(e.message);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchWithRetry('http://localhost:3267/v1/carKey/getAllKeysAndPagesCount/id/1',{
-          method: 'GET',
-          headers: {
-            "authorization": `Bearer ${sessionStorage.getItem('token')}`,
-            "Content-Type": "application/json",
-          },
-        });
-        setCarKeys(data.keys);
-        setNbPages(data.nbPagesKeys)
-      } catch (e) {
-        setError(e.message);
-      }
-    };
-    fetchData();
-  }, [])
+    setLoading(true);
+    fetchData().then(()=> setLoading(false));
+  }, [currentPage, searchValue]);
   return (
       <div>
         <Divider />
@@ -63,16 +75,13 @@ function CarKeyTable() {
             }}
             columns={columns}
             dataSource={carKeys}
-
-            pagination={{
-              pageSize: 10,           // Nombre d'éléments par page
-              total: nbPages * 10,    // Total d'éléments basé sur nbPages
+            pagination={false}
+            scroll={{
+              x: 'max-content',
             }}
-
         />
-
+        <Pagination style={{margin: '20px 20px 0 0'}} align='end' defaulCurrent={1} total={nbPages*10} hideOnSinglePage showSizeChanger={false} showQuickJumper onChange={(page)=> setCurrentPage(page)}/>
       </div>
-
   );
 };
 export default CarKeyTable;

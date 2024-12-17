@@ -58,17 +58,13 @@ function UpdateSponsoringForm() {
                 <Form.Item
                     name='sponsor'
                     label={t('sponsor')}
-                    rules={[
-                        {required: true,},
-                    ]}>
+                    >
                     <InputNumber placeholder="21" min={1} style={{width:'100%'}} />
                 </Form.Item>
                 <Form.Item
                     name='referred'
                     label={t('referred')}
-                    rules={[
-                        {required: true,},
-                    ]}>
+                >
                     <InputNumber placeholder="37" min={1} style={{width:'100%'}} />
                 </Form.Item>
                 {error && <p style={{color: "red"}}>{error}</p>}

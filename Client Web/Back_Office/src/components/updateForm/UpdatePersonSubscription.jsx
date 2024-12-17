@@ -57,31 +57,25 @@ function AddPersonSubscriptionForm() {
         <Form.Item
           name='id'
           label={t('id')}
+          disabled={true}
         >
           <Input defaultValue={valeur.id} disabled />
         </Form.Item>
         <Form.Item
           name='persoId'
           label={t('personId')}
-          rules={[
-            {required: true,},
-          ]}>
+        >
           <InputNumber placeholder="21" style={{width: '100%'}} min={1} />
         </Form.Item>
         <Form.Item
           name='vehicleId'
           label={t('vehicleId')}
-          rules={[
-            {required: true,},
-          ]}>
+        >
           <InputNumber placeholder="3" style={{width: '100%'}} min={1} />
         </Form.Item>
         <Form.Item
           name='startingSubscriptionDate'
           label={t('startingSubscriptionDate')}
-          rules={[
-            {required: true,},
-          ]}
         >
           <DatePicker
             format="YYYY-MM-DD"

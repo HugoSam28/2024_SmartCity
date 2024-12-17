@@ -81,53 +81,36 @@ function UpdatePersonForm() {
                 <Form.Item
                     name='firstName'
                     label={t('firstName')}
-                    rules={[
-                        {required: true,},
-                    ]}>
+                >
                     <Input placeholder="John" />
                 </Form.Item>
                 <Form.Item
                     name='lastName'
                     label={t('lastName')}
-                    rules={[
-                        {required: true,},
-                    ]}
                 >
                     <Input placeholder="Smith" />
                 </Form.Item>
                 <Form.Item
                     name='email'
                     label="Email"
-                    rules={[
-                        {required: true,},
-                    ]}
                 >
                     <Input placeholder="johnsmith@mail.com" />
                 </Form.Item>
                 <Form.Item
                     name='password'
                     label={t('password')}
-                    rules={[
-                        {required: true,},
-                    ]}
                 >
                     <Input placeholder="Strong.Passw0rd" />
                 </Form.Item>
                 <Form.Item
                     name='phoneNumber'
                     label={t('number')}
-                    rules={[
-                        {required: true,},
-                    ]}
                 >
                     <InputNumber addonBefore={prefixesSelect} min={1} style={{width:'100%'}}/>
                 </Form.Item>
                 <Form.Item
                     name='birthday'
                     label={t('birthday')}
-                    rules={[
-                        {required: true,},
-                    ]}
                 >
                     <DatePicker
                         format="YYYY-MM-DD"
@@ -139,13 +122,10 @@ function UpdatePersonForm() {
                     />
                 </Form.Item>
               <Form.Item
-                name='password'
-                label={t('password')}
-                rules={[
-                  {required: true,},
-                ]}
+                name='role'
+                label='Role'
               >
-                <Input placeholder="Strong.Passw0rd" />
+                <Select options={[{value:"ROLE_ADMIN", label:"Admin"}, {value:"ROLE_USER", label:"User"}]} />
               </Form.Item>
                 <Form.Item name='referralCode' label={t('referralCode')}>
                     <Input placeholder="8404B98D" />
