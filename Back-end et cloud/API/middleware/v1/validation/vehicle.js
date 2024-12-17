@@ -76,3 +76,39 @@ export const updateVehicleValidatorMiddleware = async (req, res, next) => {
     res.status(400).send(e.messages);
   }
 }
+
+const vehicleIdSchema = vine.object({
+  id: vine.number().withoutDecimals().min(1)
+})
+const vehicleIdValidator = vine.compile(vehicleIdSchema);
+export const vehicleIdValidatorMiddleware = async (req, res, next) => {
+  const data = {
+    id: req.body.id
+  }
+  try {
+    req.val = await vehicleIdValidator.validate(data);
+    next();
+  }
+  catch(e) {
+    res.status(400).send(e.messages);
+  }
+}
+const latLonSchema = vine.object({
+  lat: vine.number(),
+  lon: vine.number(),
+})
+
+const latLonValidator = vine.compile(latLonSchema);
+export const latLonValidatorMiddleware = async (req, res, next) => {
+  const data = {
+    lat: req.body.lat,
+    lon: req.body.lon,
+  }
+  try {
+    req.val = await latLonValidator.validate(data);
+    next();
+  }
+  catch(e) {
+    res.status(400).send(e.messages);
+  }
+}
