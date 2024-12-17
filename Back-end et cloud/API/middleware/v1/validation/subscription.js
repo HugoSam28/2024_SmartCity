@@ -92,11 +92,11 @@ export const addSubscriptionValidatorMiddleware = async (req, res, next) => {
 
 const updateSchema = vine.object({
   id: vine.number().withoutDecimals().min(1),
-  label: vine.string(),
-  price: vine.number().min(0),
-  discount: vine.number().min(0).max(1),
-  paymentRecurrence: vine.enum(['weekly', 'monthly', 'yearly']),
-  vehicleType: vine.enum(['Voiture', 'Scooter', 'Trotinette', 'Velo'])
+  label: vine.string().optional(),
+  price: vine.number().min(0).optional(),
+  discount: vine.number().min(0).max(1).optional(),
+  paymentRecurrence: vine.enum(['weekly', 'monthly', 'yearly']).optional(),
+  vehicleType: vine.enum(['Voiture', 'Scooter', 'Trotinette', 'Velo']).optional()
 })
 const updateValidator = vine.compile(updateSchema);
 export const updateSubscriptionValidatorMiddleware = async (req, res, next) => {
