@@ -1,0 +1,76 @@
+import {useEffect, useState} from "react";
+import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
+import fetchWithRetry from "../../API/fetchWithRetry.jsx";
+import {Table, Divider, Radio} from "antd";
+
+function CarKeyTable() {
+  const [carKeys, setCarKeys] = useState([]);
+  const [nbPages, setNbPages] = useState(0);
+  const [error, setError] = useState(null);
+  const {t} = useLanguageContext();
+  const [selectionType, setSelectionType] = useState('checkbox');
+
+  const columns = [
+    {
+      title: 'Id',
+      dataIndex: 'id',
+    },
+    {
+      title: t('carId'),
+      dataIndex: 'car_id',
+    },
+    {
+      title: t('model'),
+      dataIndex: 'model',
+    }
+  ];
+
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    getCheckboxProps: (record) => ({
+      disabled: record.name === 'Disabled User',
+      // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchWithRetry('http://localhost:3267/v1/carKey/getAllKeysAndPagesCount/id/1',{
+          method: 'GET',
+          headers: {
+            "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+            "Content-Type": "application/json",
+          },
+        });
+        setCarKeys(data.keys);
+        setNbPages(data.nbPagesKeys)
+      } catch (e) {
+        setError(e.message);
+      }
+    };
+    fetchData();
+  }, [])
+  console.log(carKeys)
+  return (
+      <div>
+        <Radio.Group onChange={(e) => setSelectionType(e.target.value)} value={selectionType}>
+          <Radio value="checkbox">Checkbox</Radio>
+          <Radio value="radio">radio</Radio>
+        </Radio.Group>
+        <Divider />
+        <Table
+            rowSelection={{
+              type: selectionType,
+              ...rowSelection,
+            }}
+            columns={columns}
+            dataSource={carKeys}
+        />
+      </div>
+  );
+};
+export default CarKeyTable;

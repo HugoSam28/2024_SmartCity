@@ -34,6 +34,8 @@ function AddButton() {
         return <AddPersonSubscriptionForm/>;
       case "/trip":
         return <AddTripForm/>;
+      case "/dashboard":
+        return <p>{t('goToMenu')}</p>
       default:
         return null;
     }
