@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import fetchWithRetry from "../../API/fetchWithRetry.jsx";
-import {Table, Divider, Pagination } from "antd";
+import {Table, Pagination, Button} from "antd";
+import { MdDeleteOutline } from "react-icons/md";
 
 function CarKeyTable() {
   const [carKeys, setCarKeys] = useState([]);
@@ -65,8 +66,7 @@ function CarKeyTable() {
     fetchData().then(()=> setLoading(false));
   }, [currentPage, searchValue]);
   return (
-      <div>
-        <Divider />
+      <div style={{display: 'flex', flexDirection: 'column', height:'86vh', justifyContent: 'center'}}>
         <Table
             rowKey="id"
             rowSelection={{
@@ -79,8 +79,12 @@ function CarKeyTable() {
             scroll={{
               x: 'max-content',
             }}
+            style={{ width: '100%' }}
         />
-        <Pagination style={{margin: '20px 20px 0 0'}} align='end' defaulCurrent={1} total={nbPages*10} hideOnSinglePage showSizeChanger={false} showQuickJumper onChange={(page)=> setCurrentPage(page)}/>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: '20px 20px 0 0'}}>
+          <Button shape="circle" icon={<MdDeleteOutline />} style={{fontSize:19}} color="danger" variant="filled"/>
+          <Pagination align='end' defaulCurrent={1} total={nbPages*10} hideOnSinglePage showSizeChanger={false} showQuickJumper onChange={(page)=> setCurrentPage(page)}/>
+        </div>
       </div>
   );
 };

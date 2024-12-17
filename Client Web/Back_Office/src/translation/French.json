@@ -46,5 +46,6 @@
   "dashboard": "Tableau de bord",
   "badRequestError": "Mauvaise requête",
   "goToMenu": "Essayer d'utiliser ce bouton apres avoir utilisé le menu.",
-  "dashboardText": "Voici le tableau de bord, yvous pouvez accéder aux données via le menu a gauche :)"
+  "dashboardText": "Voici le tableau de bord, yvous pouvez accéder aux données via le menu a gauche :)",
+  "model": "Modèle"
 }

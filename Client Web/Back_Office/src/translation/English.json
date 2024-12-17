@@ -46,5 +46,6 @@
   "dashboard": "Dashboard",
   "badRequestError": "Bad request error",
   "goToMenu": "Try to use the Menu before clicking this button",
-  "dashboardText": "This is the dashboard, you can access data by using the left menu :)"
+  "dashboardText": "This is the dashboard, you can access data by using the left menu :)",
+  "model": "Model"
 }
