@@ -52,7 +52,6 @@ function CarKeyTable() {
     };
     fetchData();
   }, [])
-  console.log(nbPages);
   return (
       <div>
         <Divider />
@@ -64,9 +63,14 @@ function CarKeyTable() {
             }}
             columns={columns}
             dataSource={carKeys}
+
+            pagination={{
+              pageSize: 10,           // Nombre d'éléments par page
+              total: nbPages * 10,    // Total d'éléments basé sur nbPages
+            }}
+
         />
 
-        <Pagination align="end" defaultCurrent={1} total={nbPages*10} />
       </div>
 
   );
