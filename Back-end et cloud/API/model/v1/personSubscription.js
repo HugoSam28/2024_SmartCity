@@ -22,7 +22,7 @@ if (!validColumns.includes(column)) {
 
   const {rows} = await SQLClient.query(`
     WITH personSubscription_page AS (
-      SELECT pS.*, p.email, s.label FROM personSubscription pS JOIN person p ON p.id = pS.person_id
+      SELECT pS.*, p.email, s.label FROM person_subscription pS JOIN person p ON p.id = pS.person_id
       JOIN subscription s ON pS.subscription_id = s.id
       ORDER BY ${column} LIMIT 10 OFFSET ($1 - 1) * 10)
     SELECT * from personSubscription_page`, [iPage]);
@@ -30,7 +30,7 @@ if (!validColumns.includes(column)) {
 }
 
 export const personSubscriptionsCount = async(SQLClient) => {
-  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM personSubscription`);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM person_subscription`);
   return rows[0]?.count;
 }
 
@@ -57,8 +57,8 @@ if (!validColumns.includes(column)) {
 }
 
   const {rows} = await SQLClient.query(`
-    WITH subscription_page AS (
-      SELECT pS.*, p.email, s.label FROM personSubscription_page pS JOIN person p ON p.id = pS.person_id
+    WITH personSubscription_page AS (
+      SELECT pS.*, p.email, s.label FROM person_subscription pS JOIN person p ON p.id = pS.person_id
       JOIN subscription s ON pS.subscription_id = s.id
       WHERE (p.email ILIKE '%'||$2||'%' OR s.label ILIKE '%'||$2||'%')
       ORDER BY ${column} LIMIT 10 OFFSET ($1 - 1) * 10) 
@@ -67,32 +67,36 @@ if (!validColumns.includes(column)) {
 }
 
 export const personSubscriptionsSearchCount = async(SQLClient, {value}) => {
-  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM personSubscription_page pS JOIN person p ON p.id = pS.person_id
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM person_subscription pS JOIN person p ON p.id = pS.person_id
     JOIN subscription s ON pS.subscription_id = s.id WHERE (p.email ILIKE '%'||$1||'%' OR s.label ILIKE '%'||$1||'%')`, [value]);
   return rows[0]?.count;
 }
 
 export const getOwnSubscription = async(SQLClient, {id}) => {
   const {rows} = await SQLClient.query(`SELECT subscription_id FROM person_subscription WHERE person_id = $1`, [id]);
-  return rows; [1,2,8]
+  const values = [];
+  rows.forEach((row) => {
+    values.push(row.subscription_id);
+  });
+  return values;
 }
 
-export const addOwnSubscription = async(SQLClient, {personID, subscriptionId, starting_subscription_date}) => {
-  const {rows} = await SQLClient.query(`INSERT INTO person_subscription(person_id, subscription_id, starting_subscription_date) VALUES ($1, $2, $3) RETURNING id`, [personID, subscriptionId, starting_subscription_date])
+export const addOwnSubscription = async(SQLClient, {personId, subscriptionId, startingSubscriptionDate}) => {
+  const {rows} = await SQLClient.query(`INSERT INTO person_subscription(person_id, subscription_id, starting_subscription_date) VALUES ($1, $2, $3) RETURNING id`, [personId, subscriptionId, startingSubscriptionDate])
   return rows[0]?.id;
 }
 
-export const addPersonSubscription = async(SQLClient, {personId, subscriptionId, starting_subscription_date}) => {
+export const addPersonSubscription = async(SQLClient, {personId, subscriptionId, startingSubscriptionDate}) => {
   const {rows} = await SQLClient.query(`INSERT INTO person_subscription (person_id, subscription_id, starting_subscription_date)
      SELECT $1, $2, $3
      WHERE NOT EXISTS (
-       SELECT 1 FROM person_subscription WHERE person_id = $1 AND subscription_id = $2
+       SELECT * FROM person_subscription WHERE person_id = $1 AND subscription_id = $2
      )
-     RETURNING id`, [personId, subscriptionId, starting_subscription_date]);
+     RETURNING id`, [personId, subscriptionId, startingSubscriptionDate]);
   return rows[0]?.id;
 }
 
-export const updatePersonSubscription = async(SQLClient, {id, personId, subscriptionId, starting_subscription_date}) =>{
+export const updatePersonSubscription = async(SQLClient, {id, personId, subscriptionId, startingSubscriptionDate}) =>{
   let query = `UPDATE person_subscription SET `;
   const querySet = [];
   const queryValues = [];
@@ -104,8 +108,8 @@ export const updatePersonSubscription = async(SQLClient, {id, personId, subscrip
     queryValues.push(subscriptionId);
     querySet.push(`subscription_id = $${queryValues.length}`);
   }
-  if(starting_subscription_date){
-    queryValues.push(starting_subscription_date);
+  if(startingSubscriptionDate){
+    queryValues.push(startingSubscriptionDate);
     querySet.push(`starting_subscription_date = $${queryValues.length}`);
   }
   if(queryValues.length > 0){

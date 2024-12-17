@@ -96,7 +96,7 @@ export const deleteSubscriptions = async(SQLClient, {idList}) => {
 }
 
 export const getOthersSubscription = async(SQLClient, ownRows) => {
-  const {rows} = await SQLClient.query(`SELECT * FROM subscription WHERE id != ANY($1)`,[ownRows]);
+  const {rows} = await SQLClient.query(`SELECT * FROM subscription WHERE id != ALL($1)`,[ownRows]);
   return rows;
 }
 

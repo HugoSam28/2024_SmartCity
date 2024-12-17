@@ -218,6 +218,11 @@ VALUES (2,
        );
 
 INSERT INTO Person_subscription(person_id, subscription_id)
+VALUES (1,
+        2
+       );
+
+INSERT INTO Person_subscription(person_id, subscription_id)
 VALUES (3,
         1
        );
