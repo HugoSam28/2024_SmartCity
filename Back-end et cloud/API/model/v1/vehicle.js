@@ -62,7 +62,7 @@ export const getVehiclesAroundMe = async(SQLClient, {lat, lon, distance}) => {
   return rows;
 }
 
-export const getVehicleById = async(SQLClient, id) => {
+export const getVehicleById = async(SQLClient, {id}) => {
   const {rows} = await SQLClient.query(`SELECT * FROM vehicle WHERE id = $1`, [id]);
   return rows[0];
 }

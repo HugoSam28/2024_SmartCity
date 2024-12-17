@@ -96,6 +96,7 @@ export const vehicleIdValidatorMiddleware = async (req, res, next) => {
 const latLonSchema = vine.object({
   lat: vine.number(),
   lon: vine.number(),
+  distance: vine.number(),
 })
 
 const latLonValidator = vine.compile(latLonSchema);
@@ -103,6 +104,7 @@ export const latLonValidatorMiddleware = async (req, res, next) => {
   const data = {
     lat: req.body.lat,
     lon: req.body.lon,
+    distance: req.body.distance
   }
   try {
     req.val = await latLonValidator.validate(data);
