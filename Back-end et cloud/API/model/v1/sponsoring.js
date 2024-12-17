@@ -1,33 +1,67 @@
-export const getAllSponsoring = async(SQLClient, {iPage}, {value}) => {
+export const getAllSponsoring = async(SQLClient, {iPage}, {column}) => {
+  const validColumnsQuery = `
+  (SELECT column_name
+  FROM information_schema.columns
+  WHERE table_name = 'sponsoring')
+  UNION ALL
+  (SELECT column_name
+  FROM information_schema.columns
+  WHERE table_name = 'person' AND column_name = 'email')
+`;
+
+const validColumnsResult = await SQLClient.query(validColumnsQuery);
+const validColumns = validColumnsResult.rows.map(row => row.column_name);
+
+if (!validColumns.includes(column)) {
+  throw new Error('Invalid column name');
+}
+
   const {rows} = await SQLClient.query(`
     WITH sponsoring_page AS (
       SELECT s.sponsor, pS.email, s.referred, pR.email FROM sponsoring s
-      JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
-      ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
-    SELECT * FROM sponsoring_page`, [iPage, value]);
+      JOIN person pS ON s.sponsor = pS.id JOIN person pR ON s.referred = pR.id
+      ORDER BY ${column} LIMIT 10 OFFSET ($1 - 1) * 10) 
+    SELECT * FROM sponsoring_page`, [iPage]);
   return rows;
 }
 
 export const sponsoringCount = async(SQLClient) => {
-  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Sponsoring`);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM sponsoring`);
   return rows[0]?.count;
 }
 
 export const getSearchSponsoring = async(SQLClient, {iPage}, {value}, {column}) => {
+  const validColumnsQuery = `
+  (SELECT column_name
+  FROM information_schema.columns
+  WHERE table_name = 'sponsoring')
+  UNION ALL
+  (SELECT column_name
+  FROM information_schema.columns
+  WHERE table_name = 'person' AND column_name = 'email')
+`;
+
+const validColumnsResult = await SQLClient.query(validColumnsQuery);
+const validColumns = validColumnsResult.rows.map(row => row.column_name);
+
+if (!validColumns.includes(column)) {
+  throw new Error('Invalid column name');
+}
+
   const {rows} = await SQLClient.query(`
     WITH sponsoring_page AS (
       SELECT s.sponsor, pS.email, s.referred, pR.email FROM sponsoring s
-      JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
+      JOIN person pS ON s.sponsor = pS.id JOIN person pR ON s.referred = pR.id
       WHERE (pS.email ILIKE '%'||$2||'%' OR pR.email ILIKE '%'||$2||'%')
-      ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) 
+      ORDER BY ${column} LIMIT 10 OFFSET ($1 - 1) * 10) 
     SELECT * FROM sponsoring_page`, 
-    [iPage, value, column]
+    [iPage, value]
   );
   return rows;
 }
 
 export const sponsoringSearchCount = async(SQLClient, {value}) => {
-  return await SQLClient.query(`SELECT COUNT(*) FROM Sponsoring s JOIN Person pS ON s.sponsor = pS.id JOIN Person pR ON s.referred = pR.id
+  return await SQLClient.query(`SELECT COUNT(*) FROM sponsoring s JOIN person pS ON s.sponsor = pS.id JOIN person pR ON s.referred = pR.id
     WHERE (pS.email ILIKE '%'||$1||'%' OR pR.email ILIKE '%'||$1||'%')`, [value]);
 }
 
@@ -63,5 +97,5 @@ export const updateSponsoring = async(SQLClient, {idReferred, sponsor, referred}
 }
 
 export const deleteSponsoring = async(SQLClient, {idList}) => {
-  return await SQLClient.query(`DELETE FROM Subscription WHERE id = ANY($1)`, [idList]);
+  return await SQLClient.query(`DELETE FROM subscription WHERE id = ANY($1)`, [idList]);
 }

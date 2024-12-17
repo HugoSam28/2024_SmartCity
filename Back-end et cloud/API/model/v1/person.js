@@ -3,7 +3,7 @@ import * as util from "../../util/argon.js"
 export const addPerson = async(SQLClient, {firstName, lastName, email, phoneNumber, password, birthday, hasCarLicence, hasMotorbikeLicence}) =>{
   const hashedPassword = await util.hash(password)
   const {rows} = await SQLClient.query(
-    `INSERT INTO Person (first_name, last_name, email, phone_number, password, birthday, has_car_licence, has_motorbike_licence)
+    `INSERT INTO person (first_name, last_name, email, phone_number, password, birthday, has_car_licence, has_motorbike_licence)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
     [
       firstName,
@@ -19,7 +19,7 @@ export const addPerson = async(SQLClient, {firstName, lastName, email, phoneNumb
 }
 
 export const getPersonByReferralCode = async(SQLClient, referralCode) =>{
-  const {rows} = await SQLClient.query(`SELECT id FROM Person WHERE referral_code = $1`, [referralCode]);
+  const {rows} = await SQLClient.query(`SELECT id FROM person WHERE referral_code = $1`, [referralCode]);
   if(rows[0]?.id !== undefined) {
     return rows[0].id;
   }
@@ -27,18 +27,18 @@ export const getPersonByReferralCode = async(SQLClient, referralCode) =>{
 }
 
 export const getPersonByEmail = async(SQLClient, email) =>{
-  const {rows} = await SQLClient.query(`SELECT id, password, email, role FROM Person WHERE email = $1`, [email]);
+  const {rows} = await SQLClient.query(`SELECT id, password, email, role FROM person WHERE email = $1`, [email]);
   return rows[0];
 }
 
 
 export const getPersonById = async(SQLClient,id) => {
-  const {rows} = await SQLClient.query(`SELECT first_name, last_name, email, phone_number, birthday, has_car_licence, has_motorbike_licence FROM Person WHERE id = $1`, [id]);
+  const {rows} = await SQLClient.query(`SELECT first_name, last_name, email, phone_number, birthday, has_car_licence, has_motorbike_licence FROM person WHERE id = $1`, [id]);
   return rows[0];
 }
 
 export const getProfileInfosById = async(SQLClient, id) =>{
-  const {rows} = await SQLClient.query(`SELECT first_name, last_name, balance, referral_code FROM Person WHERE id = $1`, [id]);
+  const {rows} = await SQLClient.query(`SELECT first_name, last_name, balance, referral_code FROM person WHERE id = $1`, [id]);
   return rows[0];
 }
 
@@ -57,15 +57,15 @@ export const getAllPersons = async(SQLClient, {iPage}, {column}) => {
   }
 
   const {rows} = await SQLClient.query(`
-    WITH Person_page AS (
-      SELECT id, first_name, last_name, email, phone_number, birthday, role, balance, has_car_licence, has_motorbike_licence, referral_code FROM Person
+    WITH person_page AS (
+      SELECT id, first_name, last_name, email, phone_number, birthday, role, balance, has_car_licence, has_motorbike_licence, referral_code FROM person
       ORDER BY ${column} LIMIT 10 OFFSET ($1 - 1) * 10)
-    SELECT * FROM Person_page`, [iPage]);
+    SELECT * FROM person_page`, [iPage]);
   return rows;
 }
 
 export const personsCount = async(SQLClient) => {
-  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Person`);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM person`);
   return rows[0]?.count;
 }
 
@@ -84,21 +84,21 @@ export const getSearchPersons = async(SQLClient, {iPage}, {value}, {column}) => 
   }
 
   const {rows} = await SQLClient.query(`
-    WITH Person_page AS (
-      SELECT id, first_name, last_name, email, phone_number, role, balance, birthday, has_car_licence, has_motorbike_licence, referral_code FROM Person
+    WITH person_page AS (
+      SELECT id, first_name, last_name, email, phone_number, role, balance, birthday, has_car_licence, has_motorbike_licence, referral_code FROM person
       WHERE (first_name ILIKE '%'||$2||'%' OR last_name ILIKE '%'||$2||'%')
       ORDER BY ${column} LIMIT 10 OFFSET ($1 - 1) * 10)
-    SELECT * FROM Person_page`, [iPage, value]);
+    SELECT * FROM person_page`, [iPage, value]);
   return rows;
 }
 
 export const personsSearchCount = async(SQLClient, {value}) => {
-  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Person WHERE (first_name ILIKE '%'||$1||'%' OR last_name ILIKE '%'||$1||'%')`, [value]);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM person WHERE (first_name ILIKE '%'||$1||'%' OR last_name ILIKE '%'||$1||'%')`, [value]);
   return rows[0]?.count;
 }
 
 export const updateMySelf = async(SQLClient, {id, firstName, lastName, email, phoneNumber, password, hasCarlicence, hasMotorbikelicence}) => {
-  let query = `UPDATE Person SET `;
+  let query = `UPDATE person SET `;
   const querySet = [];
   const queryValues = [];
   if (firstName) {
@@ -139,7 +139,7 @@ export const updateMySelf = async(SQLClient, {id, firstName, lastName, email, ph
 }
 
 export async function updatePerson(SQLClient, {id, firstName, lastName, email, phoneNumber, password, role, birthday, balance, hasCarlicence, hasMotorbikelicence, referralCode}){
-  let query = `UPDATE Person SET `;
+  let query = `UPDATE person SET `;
   const querySet = [];
   const queryValues = [];
   if (firstName) {
@@ -196,10 +196,10 @@ export async function updatePerson(SQLClient, {id, firstName, lastName, email, p
 }
 
 export const updatePersonalBalance = async(SQLClient, {id, balance}) => {
-  const {rows} =  await SQLClient.query(`UPDATE Person SET balance = balance + $1 WHERE id = $2 RETURNING balance`, [balance, id]);
+  const {rows} =  await SQLClient.query(`UPDATE person SET balance = balance + $1 WHERE id = $2 RETURNING balance`, [balance, id]);
   return rows[0]?.balance;
 }
 
 export const deletePersons = async(SQLClient, {idList}) => {
-  return await SQLClient.query(`DELETE FROM Person WHERE id = ANY($1)`, [idList]);
+  return await SQLClient.query(`DELETE FROM person WHERE id = ANY($1)`, [idList]);
 }

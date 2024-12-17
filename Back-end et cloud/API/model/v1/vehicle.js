@@ -1,12 +1,23 @@
 
 export const getAllVehicles = async(SQLClient, {iPage}, {column}) => {
-  
+  const validColumnsQuery = `
+    SELECT column_name
+    FROM information_schema.columns
+    WHERE table_name = 'vehicle'
+  `;
+
+  const validColumnsResult = await SQLClient.query(validColumnsQuery);
+  const validColumns = validColumnsResult.rows.map(row => row.column_name);
+
+  if (!validColumns.includes(column)) {
+    throw new Error('Invalid column name');
+  }
+
   const {rows} = await SQLClient.query(`
     WITH vehicles_page AS (
-      SELECT v.*, wl.brand, wl.model, wl.chassis_number FROM Vehicle v
-      LEFT JOIN Vehicle wl ON v.id = wl.id
-      ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10)
-      SELECT * FROM vehicles_page`, [iPage, column]);
+      SELECT * FROM vehicle
+      ORDER BY ${column} LIMIT 10 OFFSET ($1 - 1) * 10)
+      SELECT * FROM vehicles_page`, [iPage]);
   return rows;
 }
 
@@ -16,13 +27,25 @@ export const vehiclesCount = async(SQLClient) => {
 }
 
 export const getSearchVehicles = async(SQLClient, {iPage}, {value}, {column}) => {
+  const validColumnsQuery = `
+    SELECT column_name
+    FROM information_schema.columns
+    WHERE table_name = 'vehicle'
+  `;
+
+  const validColumnsResult = await SQLClient.query(validColumnsQuery);
+  const validColumns = validColumnsResult.rows.map(row => row.column_name);
+
+  if (!validColumns.includes(column)) {
+    throw new Error('Invalid column name');
+  }
+
   const {rows} = await SQLClient.query(`
     WITH vehicles_pages AS (
-      SELECT v.*, wl.brand, wl.model, wl.chassis_number FROM vehicle v
-      LEFT JOIN Vehicle wl ON v.id = wl.id
-      WHERE v.type ILIKE '%'||$2||'%'
-      ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10)
-    SELECT FROM Vehicles_pages`, [iPage, value, column]);
+      SELECT * FROM vehicle
+      WHERE type ILIKE '%'||$2||'%'
+      ORDER BY ${column} LIMIT 10 OFFSET ($1 - 1) * 10)
+    SELECT FROM vehicles_pages`, [iPage, value, column]);
   return rows;
 }
 
@@ -32,7 +55,7 @@ export const vehiclesSearchCount = async(SQLClient, {value}) => {
 }
 
 export const getVehiclesAroundMe = async(SQLClient, {lat, lon, distance}) => {
-  const {rows} = await SQLClient.query(`SELECT id, location, type FROM Vehicle 
+  const {rows} = await SQLClient.query(`SELECT id, location, type FROM vehicle 
     WHERE 111195 * DEGREES(ACOS(COS(RADIANS($1)) * COS(RADIANS(location[1])) * COS(RADIANS(location[0]) 
     - RADIANS($2)) + SIN(RADIANS($1)) * SIN(RADIANS(location[1])))) <= $3;`,
     [lat, lon, distance]);
@@ -110,5 +133,5 @@ export const updateInformations = async(SQLClient, {id, lon, lat, batteryLevel, 
 }
 
 export const deleteVehicles = async(SQLClient, {idList}) => {
-  return await SQLClient.query(`DELETE FROM Vehicle WHERE id = ANY($1)`, [idList]);
+  return await SQLClient.query(`DELETE FROM vehicle WHERE id = ANY($1)`, [idList]);
 }
