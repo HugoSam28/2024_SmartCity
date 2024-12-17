@@ -45,13 +45,12 @@ export default function LoginScreen() {
           throw new Error(t("wrongPassword"));
         }
         sessionStorage.setItem('token', token);
-        console.log("Token:", token);
         navigate("/dashboard");
       } catch (error) {
         if (retryCount < maxRetries && error.message !== t("badRequestError") && error.message !== t("wrongPassword")) {
           retryCount++;
-          const waitTime = Math.pow(2, retryCount) * 100; // Backoff exponentiel
-          console.log(`Retrying... (${retryCount}) after ${waitTime}ms`);
+          const waitTime = Math.pow(2, retryCount) * 500; // Backoff exponentiel
+          setError(`Retrying... (${retryCount})`);
           await new Promise(resolve => setTimeout(resolve, waitTime));
           return loginWithRetry();
         } else {
@@ -59,10 +58,11 @@ export default function LoginScreen() {
         }
       }
     };
+
     try {
       await loginWithRetry();
     } catch (e) {
-      setError(e.message); // Afficher l'erreur finale
+      setError(e.message);
     }
   };
   return (

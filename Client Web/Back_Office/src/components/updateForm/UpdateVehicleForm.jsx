@@ -1,9 +1,9 @@
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
-import {Button, Form, Input, InputNumber, Select, Space, Switch} from "antd";
+import {Button, Form, Input, InputNumber, notification, Select, Space, Switch} from "antd";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-function UpdateVehicleForm() {
+function UpdateVehicleForm({callback}) {
     const [form] = Form.useForm();
     const {t} = useLanguageContext();
     const vehicleOptions = [
@@ -15,7 +15,14 @@ function UpdateVehicleForm() {
     const [isAvailable, setIsAvailable] = useState(true);
     const [error, setError] = useState("");
     const navigate = useNavigate();
-
+    const [api, contextHolder] = notification.useNotification();
+    const openNotificationWithIcon = () => {
+      api['success']({
+        message: t('success'),
+        description:
+          t('successMessageUpdate'),
+      });
+    };
     const onReset = () => {
         setIsAvailable(true);
         form.resetFields();
@@ -51,6 +58,8 @@ function UpdateVehicleForm() {
             })
             .then(data => {
                 console.log(data);
+                openNotificationWithIcon();
+                callback();
             })
             .catch (e => setError(e.message))
     };
@@ -58,6 +67,7 @@ function UpdateVehicleForm() {
     const valeur = {id : 2}
     return (
         <div id="formContainer">
+          {contextHolder} /*jj*/
             <Form
                 onFinish={onFinish}
                 layout={"vertical"}

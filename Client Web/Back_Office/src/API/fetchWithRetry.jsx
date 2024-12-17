@@ -1,5 +1,5 @@
 const addJitter = (time) => {
-  const jitter = Math.random() * 500;
+  const jitter = Math.random() * 700;
   return time + jitter;
 }
 
@@ -7,7 +7,7 @@ async function FetchWithRetry(url, options, onUnauthorized = () => {return null}
 
   let attempt = 0;
   const maxRetries = 5;
-  const delay = 5
+  const delay = 700;
 
   while (attempt < maxRetries) {
     try {
@@ -26,12 +26,10 @@ async function FetchWithRetry(url, options, onUnauthorized = () => {return null}
     } catch (err) {
       console.error(`Erreur lors de la tentative ${attempt + 1}: ${err.message}`);
     }
-
     attempt++;
     const waitTime = addJitter(delay * (2 ** attempt));
-    console.log(`Attente de ${waitTime} ms avant de réessayer...`);
     await new Promise((resolve) => setTimeout(resolve, waitTime));
   }
-  throw new Error('Toutes les tentatives ont échouées');
+  throw new Error('Les tentatives ont échouées');
 }
 export default FetchWithRetry;

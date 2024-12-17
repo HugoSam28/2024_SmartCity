@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import {Button, Form, Input, Space, Select, DatePicker, Switch, InputNumber} from 'antd';
+import {Button, Form, Input, Space, Select, DatePicker, Switch, InputNumber, notification} from 'antd';
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import dayjs from 'dayjs';
 
-function AddPersonForm() {
+function AddPersonForm({callback}) {
     const [form] = Form.useForm();
     const { t } = useLanguageContext();
     const [phonePrefix, setPhonePrefix] = useState('+32');
@@ -21,6 +21,14 @@ function AddPersonForm() {
     const [carDisabled, setCarDisabled] = useState(false);
     const [motorbikeDisabled, setMotorbikeDisabled] = useState(false);
     const [error, setError] = useState("");
+    const [api, contextHolder] = notification.useNotification();
+    const openNotificationWithIcon = () => {
+      api['success']({
+        message: t('success'),
+        description:
+          t('successMessageAdd'),
+      });
+    };
 
     const onPrefixChange = (value) => {
     setPhonePrefix(value);
@@ -58,6 +66,8 @@ function AddPersonForm() {
         })
         .then(data => {
           console.log(data);
+          openNotificationWithIcon();
+          callback();
         })
         .catch (e => setError(e.message))
     };
@@ -65,6 +75,7 @@ function AddPersonForm() {
 
     return (
       <div id="formContainer">
+        {contextHolder}
         <Form
             onFinish={onFinish}
             layout={"vertical"}

@@ -1,4 +1,5 @@
 {
+  "bestInLightTheme": "This website looks 'better' in light theme since we weren't able to change all antd's colors. Try to change your system's theme.",
   "login": "Log in",
   "logout": "Log out",
   "password": "Password",
@@ -44,8 +45,11 @@
   "endingLocationLon" : "Ending location longitude",
   "startingSubscriptionDate": "Starting subscription date",
   "dashboard": "Dashboard",
-  "badRequestError": "Bad request error",
-  "goToMenu": "Try to use the Menu before clicking this button",
+  "badRequestError": "Bad request: Please type a valid email and password",
+  "goToMenu": "Try to navigate with the menu before clicking this button",
   "dashboardText": "This is the dashboard, you can access data by using the left menu :)",
-  "model": "Model"
+  "model": "Model",
+  "success": "Success",
+  "successMessageAdd": "Successfully added the element",
+  "successMessageUpdate": "Successfully updated the element"
 }

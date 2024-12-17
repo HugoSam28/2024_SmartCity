@@ -1,17 +1,24 @@
-import {Button, Form, Input, Space, DatePicker, InputNumber} from "antd";
+import {Button, Form, Input, Space, DatePicker, InputNumber, notification} from "antd";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
 
-function UpdateTripForm() {
+function UpdateTripForm({callback}) {
     const [form] = Form.useForm();
     const {t} = useLanguageContext();
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const [startingDate, setStartingDate] = useState("");
     const [endingDate, setEndingDate] = useState("");
-
+    const [api, contextHolder] = notification.useNotification();
+    const openNotificationWithIcon = () => {
+      api['success']({
+        message: t('success'),
+        description:
+          t('successMessageUpdate'),
+      });
+    };
     const onReset = () => {
         form.resetFields();
     }
@@ -52,12 +59,15 @@ function UpdateTripForm() {
             })
             .then(data => {
                 console.log(data);
+                openNotificationWithIcon();
+                callback();
             })
             .catch (e => setError(e.message))
     };
     const valeur = {id : 2}
     return (
         <div id="formContainer">
+          {contextHolder}
             <Form
                 onFinish={onFinish}
                 layout={"vertical"}

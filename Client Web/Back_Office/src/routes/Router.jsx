@@ -1,10 +1,8 @@
 import {createBrowserRouter} from 'react-router-dom';
 
 import LoginScreen from "../screens/Login.jsx";
-import Bidondon from "../screens/Bidondon.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import Logout from "../components/Logout.jsx";
-
 import Dashboard from "../screens/Dashboard.jsx";
 import CarKeyTable from "../components/tables/CarKeyTable.jsx";
 import TextDashBoard from "../components/TextDashBoard.jsx";
@@ -32,7 +30,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Dashboard >
-          <Bidondon />
+
         </Dashboard>
       </ProtectedRoute>)
   },
@@ -41,7 +39,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Dashboard >
-          <Bidondon />
+
         </Dashboard>
       </ProtectedRoute>)
   },
@@ -59,7 +57,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Dashboard >
-          <Bidondon />
+
         </Dashboard>
       </ProtectedRoute>)
   },
@@ -68,7 +66,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Dashboard >
-          <Bidondon />
+
         </Dashboard>
       </ProtectedRoute>)
   },
@@ -77,7 +75,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Dashboard >
-          <Bidondon />
+
         </Dashboard>
       </ProtectedRoute>)
   },
@@ -86,7 +84,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Dashboard >
-          <Bidondon />
+
         </Dashboard>
       </ProtectedRoute>
     )

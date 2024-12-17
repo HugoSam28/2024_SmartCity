@@ -19,22 +19,22 @@ function AddButton() {
   const {t} = useLanguageContext();
 
   const location = useLocation();
-  const renderForms =() => {
+  const renderForms =(callback) => {
     switch (location.pathname) {
       case "/person":
-        return <UpdatePersonForm/>;
+        return <UpdatePersonForm callback={callback} />;
       case "/vehicle":
-        return <UpdateVehicleForm/>;
+        return <UpdateVehicleForm callback={callback} />;
       case "/subscription":
-        return <UpdateSubscriptionForm/>;
+        return <UpdateSubscriptionForm callback={callback} />;
       case "/sponsoring":
-        return <UpdateSponsoringForm/>;
+        return <UpdateSponsoringForm callback={callback} />;
       case "/carKey":
-        return <UpdateCarKeyForm/>;
+        return <UpdateCarKeyForm callback={callback} />;
       case "/personSubscription":
-        return <UpdatePersonSubscriptionForm/>;
+        return <UpdatePersonSubscriptionForm callback={callback} />;
       case "/trip":
-        return <UpdateTripForm/>;
+        return <UpdateTripForm callback={callback} />;
       case "/dashboard":
         return <p>{t('goToMenu')}</p>
       default:
@@ -55,10 +55,10 @@ function AddButton() {
         title={Model()}
         centered
         open={modalOpen}
-        onOk={() => setModalOpen(false)}
         onCancel={() => setModalOpen(false)}
+        footer={null}
       >
-        {renderForms()}
+        {renderForms(() => setModalOpen(false))}
       </Modal>
     </>
   )

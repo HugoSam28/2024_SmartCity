@@ -1,4 +1,5 @@
 {
+  "bestinLightTheme": "Ce site parait mieux en thème clair, étant donné qu'on n'a pas pu changer toutes les couleurs d'antd. Essayez de changer le thème du système.",
   "login": "Connexion",
   "logout": "Déconnexion",
   "password": "Mot de passe",
@@ -44,8 +45,11 @@
   "endingLocationLon" : "Longitude de l’emplacement de fin",
   "startingSubscriptionDate": "Date de début d'abonnement",
   "dashboard": "Tableau de bord",
-  "badRequestError": "Mauvaise requête",
-  "goToMenu": "Essayer d'utiliser ce bouton apres avoir utilisé le menu.",
-  "dashboardText": "Voici le tableau de bord, yvous pouvez accéder aux données via le menu a gauche :)",
-  "model": "Modèle"
+  "badRequestError": "Mauvaise requête: Veuillez entre un mail et un mot de passe valides",
+  "goToMenu": "Essayer d'utiliser ce bouton apres avoir navigué en utilisant le menu à gauche.",
+  "dashboardText": "Voici le tableau de bord, vous pouvez accéder aux données via le menu a gauche :)",
+  "model": "Modèle",
+  "success": "Nickel",
+  "successMessageAdd": "Ajout de l'élément avec succès !",
+  "successMessageUpdate": "Modification de l'élément avec succès !"
 }

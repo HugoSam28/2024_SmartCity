@@ -1,14 +1,21 @@
-import {Button, Form, InputNumber, Space} from "antd";
+import {Button, Form, InputNumber, notification, Space} from "antd";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-function AddCarKeyForm() {
+function AddCarKeyForm({callback}) {
   const [form] = Form.useForm();
   const {t} = useLanguageContext();
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+  const [api, contextHolder] = notification.useNotification();
+  const openNotificationWithIcon = () => {
+    api['success']({
+      message: t('success'),
+      description:
+        t('successMessageAdd'),
+    });
+  };
   const onReset = () => {
     form.resetFields();
   }
@@ -36,11 +43,14 @@ function AddCarKeyForm() {
       })
       .then(data => {
         console.log(data);
+        openNotificationWithIcon();
+        callback();
       })
       .catch (e => setError(e.message))
   };
   return (
     <div id="formContainer">
+      {contextHolder}
       <Form
         onFinish={onFinish}
         layout={"vertical"}
@@ -53,7 +63,7 @@ function AddCarKeyForm() {
           rules={[
             {required: true,},
           ]}>
-          <InputNumber placeholder="21" min={1}/>
+          <InputNumber placeholder="21" min={1} style={{width:'100%'}} />
         </Form.Item>
         {error && <p style={{color: "red"}}>{error}</p>}
         <Form.Item>

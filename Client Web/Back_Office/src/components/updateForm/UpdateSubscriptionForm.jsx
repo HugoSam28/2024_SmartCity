@@ -1,9 +1,9 @@
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
-import {Button, Form, Input, InputNumber, Select, Space} from "antd";
+import {Button, Form, Input, InputNumber, notification, Select, Space} from "antd";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-function UpdateSubscriptionForm() {
+function UpdateSubscriptionForm({callback}) {
     const [form] = Form.useForm();
     const {t} = useLanguageContext();
     const labelOptions = [
@@ -25,7 +25,14 @@ function UpdateSubscriptionForm() {
     ];
     const [error, setError] = useState("");
     const navigate = useNavigate();
-
+    const [api, contextHolder] = notification.useNotification();
+    const openNotificationWithIcon = () => {
+      api['success']({
+        message: t('success'),
+        description:
+          t('successMessageUpdate'),
+      });
+    };
     const onReset = () => {
         form.resetFields();
     }
@@ -53,6 +60,8 @@ function UpdateSubscriptionForm() {
             })
             .then(data => {
                 console.log(data);
+                openNotificationWithIcon();
+                callback();
             })
             .catch (e => setError(e.message))
     };
@@ -60,6 +69,7 @@ function UpdateSubscriptionForm() {
 
     return (
         <div id="formContainer">
+          {contextHolder}
             <Form
                 onFinish={onFinish}
                 layout={"vertical"}

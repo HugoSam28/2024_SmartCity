@@ -1,14 +1,21 @@
-import {Button, Form, Input, InputNumber, Space} from "antd";
+import {Button, Form, Input, InputNumber, notification, Space} from "antd";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-function UpdateCarKeyForm() {
+function UpdateCarKeyForm({callback}) {
     const [form] = Form.useForm();
     const {t} = useLanguageContext();
     const [error, setError] = useState("");
     const navigate = useNavigate();
-
+    const [api, contextHolder] = notification.useNotification();
+    const openNotificationWithIcon = () => {
+      api['success']({
+        message: t('success'),
+        description:
+          t('successMessageUpdate'),
+      });
+    };
     const onReset = () => {
         form.resetFields();
     }
@@ -37,12 +44,15 @@ function UpdateCarKeyForm() {
             })
             .then(data => {
                 console.log(data);
+                openNotificationWithIcon();
+                callback();
             })
             .catch (e => setError(e.message))
     };
     const valeur = {id : 2}
     return (
         <div id="formContainer">
+          {contextHolder}
             <Form
                 onFinish={onFinish}
                 layout={"vertical"}

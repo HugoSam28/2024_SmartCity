@@ -5,12 +5,13 @@ import {Table, Pagination, Button} from "antd";
 import { MdDeleteOutline } from "react-icons/md";
 
 function CarKeyTable() {
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [carKeys, setCarKeys] = useState([]);
   const [nbPages, setNbPages] = useState(0);
   const [orderBy, setOrderBy] = useState('id');
   const [currentPage, setCurrentPage] = useState(1);
   const [lookingFor, setLookingFor] = useState(0);
-  const [searchValue, setSearchValue] = useState("guan");
+  const [searchValue, setSearchValue] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const {t} = useLanguageContext();
@@ -26,26 +27,32 @@ function CarKeyTable() {
       dataIndex: 'id',
       fixed: 'left',
       sorter: true,
+      sortDirections: ['ascend'],
     },
     {
       title: t('carId'),
       dataIndex: 'car_id',
+      sorter: true,
+      sortDirections: ['ascend']
     },
     {
       title: t('model'),
       dataIndex: 'model',
+      sorter: true,
+      sortDirections: ['ascend']
     }
   ];
+
+  const onSelectChange = (newSelectedRowKeys) => {
+    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: (record) => ({
-      disabled: record.name === 'Disabled User', // Column configuration not to be checked
-      name: record.name,
-    }),
+    selectedRowKeys,
+    onChange: onSelectChange,
   };
   const fetchData = async () => {
+    setLoading(true);
     try {
       const data = await fetchWithRetry(`http://localhost:3267/v1/carKey/${fetchUrls[lookingFor]}/${orderBy}/${currentPage}`,{
         method: 'GET',
@@ -54,6 +61,7 @@ function CarKeyTable() {
           "Content-Type": "application/json",
         },
       });
+      //await new Promise((resolve) => setTimeout(resolve,2000));
       setCarKeys(data.keys);
       setNbPages(data.nbPagesKeys)
     } catch (e) {
@@ -62,29 +70,36 @@ function CarKeyTable() {
   };
 
   useEffect(() => {
-    setLoading(true);
     fetchData().then(()=> setLoading(false));
-  }, [currentPage, searchValue]);
+  }, [searchValue, orderBy, currentPage]);
   return (
       <div style={{display: 'flex', flexDirection: 'column', height:'86vh', justifyContent: 'center'}}>
         <Table
             rowKey="id"
-            rowSelection={{
-              type: "checkbox",
-              ...rowSelection,
-            }}
+            rowSelection={rowSelection}
             columns={columns}
             dataSource={carKeys}
             pagination={false}
             scroll={{
               x: 'max-content',
             }}
-            style={{ width: '100%' }}
+            loading={loading}
         />
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: '20px 20px 0 0'}}>
-          <Button shape="circle" icon={<MdDeleteOutline />} style={{fontSize:19}} color="danger" variant="filled"/>
-          <Pagination align='end' defaulCurrent={1} total={nbPages*10} hideOnSinglePage showSizeChanger={false} showQuickJumper onChange={(page)=> setCurrentPage(page)}/>
+          <Button id='deleteButton' shape="circle" icon={<MdDeleteOutline />} style={{fontSize:19}} color="danger" variant="filled"/>
+          <Pagination
+            align='end'
+            defaulCurrent={1}
+            total={nbPages*10}
+            hideOnSinglePage
+            showSizeChanger={false}
+            showQuickJumper
+            onChange={(page)=> setCurrentPage(page)}/>
         </div>
+        <span style={{
+          textAlign: 'center',
+          color: 'red'}}
+        >{error && <p>{error}</p>}</span>
       </div>
   );
 };

@@ -5,7 +5,7 @@ const LanguageSelect = () => {
     <select
       style={{
         width: "125px",
-        position: "absolute",
+        position: "fixed",
         top: 20,
         left: 20,
         height: "40px",

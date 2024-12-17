@@ -41,8 +41,6 @@
 }
 #formContainer {
   background-color: rgba(150, 150, 150, 0.1);
-  display: flex;
-  align-items: center;
   padding: 25px 30px 10px;
   border-radius: 15px;
   drop-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
@@ -66,6 +64,14 @@
 #titleLabel {
   margin-top: 13px;
 }
+#deleteButton {
+  background-color: rgb(68, 45, 41);
+}
+#deleteButton:hover{
+  background-color: rgb(126, 68, 59);
+}
+
+
 
 @media(prefers-color-scheme: light) {
   #loginForm label {
@@ -94,5 +100,11 @@
   }
   #titleIcon, #titleLabel {
     color: var(--color-light);
+  }
+  #deleteButton {
+    background-color: rgb(255, 242, 240);
+  }
+  #deleteButton:hover{
+    background-color: rgb(255, 218, 213);
   }
 }
