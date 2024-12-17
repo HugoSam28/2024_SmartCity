@@ -1,14 +1,13 @@
 import {useEffect, useState} from "react";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import fetchWithRetry from "../../API/fetchWithRetry.jsx";
-import {Table, Divider, Radio} from "antd";
+import {Table, Divider} from "antd";
 
 function CarKeyTable() {
   const [carKeys, setCarKeys] = useState([]);
   const [nbPages, setNbPages] = useState(0);
   const [error, setError] = useState(null);
   const {t} = useLanguageContext();
-  const [selectionType, setSelectionType] = useState('checkbox');
 
   const columns = [
     {
@@ -57,14 +56,10 @@ function CarKeyTable() {
   console.log(carKeys)
   return (
       <div>
-        <Radio.Group onChange={(e) => setSelectionType(e.target.value)} value={selectionType}>
-          <Radio value="checkbox">Checkbox</Radio>
-          <Radio value="radio">radio</Radio>
-        </Radio.Group>
         <Divider />
         <Table
             rowSelection={{
-              type: selectionType,
+              type: "checkbox",
               ...rowSelection,
             }}
             columns={columns}
