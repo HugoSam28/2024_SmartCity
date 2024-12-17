@@ -179,6 +179,13 @@ VALUES ('Gold',
         'Voiture',
         0.15);
 
+INSERT INTO Subscription (label, price, payment_recurrence, vehicle_type, discount)
+VALUES ('Silver',
+        15,
+        'monthly',
+        'Velo',
+        0.10);
+
 INSERT INTO Person (first_name, last_name, email, phone_number, password, role, birthday)
 VALUES ('root',
         'root',
@@ -196,11 +203,47 @@ VALUES ('user',
         '$argon2id$v=19$m=65536,t=3,p=4$WPgpXYFThjZ6IxA5LZRJqA$Tq3kF0FwFkGHmrfA3LHeFSwgtiXvDq5b9TECM7VfvhA',
         'ROLE_USER',
         '2004-04-12');
+INSERT INTO Person (first_name, last_name, email, phone_number, password, role, birthday)
+VALUES ('user2',
+        'user2',
+        'user2@mail.be',
+        '+3572748284',
+        '$argon2id$v=19$m=65536,t=3,p=4$WPgpXYFThjZ6IxA5LZRJqA$Tq3kF0FwFkGHmrfA3LHeFSwgtiXvDq5b9TECM7VfvhA',
+        'ROLE_USER',
+        '2004-04-12');
 
 INSERT INTO Person_subscription(person_id, subscription_id)
 VALUES (2,
+        2
+       );
+
+INSERT INTO Person_subscription(person_id, subscription_id)
+VALUES (3,
         1
        );
 
 INSERT INTO Sponsoring (sponsor, referred)
 VALUES (2, 1);
+
+INSERT INTO Sponsoring (sponsor, referred)
+VALUES (3, 2);
+
+INSERT INTO Trip (person_ID, vehicle_ID, starting_date, ending_date, distance, cost, starting_location, ending_location)
+VALUES (1,
+        2,
+        '2023-12-17 14:14:00',
+        '2023-12-17 14:24:00',
+        23.45,
+        0.45,
+        POINT(4.90997, 50.41512),
+        point(4.90997, 51.41512));
+
+INSERT INTO Trip (person_ID, vehicle_ID, starting_date, ending_date, distance, cost, starting_location, ending_location)
+VALUES (2,
+        4,
+        '2023-10-17 14:14:00',
+        '2023-10-17 14:24:00',
+        23.40,
+        500.45,
+        POINT(4.90997, 50.41512),
+        point(5.90997, 51.41512));

@@ -162,9 +162,9 @@ export const updatePerson = async(req, res) => {
 
 export const updatePersonalBalance = async(req, res) =>{
   try{
-    const balance = personModel.updatePersonalBalance(pool, req.val);
+    const balance = await personModel.updatePersonalBalance(pool, req.val);
     if(balance){
-      res.send({balance});
+      res.send(balance);
     }
     else{
       res.sendStatus(404);

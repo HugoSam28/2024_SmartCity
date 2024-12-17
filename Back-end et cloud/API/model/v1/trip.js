@@ -1,34 +1,68 @@
 
 export const getAllTrips = async(SQLClient, {iPage}, {column}) => {
+  const validColumnsQuery = `
+  (SELECT column_name
+  FROM information_schema.columns
+  WHERE table_name = 'trip')
+  UNION ALL
+  (SELECT column_name
+  FROM information_schema.columns
+  WHERE table_name = 'person' AND column_name = 'email')
+`;
+
+const validColumnsResult = await SQLClient.query(validColumnsQuery);
+const validColumns = validColumnsResult.rows.map(row => row.column_name);
+
+if (!validColumns.includes(column)) {
+  throw new Error('Invalid column name');
+}
+
   const {rows} = await SQLClient.query(`
     WITH trips_page AS (
       SELECT p.email, t.* FROM trip t
-      JOIN Person p ON t.person_id = p.id
-      ORDER BY $2 LIMIT 10 OFFSET ($1 - 1) * 10) 
-    SELECT * FROM trips_page`, [iPage, column]);
+      JOIN person p ON t.person_id = p.id
+      ORDER BY ${column} LIMIT 10 OFFSET ($1 - 1) * 10) 
+    SELECT * FROM trips_page`, [iPage]);
   return rows;
 }
 
 export const tripsCount = async(SQLClient) => {
-  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Trip`);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM trip`);
   return rows[0]?.count;
 }
 
 export const getSearchTrips = async(SQLClient, {iPage}, {value}, {column}) => {
+  const validColumnsQuery = `
+    (SELECT column_name
+    FROM information_schema.columns
+    WHERE table_name = 'trip')
+    UNION ALL
+    (SELECT column_name
+    FROM information_schema.columns
+    WHERE table_name = 'person' AND column_name = 'email')
+  `;
+
+  const validColumnsResult = await SQLClient.query(validColumnsQuery);
+  const validColumns = validColumnsResult.rows.map(row => row.column_name);
+
+  if (!validColumns.includes(column)) {
+    throw new Error('Invalid column name');
+  }
+
   const {rows} = await SQLClient.query(`
     WITH trips_page AS (
       SELECT p.email, t.* FROM trip t
-      JOIN Person p ON t.person_id = p.id
+      JOIN person p ON t.person_id = p.id
       WHERE p.email ILIKE '%'||$2||'%'
-      ORDER BY $3 LIMIT 10 OFFSET ($1 - 1) * 10) 
+      ORDER BY ${column} LIMIT 10 OFFSET ($1 - 1) * 10) 
       SELECT * FROM trips_page`, 
-    [iPage, value, column]
+    [iPage, value]
   );
   return rows;
 }
 
 export const tripsSearchCount = async(SQLClient, {value}) => {
-  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM Trip t JOIN Person p ON t.person_id = p.id WHERE p.email ILIKE '%'||$1||'%'`, [value]);
+  const {rows} = await SQLClient.query(`SELECT COUNT(*) FROM trip t JOIN person p ON t.person_id = p.id WHERE p.email ILIKE '%'||$1||'%'`, [value]);
   return rows[0]?.count;
 }
 
@@ -112,7 +146,7 @@ export const updateTrip = async(SQLClient, {id, personId, vehicleId, startingDat
 }
 
 export const deleteTrip = async(SQLClient, {idList}) => {
-  return await SQLClient.query(`DELETE FROM Trip WHERE id = ANY($1)`, [idList]);
+  return await SQLClient.query(`DELETE FROM trip WHERE id = ANY($1)`, [idList]);
 }
 
 
