@@ -1,14 +1,13 @@
 import {useEffect, useState} from "react";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import fetchWithRetry from "../../API/fetchWithRetry.jsx";
-import {Table, Divider, Radio} from "antd";
+import {Table, Divider, Pagination } from "antd";
 
 function CarKeyTable() {
   const [carKeys, setCarKeys] = useState([]);
   const [nbPages, setNbPages] = useState(0);
   const [error, setError] = useState(null);
   const {t} = useLanguageContext();
-  const [selectionType, setSelectionType] = useState('checkbox');
 
   const columns = [
     {
@@ -30,8 +29,7 @@ function CarKeyTable() {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     },
     getCheckboxProps: (record) => ({
-      disabled: record.name === 'Disabled User',
-      // Column configuration not to be checked
+      disabled: record.name === 'Disabled User', // Column configuration not to be checked
       name: record.name,
     }),
   };
@@ -54,23 +52,23 @@ function CarKeyTable() {
     };
     fetchData();
   }, [])
-  console.log(carKeys)
+  console.log(nbPages);
   return (
       <div>
-        <Radio.Group onChange={(e) => setSelectionType(e.target.value)} value={selectionType}>
-          <Radio value="checkbox">Checkbox</Radio>
-          <Radio value="radio">radio</Radio>
-        </Radio.Group>
         <Divider />
         <Table
+            rowKey="id"
             rowSelection={{
-              type: selectionType,
+              type: "checkbox",
               ...rowSelection,
             }}
             columns={columns}
             dataSource={carKeys}
         />
+
+        <Pagination align="end" defaultCurrent={1} total={nbPages*10} />
       </div>
+
   );
 };
 export default CarKeyTable;

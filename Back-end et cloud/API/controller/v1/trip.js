@@ -39,7 +39,7 @@ export const getSearchTrips = async (req, res) => {
     const result = {};
     result.trips = await tripModel.getSearchTrips(pool, req.val.page, req.val.search, req.val.order);
     result.nbPagesTrips = Math.ceil((await tripModel.tripsSearchCount(pool, req.val.search))/10);
-    if(result.trips && result.nbPagesTrips){
+    if(result.trips[0] && result.nbPagesTrips){
         res.send(result);
     }
     else{
