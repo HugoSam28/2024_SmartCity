@@ -74,27 +74,21 @@ function UpdateTripForm() {
                 <Form.Item
                     name='personId'
                     label={t('personId')}
-                    rules={[
-                        {required: true,},
-                    ]}>
+                    >
                     <InputNumber placeholder="21" min={1} style={{width:'100%'}} />
                 </Form.Item>
 
                 <Form.Item
                     name='vehicleId'
                     label={t('vehicleId')}
-                    rules={[
-                        {required: true,},
-                    ]}>
+                    >
                     <InputNumber placeholder="21" min={1} style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
                     name='startingDate'
                     label={t('startingDate')}
-                    rules={[
-                        {required: true,},
-                    ]}>
+                    >
                     <DatePicker
                         showTime
                         onChange={onChangeStart}
@@ -106,9 +100,7 @@ function UpdateTripForm() {
                 <Form.Item
                     name='endingDate'
                     label={t('endingDate')}
-                    rules={[
-                        {required: true,},
-                    ]}>
+                    >
                     <DatePicker
                         showTime
                         onChange={onChangeEnd}
@@ -120,27 +112,21 @@ function UpdateTripForm() {
                 <Form.Item
                     name='distance'
                     label={t('Distance')}
-                    rules={[
-                        {required: true,},
-                    ]}>
+                    >
                     <InputNumber min={0} placeholder="2000" style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
                     name='cost'
                     label={t('cost')}
-                    rules={[
-                        {required: true,},
-                    ]}>
+                    >
                     <InputNumber placeholder="2.2" min={0} style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
                     name='startingLocationLat'
                     label={t('startingLocationLat')}
-                    rules={[
-                        {required: true,},
-                    ]}>
+                    >
                     <InputNumber placeholder="50.342326" style={{width:'100%'}}/>
                 </Form.Item>
 

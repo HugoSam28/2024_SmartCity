@@ -71,6 +71,7 @@ function AddSubscriptionForm() {
             {required:true}
           ]}>
           <Select
+            defaultValue=""
             options={labelOptions}
           />
         </Form.Item>

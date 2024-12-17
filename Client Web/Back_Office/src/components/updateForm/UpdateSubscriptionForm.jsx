@@ -75,9 +75,7 @@ function UpdateSubscriptionForm() {
                 <Form.Item
                     name="label"
                     label={t("label")}
-                    rules={[
-                        {required:true}
-                    ]}>
+                    >
                     <Select
                         defaultValue="Gold"
                         options={labelOptions}
@@ -86,25 +84,19 @@ function UpdateSubscriptionForm() {
                 <Form.Item
                     name="price"
                     label={t("price")}
-                    rules={[
-                        {required:true}
-                    ]}>
+                    >
                     <InputNumber placeholder="20" min={0} style={{width:'100%'}} />
                 </Form.Item>
                 <Form.Item
                     name="discount"
                     label={t("discount")}
-                    rules={[
-                        {required:true}
-                    ]}>
+                    >
                     <InputNumber placeholder={`0 < ${t("discount")} <= 1`} style={{width:'100%'}} />
                 </Form.Item>
                 <Form.Item
                     name="paymentRecurrence"
                     label={t("paymentRecurrence")}
-                    rules={[
-                        {required:true}
-                    ]}>
+                    >
                     <Select
                         defaultValue=""
                         options={recurrenceOptions}/>
@@ -112,9 +104,7 @@ function UpdateSubscriptionForm() {
                 <Form.Item
                     name="vehicleType"
                     label={t("vehicleType")}
-                    rules={[
-                        {required:true}
-                    ]}>
+                    >
                     <Select
                         defaultValue=""
                         options={vehicleOptions}/>

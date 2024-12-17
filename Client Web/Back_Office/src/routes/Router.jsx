@@ -50,7 +50,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Dashboard >
-          <Bidondon />
+          <CarKeyTable />
         </Dashboard>
       </ProtectedRoute>)
   },
@@ -90,16 +90,6 @@ const router = createBrowserRouter([
         </Dashboard>
       </ProtectedRoute>
     )
-  },
-  {
-    path: '/TablesCarKey',
-    element: (
-      <ProtectedRoute>
-        <Dashboard >
-          <CarKeyTable />
-        </Dashboard>
-      </ProtectedRoute>
-    )
-    }
+  }
 ])
 export default router;

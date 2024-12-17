@@ -74,34 +74,25 @@ function UpdateVehicleForm() {
                 <Form.Item
                     name="lat"
                     label={'Latitude'}
-                    rules={[
-                        {required:true}
-                    ]}
                 >
                     <InputNumber placeholder={50.35468} style={{width:'100%'}}/>
                 </Form.Item>
                 <Form.Item
                     name="lon"
                     label={'Longitude'}
-                    rules={[
-                        {required:true}
-                    ]}>
+                    >
                     <InputNumber placeholder={4.45793}  style={{width:'100%'}}/>
                 </Form.Item>
                 <Form.Item
                     name="batteryLevel"
                     label={t("batteryLevel")}
-                    rules={[
-                        {required:true}
-                    ]}>
+                    >
                     <InputNumber placeholder={70} min={0} max={100} style={{width:'100%'}} />
                 </Form.Item>
                 <Form.Item
                     name="type"
                     label={t("vehicleType")}
-                    rules={[
-                        {required:true}
-                    ]}>
+                    >
                     <Select
                         defaultValue=""
                         options={vehicleOptions}/>
@@ -109,17 +100,13 @@ function UpdateVehicleForm() {
                 <Form.Item
                     name="price"
                     label={t("price")}
-                    rules={[
-                        {required:true}
-                    ]}>
+                    >
                     <InputNumber placeholder="20" min={0} style={{width:'100%'}}/>
                 </Form.Item>
                 <Form.Item
                     name="fees"
                     label={t("fees")}
-                    rules={[
-                        {required:true}
-                    ]}>
+                    >
                     <InputNumber placeholder="1.5" min={0} style={{width:'100%'}}/>
                 </Form.Item>
                 <Form.Item
