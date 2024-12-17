@@ -67,7 +67,7 @@ function UpdateVehicleForm({callback}) {
     const valeur = {id : 2}
     return (
         <div id="formContainer">
-          {contextHolder} /*jj*/
+          {contextHolder}
             <Form
                 onFinish={onFinish}
                 layout={"vertical"}
