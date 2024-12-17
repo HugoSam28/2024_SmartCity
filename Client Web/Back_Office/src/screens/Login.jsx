@@ -66,43 +66,45 @@ export default function LoginScreen() {
     }
   };
   return (
-    <div id="formContainer">
-      <Form
-        name="login"
-        onFinish={handleLogin}
-        layout={'vertical'}
-        id="loginForm"
-        requiredMark={false}
-      >
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
+    <div id="loginContainer">
+      <div id="formContainer">
+        <Form
+          name="login"
+          onFinish={handleLogin}
+          layout={'vertical'}
+          id="loginForm"
+          requiredMark={false}
         >
-          <Input type="email" placeholder="johnsmith@mail.com"/>
-        </Form.Item>
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input.Password type="password" placeholder="Strong.Passw0rd"/>
-        </Form.Item>
-        {error && <p style={{color: "red"}}>{error}</p>}
-        <Form.Item label={null}>
-          <Button type="primary" htmlType="submit">
-            {t("login")}
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input type="email" placeholder="johnsmith@mail.com"/>
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input.Password type="password" placeholder="Strong.Passw0rd"/>
+          </Form.Item>
+          {error && <p style={{color: "red"}}>{error}</p>}
+          <Form.Item label={null}>
+            <Button type="primary" htmlType="submit">
+              {t("login")}
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
     </div>
   )
 }

@@ -32,8 +32,14 @@
   background-color: var(--menu-background-color-dark);
   border-bottom: 1px solid ;
 }
-
+#loginContainer {
+  height:100%;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
 #formContainer {
+  width: 100%;
   background-color: rgba(150, 150, 150, 0.1);
   padding: 25px 30px 10px;
   border-radius: 15px;

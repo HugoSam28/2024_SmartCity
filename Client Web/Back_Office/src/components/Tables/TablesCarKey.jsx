@@ -49,8 +49,6 @@ function TablesCarKey() {
             .catch (e => console.error(e));
     };
 
-
-
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
     const onSelectChange = (newSelectedRowKeys) => {
