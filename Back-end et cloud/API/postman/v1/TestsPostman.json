@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "2fbb75e3-1e7f-40c5-9dad-ad95b1cb0854",
+		"_postman_id": "dca96ccd-eb94-4851-978b-957d702eb8fe",
 		"name": "SmartCityApiTests",
 		"description": "Pré-requis pour lancer l'ensemble des tests :  \n\\- faire npm run initDB avant l'ensemble des tests pour réinitialiser la DB  \n\\- faire npm start express pour lancer l'API  \n  \nVous pouvez ensuite lancer l'ensemble des tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "38872680"
+		"_exporter_id": "39053855"
 	},
 	"item": [
 		{
@@ -2977,7 +2977,7 @@
 									"    pm.expect(response.id).equal(2);\r",
 									"    pm.expect(response.person_id).equal(1);\r",
 									"    pm.expect(response.subscription_id).equal(2);\r",
-									"    pm.expect(response.starting_subscription_date).equal(\"2024-12-16T23:00:00.000Z\");\r",
+									"    pm.expect(response.starting_subscription_date).equal(\"2024-12-17T23:00:00.000Z\");\r",
 									"    pm.expect(response.email).equal(\"root@mail.be\");\r",
 									"    pm.expect(response.label).equal(\"Silver\");\r",
 									"})"
@@ -3045,7 +3045,7 @@
 									"    pm.expect(response.id).equal(2);\r",
 									"    pm.expect(response.person_id).equal(1);\r",
 									"    pm.expect(response.subscription_id).equal(2);\r",
-									"    pm.expect(response.starting_subscription_date).equal(\"2024-12-16T23:00:00.000Z\");\r",
+									"    pm.expect(response.starting_subscription_date).equal(\"2024-12-17T23:00:00.000Z\");\r",
 									"    pm.expect(response.email).equal(\"root@mail.be\");\r",
 									"    pm.expect(response.label).equal(\"Silver\");\r",
 									"})"
@@ -3113,7 +3113,7 @@
 									"    pm.expect(response.id).equal(1);\r",
 									"    pm.expect(response.person_id).equal(2);\r",
 									"    pm.expect(response.subscription_id).equal(2);\r",
-									"    pm.expect(response.starting_subscription_date).equal(\"2024-12-16T23:00:00.000Z\");\r",
+									"    pm.expect(response.starting_subscription_date).equal(\"2024-12-17T23:00:00.000Z\");\r",
 									"    pm.expect(response.email).equal(\"user@mail.be\");\r",
 									"    pm.expect(response.label).equal(\"Silver\");\r",
 									"})"
