@@ -19,7 +19,7 @@ function CarKeyTable() {
   const {t} = useLanguageContext();
 
   const fetchUrls= [
-    '/getAllKeysAndPagesCount',
+    `/getAllKeysAndPagesCount`,
     `/getSearchKeys/${searchValue}`,
   ];
 
@@ -74,11 +74,35 @@ function CarKeyTable() {
     }
   };
 
+
+  const onDelete = async() => {
+    setLoading(true);
+    console.log(JSON.stringify({idList : selectedRowKeys}))
+    try {
+      const data = await fetchWithRetry(`http://localhost:3267/v1/carKey/delete`,{
+        method: 'DELETE',
+        headers: {
+          "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({idList : selectedRowKeys, iPage: currentPage, column: orderBy}),
+      });
+      //await new Promise((resolve) => setTimeout(resolve,2000));
+      setCarKeys(data.keys);
+      setNbPages(data.nbPagesKeys);
+      setLoading(false);
+    } catch (e) {
+      setError(e.message);
+    }
+  }
+
   useEffect(() => {
     fetchData().then(()=> setLoading(false));
   }, [searchValue, orderBy, currentPage]);
+
   return (
-      <div style={{display: 'flex', flexDirection: 'column', height:'86vh', justifyContent: 'center'}}>
+      <div style={{display: 'flex', flexDirection: 'column', height:'86vh', paddingTop: 40}}>
         <Table
             rowKey="id"
             rowSelection={rowSelection}
@@ -91,7 +115,7 @@ function CarKeyTable() {
             loading={loading}
         />
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: '20px 20px 0 0'}}>
-          <Button id='deleteButton' shape="circle" icon={<MdDeleteOutline />} style={{fontSize:19}} color="danger" variant="filled"/>
+          <Button id='deleteButton' onClick={onDelete} shape="circle" icon={<MdDeleteOutline />} style={{fontSize:19}} color="danger" variant="filled"/>
           <Pagination
             align='end'
             defaulCurrent={1}
