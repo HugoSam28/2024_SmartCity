@@ -103,6 +103,9 @@ export const deleteVehicles = async (req, res) => {
         const result= {};
         await vehicleModel.deleteVehicles(pool, req.val.del);
         result.vehicles = await vehicleModel.getAllVehicles(pool, req.val.page, req.val.order);
+        if(!result.vehicles[0]){
+              result.vehicles = await vehicleModel.getAllVehicles(pool, {iPage: req.val.page.iPage - 1}, req.val.order);
+            }
         result.nbPagesVehicles = Math.ceil((await vehicleModel.vehiclesCount(pool))/10);
         if(result.vehicles[0] && result.nbPagesVehicles){
             res.send(result);

@@ -152,8 +152,16 @@ export const deleteSubscriptions = async (req, res) => {
         await subscriptionModel.deleteSubscriptions(pool, req.val.del);
         const result= {};
         result.subscriptions = await subscriptionModel.getAllSubscriptions(pool, req.val.page, req.val.order);
+        if(!result.subscriptions[0]){
+            result.subscriptions = await subscriptionModel.getAllSubscriptions(pool, {iPage: req.val.page.iPage - 1}, req.val.order);
+        }
         result.nbPagesSubscriptions = Math.ceil((await subscriptionModel.subscriptionsCount(pool))/10);
-        res.send(result);
+        if(result.subscriptions[0] && result.nbPagesSubscriptions){
+            res.send(result);
+        }
+          else {
+            res.sendStatus(404);
+        }
     }
     catch(e){
       res.status(500).send(e.message);

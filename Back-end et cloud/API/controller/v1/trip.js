@@ -21,6 +21,9 @@ export const getAllTripsAndPagesCount = async (req, res) => {
   try{
     const result = {};
     result.trips = await tripModel.getAllTrips(pool, req.val.page, req.val.order);
+    if(!result.trips[0]){
+      result.trips = await tripModel.getAllTrips(pool, {iPage: req.val.page.iPage - 1}, req.val.order);
+    }
     result.nbPagesTrips = Math.ceil((await tripModel.tripsCount(pool))/10);
     if(result.trips && result.nbPagesTrips){
         res.send(result);

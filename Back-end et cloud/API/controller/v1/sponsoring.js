@@ -143,8 +143,16 @@ export const deleteSponsoring = async (req, res) => {
         await sponsoringModel.deleteSponsoring(pool, req.val.del);
         const result= {};
         result.sponsoring = await sponsoringModel.getAllSponsoring(pool, req.val.page, req.val.order);
+        if(!result.sponsoring[0]){
+            result.sponsoring = await sponsoringModel.getAllSponsoring(pool, {iPage: req.val.page.iPage - 1}, req.val.order);
+        }
         result.nbPagesSponsoring = Math.ceil((await sponsoringModel.sponsoringCount(pool))/10);
-        res.send(result);
+        if(result.sponsoring[0] && result.nbPagesSponsoring){
+            res.send(result);
+        }
+          else {
+            res.sendStatus(404);
+        }
     }
     catch(e){
       res.status(500).send(e.messages);
