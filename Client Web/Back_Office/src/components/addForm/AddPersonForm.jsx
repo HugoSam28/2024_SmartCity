@@ -2,10 +2,12 @@ import { useState } from 'react';
 import {Button, Form, Input, Space, Select, DatePicker, Switch, InputNumber, notification} from 'antd';
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import dayjs from 'dayjs';
+import fetchWithRetry from "../../API/fetchWithRetry.jsx";
 
 function AddPersonForm({callback}) {
     const [form] = Form.useForm();
     const { t } = useLanguageContext();
+    const [loading, setLoading] = useState(false);
     const [phonePrefix, setPhonePrefix] = useState('+32');
     const prefixes = [
       {value: "+30", label: "+30"},
@@ -50,26 +52,9 @@ function AddPersonForm({callback}) {
       values.hasMotorbikeLicence = motorbikeDisabled
       values.iPage = 1;
       values.column = "id";
-      await fetch('http://localhost:3267/v1/person/registration', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-
-      })
-        .then(response => {
-          if (!response?.ok) {
-            throw new Error(`${t('httpError')} : ${response.status}, ${response.statusText}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log(data);
-          openNotificationWithIcon();
-          callback();
-        })
-        .catch (e => setError(e.message))
+      setLoading(true);
+      addData(values)
+      .then(()=> setLoading(false))
     };
 
 

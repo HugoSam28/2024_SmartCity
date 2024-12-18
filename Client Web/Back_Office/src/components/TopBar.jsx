@@ -13,8 +13,6 @@ function TopBar({children}) {
       <div
         id="topBar"
         style={{
-          marginLeft: -257,
-          paddingLeft: 257,
           width: "100%",
           height: '80px',
           display: 'flex',
@@ -28,7 +26,7 @@ function TopBar({children}) {
         </span>
         <Divider type="vertical"
                  style={{height: '80px', backgroundColor: '#9A9A9970'}}/>
-        <div style={{display: "flex", alignItems: "center", width:'100%', justifyContent: "flex-end", paddingRight: 15}}>
+        <div style={{display: "flex", alignItems: "center", width:'100%', justifyContent: "flex-end", paddingRight: 20}}>
           <Input prefix={<IoSearch/>} size="large" style={{margin: '0 10px 0 10px'}} placeholder={"Search..."}/>
           <UpdateButton />
           <AddButton />
