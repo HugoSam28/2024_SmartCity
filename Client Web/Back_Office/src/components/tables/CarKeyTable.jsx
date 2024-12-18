@@ -3,6 +3,7 @@ import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import fetchWithRetry from "../../API/fetchWithRetry.jsx";
 import {Table, Pagination, Button} from "antd";
 import { MdDeleteOutline } from "react-icons/md";
+import {useNavigate} from "react-router-dom";
 
 function CarKeyTable() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -14,6 +15,7 @@ function CarKeyTable() {
   const [searchValue, setSearchValue] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const {t} = useLanguageContext();
 
   const fetchUrls= [
@@ -51,6 +53,9 @@ function CarKeyTable() {
     selectedRowKeys,
     onChange: onSelectChange,
   };
+  const toLogout = () => {
+    navigate("/logout", {replace: true});
+  }
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -60,7 +65,7 @@ function CarKeyTable() {
           "authorization": `Bearer ${sessionStorage.getItem('token')}`,
           "Content-Type": "application/json",
         },
-      });
+      }, toLogout);
       //await new Promise((resolve) => setTimeout(resolve,2000));
       setCarKeys(data.keys);
       setNbPages(data.nbPagesKeys)

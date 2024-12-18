@@ -2,10 +2,13 @@ import {Button, Form, InputNumber, notification, Space} from "antd";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import fetchWithRetry from "../../API/fetchWithRetry.jsx";
 
 function AddCarKeyForm({callback}) {
   const [form] = Form.useForm();
   const {t} = useLanguageContext();
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState({});
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
@@ -19,34 +22,35 @@ function AddCarKeyForm({callback}) {
   const onReset = () => {
     form.resetFields();
   }
+  const toLogout = () => {
+    navigate("/logout", {replace: true});
+  }
+  const addData = async (values) => {
+    setLoading(true);
+    try {
+      const data = await fetchWithRetry('http://localhost:3267/v1/carKey/add', {
+        method: 'POST',
+        headers: {
+          "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }, toLogout)
+      setData(data)
+      console.log(data);
+      openNotificationWithIcon();
+      callback();
+    }
+    catch (e) {
+      setError(e.message)
+    }
+  }
+
   const onFinish = async (values) => {
     setError("");
     values.iPage = 1;
     values.column = "id";
-    await fetch('http://localhost:3267/v1/carKey/add', {
-      method: 'POST',
-      headers: {
-        "authorization": `Bearer ${sessionStorage.getItem('token')}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-
-    })
-      .then(response => {
-        if (!response?.ok) {
-          if(response.status === 401) {
-            navigate("/logout", {replace:true});
-          }
-          throw new Error(`${t('httpError')} : ${response.status}, ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-        openNotificationWithIcon();
-        callback();
-      })
-      .catch (e => setError(e.message))
+    addData(values).then(()=> setLoading(false));
   };
   return (
     <div id="formContainer">
@@ -68,7 +72,7 @@ function AddCarKeyForm({callback}) {
         {error && <p style={{color: "red"}}>{error}</p>}
         <Form.Item>
           <Space>
-            <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
+            <Button onClick={onReset} loading={loading} color="default" variant="filled">{t('reset')}</Button>
             <Button type="primary" htmlType='submit'>{t('add')}</Button>
           </Space>
         </Form.Item>
