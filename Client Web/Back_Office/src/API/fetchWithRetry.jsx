@@ -25,6 +25,7 @@ async function FetchWithRetry(url, options, onUnauthorized = () => {return null}
       console.error(`Tentative ${attempt + 1} échouée: http : ${response.status}`);
     } catch (err) {
       console.error(`Erreur lors de la tentative ${attempt + 1}: ${err.message}`);
+      throw err;
     }
     attempt++;
     const waitTime = addJitter(delay * (2 ** attempt));
