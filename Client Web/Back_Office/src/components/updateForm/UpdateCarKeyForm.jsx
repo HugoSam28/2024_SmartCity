@@ -1,6 +1,6 @@
 import {Button, Form, Input, InputNumber, notification, Space} from "antd";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 function UpdateCarKeyForm({callback}) {
@@ -9,6 +9,7 @@ function UpdateCarKeyForm({callback}) {
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const [api, contextHolder] = notification.useNotification();
+
     const openNotificationWithIcon = () => {
       api['success']({
         message: t('success'),
@@ -16,6 +17,7 @@ function UpdateCarKeyForm({callback}) {
           t('successMessageUpdate'),
       });
     };
+
     const onReset = () => {
         form.resetFields();
     }
@@ -49,7 +51,7 @@ function UpdateCarKeyForm({callback}) {
             })
             .catch (e => setError(e.message))
     };
-    const valeur = {id : 2}
+
     return (
         <div id="formContainer">
           {contextHolder}
@@ -63,7 +65,7 @@ function UpdateCarKeyForm({callback}) {
                     name ='id'
                     label="Id"
                     disabled={true}>
-                    <Input defaultValue = {valeur.id} disabled />
+                    <Input disabled />
                 </Form.Item>
 
                 <Form.Item
@@ -72,7 +74,7 @@ function UpdateCarKeyForm({callback}) {
                     rules={[
                         {required: true,},
                     ]}>
-                    <InputNumber placeholder="21" min={1} style={{width:'100%'}} />
+                    <InputNumber min={1} style={{width:'100%'}} />
                 </Form.Item>
                 {error && <p style={{color: "red"}}>{error}</p>}
                 <Form.Item>

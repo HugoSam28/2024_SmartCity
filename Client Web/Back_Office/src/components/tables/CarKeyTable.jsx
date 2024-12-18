@@ -3,6 +3,8 @@ import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import fetchWithRetry from "../../API/fetchWithRetry.jsx";
 import {Table, Pagination, Button} from "antd";
 import { MdDeleteOutline } from "react-icons/md";
+//import { useContext } from "react"
+//import DataTransferContext from "../../contexts/DataTransferContext.jsx";
 
 function CarKeyTable() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -15,6 +17,7 @@ function CarKeyTable() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const {t} = useLanguageContext();
+  //const dataTransfer = useContext(DataTransferContext);
 
   const fetchUrls= [
     `/getAllKeysAndPagesCount`,
@@ -43,14 +46,17 @@ function CarKeyTable() {
     }
   ];
 
-  const onSelectChange = (newSelectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
   const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    }
   };
+
+  useEffect(() => {
+    console.log(selectedRowKeys);
+    //.updateRow = s;
+    //console.log(dataTransfer.updateRow);
+  }, [selectedRowKeys]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -73,7 +79,6 @@ function CarKeyTable() {
 
   const onDelete = async() => {
     setLoading(true);
-    console.log(JSON.stringify({idList : selectedRowKeys}))
     try {
       const data = await fetchWithRetry(`http://localhost:3267/v1/carKey/delete`,{
         method: 'DELETE',
@@ -101,7 +106,8 @@ function CarKeyTable() {
       <div style={{display: 'flex', flexDirection: 'column', height:'86vh', paddingTop: 40}}>
         <Table
             rowKey="id"
-            rowSelection={rowSelection}
+            rowSelection={{type: "checkbox", ...rowSelection,
+            }}
             columns={columns}
             dataSource={carKeys}
             pagination={false}

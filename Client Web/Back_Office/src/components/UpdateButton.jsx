@@ -1,6 +1,6 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {useLocation} from "react-router-dom";
-import {Button, Modal} from "antd";
+import {Button, Modal, notification} from "antd";
 import { FiEdit } from "react-icons/fi";
 import {useLanguageContext} from "../contexts/LanguageContext.jsx";
 
@@ -17,7 +17,14 @@ import Model from "./Model.jsx";
 function AddButton() {
 
   const {t} = useLanguageContext();
-
+  const [api, contextHolder] = notification.useNotification();
+  const openNotificationWithIcon = (type) => {
+    api[type]({
+      message: t('success'),
+      description:
+          t('successMessageAdd'),
+    });
+  };
   const location = useLocation();
   const renderForms =(callback) => {
     switch (location.pathname) {
@@ -42,13 +49,24 @@ function AddButton() {
     }
   };
 
+  /*
+  const onClick =() => {
+    console.log(dataTransfer)
+    if(dataTransfer.updateRow.length !== 1) {
+      openNotificationWithIcon("error");
+    }else{
+      setModalOpen(true);
+    }
+  } */
+
   const [modalOpen, setModalOpen] = useState(false);
   return (
     <>
+      {contextHolder}
       <Button
         size="large"
         icon={<FiEdit />}
-        onClick={() => setModalOpen(true)}
+        //onClick={}
         style={{border: "1px solid grey" }}
       >{t('update')}</Button>
       <Modal
