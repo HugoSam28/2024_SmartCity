@@ -53,5 +53,6 @@
   "successMessageAdd": "Ajout de l'élément avec succès !",
   "successMessageUpdate": "Modification de l'élément avec succès !",
   "error" : "Erreur",
-  "messageError" : "Vous ne pouvez modifier qu'un seul élément à la fois"
+  "messageError" : "Vous ne pouvez modifier qu'un seul élément à la fois",
+  "search": "Rechercher"
 }

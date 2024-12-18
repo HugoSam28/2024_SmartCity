@@ -9,18 +9,43 @@ function CarKeyTable() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [carKeys, setCarKeys] = useState([]);
   const [nbPages, setNbPages] = useState(0);
-  const [orderBy, setOrderBy] = useState('id');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [lookingFor, setLookingFor] = useState(0);
-  const [searchValue, setSearchValue] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const {data, rowsToUpdate, setRowsToUpdate} = useDataContext();
+  const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
   const {t} = useLanguageContext();
 
+  useEffect(() => {
+    setPage(1);
+    setOrderBy("id");
+  },[]);
+
+  useEffect(() => {
+    if(data?.elements[0]) {
+      setCarKeys(data?.elements);
+      setNbPages(data?.nbPages);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setRowsToUpdate(selectedRows);
+  }, [selectedRows])
+
+  useEffect( () => {
+    if (orderBy) {
+      setPage(1);
+      fetchData().then(() => setLoading(false));
+    }
+  }, [searchValue]);
+
+  useEffect(() => {
+    if (orderBy) { // parce que orderBy n'est pas encore init au lancement de la page
+      fetchData().then(() => setLoading(false));
+    }
+  }, [orderBy, page]);
+
   const fetchUrls= [
-    `/getAllKeysAndPagesCount`,
-    `/getSearchKeys/${searchValue}`,
+    `getAllKeysAndPagesCount`,
+    `getSearchKeys/${searchValue}`,
   ];
 
   const columns = [
@@ -29,6 +54,7 @@ function CarKeyTable() {
       dataIndex: 'id',
       fixed: 'left',
       sorter: true,
+      defaultSortOrder:'ascend',
       sortDirections: ['ascend'],
     },
     {
@@ -47,96 +73,103 @@ function CarKeyTable() {
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys : ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
       setSelectedRows(selectedRows);
     }
   };
-  useEffect(() => {
-    setRowsToUpdate(selectedRows);
-    console.log(rowsToUpdate);
-  }, [selectedRows])
-
-  useEffect(() => {
-    setCarKeys(data);
-  }, [data]);
 
   const fetchData = async () => {
+    setError("");
     setLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 700));
+
+    let lookingFor = 0;
+    if(searchValue !== ""){
+      lookingFor = 1;
+    }
     try {
-      const data = await fetchWithRetry(`http://localhost:3267/v1/carKey/${fetchUrls[lookingFor]}/${orderBy}/${currentPage}`,{
+      const items = await fetchWithRetry(`http://localhost:3267/v1/carKey/${fetchUrls[lookingFor]}/${orderBy}/${page}`,{
         method: 'GET',
         headers: {
           "authorization": `Bearer ${sessionStorage.getItem('token')}`,
           "Content-Type": "application/json",
         },
       });
-      //await new Promise((resolve) => setTimeout(resolve,2000));
-      setCarKeys(data.keys);
-      setNbPages(data.nbPagesKeys)
+      setData({elements: items.keys, nbPages: items.nbPagesKeys});
     } catch (e) {
       setError(e.message);
     }
   };
-  
 
   const onDelete = async() => {
-    setLoading(true);
-    try {
-      const values = [];
-      selectedRows.forEach((row) => {
-        values.push(row.id);
-      })
-      const data = await fetchWithRetry(`http://localhost:3267/v1/carKey/delete`,{
-        method: 'DELETE',
-        headers: {
-          "authorization": `Bearer ${sessionStorage.getItem('token')}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({idList : values, iPage: currentPage, column: orderBy}),
-      });
-      //await new Promise((resolve) => setTimeout(resolve,2000));
-      setCarKeys(data.keys);
-      setNbPages(data.nbPagesKeys);
-      setLoading(false);
-    } catch (e) {
-      setError(e.message);
+    if(selectedRows.length > 0) {
+      setLoading(true);
+      await new Promise(resolve => setTimeout(resolve, 700));
+      try {
+        const values = [];
+        selectedRows.forEach((row) => {
+          values.push(row.id);
+        })
+        const items = await fetchWithRetry(`http://localhost:3267/v1/carKey/delete`,{
+          method: 'DELETE',
+          headers: {
+            "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({idList : values, iPage: page, column: orderBy}),
+        });
+        setData({elements:items.keys, nbPages: items.nbPagesKeys});
+        setSelectedRows([]);
+        setLoading(false);
+      } catch (e) {
+        setError(e.message);
+      }
     }
   }
-
-  useEffect(() => {
-    fetchData().then(()=> setLoading(false));
-  }, [searchValue, orderBy, currentPage]);
-
+  const handleTableChange = (pagination, filters, sorter) => {
+    if (sorter.field) {
+      setOrderBy(sorter.field);
+    } else {
+      setOrderBy('id');
+    }
+  }
   return (
-      <div style={{display: 'flex', flexDirection: 'column', height:'86vh', paddingTop: 40}}>
-        <Table
-            rowKey="id"
-            rowSelection={{ ...rowSelection,
-            }}
-            columns={columns}
-            dataSource={carKeys}
-            pagination={false}
-            scroll={{
-              x: 'max-content',
-            }}
-            loading={loading}
+    <div style={{display: 'flex', flexDirection: 'column', height:'86vh', paddingTop: 40}}>
+      <Table
+        rowKey="id"
+        rowSelection={{ ...rowSelection,
+        }}
+        columns={columns}
+        dataSource={carKeys}
+        pagination={false}
+        scroll={{
+          x: 'max-content',
+        }}
+        loading={loading}
+        onChange={handleTableChange}
+      />
+      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: '20px 20px 0 0'}}>
+        <Button
+          id='deleteButton'
+          loading={loading}
+          onClick={onDelete}
+          shape="circle"
+          icon={<MdDeleteOutline />}
+          style={{fontSize:19, marginLeft:'-5px', marginTop:'-5px'}}
+          color="danger"
+          variant="filled"
+          size="large"
         />
-        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: '20px 20px 0 0'}}>
-          <Button id='deleteButton' onClick={onDelete} shape="circle" icon={<MdDeleteOutline />} style={{fontSize:19}} color="danger" variant="filled"/>
-          <Pagination
-            align='end'
-            defaulCurrent={1}
-            total={nbPages*10}
-            hideOnSinglePage
-            showSizeChanger={false}
-            showQuickJumper
-            onChange={(page)=> setCurrentPage(page)}/>
-        </div>
-        <span style={{
-          textAlign: 'center',
-          color: 'red'}}
-        >{error && <p>{error}</p>}</span>
+        <Pagination
+          align='end'
+          defaulCurrent={page}
+          total={nbPages*10}
+          hideOnSinglePage
+          showSizeChanger={false}
+          showQuickJumper
+          onChange={(page)=> setPage(page)}/>
       </div>
+      <span style={{textAlign: 'center', color: 'red'}} >{error && <p>{error}</p>}</span>
+    </div>
   );
 };
 export default CarKeyTable;

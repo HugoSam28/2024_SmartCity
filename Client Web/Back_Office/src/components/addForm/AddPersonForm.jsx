@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {Button, Form, Input, Space, Select, DatePicker, Switch, InputNumber, notification} from 'antd';
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import dayjs from 'dayjs';
-import fetchWithRetry from "../../API/fetchWithRetry.jsx";
 
 function AddPersonForm({callback}) {
     const [form] = Form.useForm();
@@ -153,7 +152,7 @@ function AddPersonForm({callback}) {
             <Form.Item>
                 <Space>
                     <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-                    <Button type="primary" htmlType='submit'>{t('add')}</Button>
+                    <Button type="primary" loading={loading} htmlType='submit'>{t('add')}</Button>
                 </Space>
             </Form.Item>
         </Form>

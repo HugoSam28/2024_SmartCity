@@ -14,7 +14,6 @@ import Model from "./Model.jsx";
 import {useDataContext} from "../contexts/DataTransferContext.jsx";
 import {useState} from "react";
 
-
 function UpdateButton() {
   const {t} = useLanguageContext();
   const {rowsToUpdate} = useDataContext();

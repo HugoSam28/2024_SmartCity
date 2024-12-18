@@ -9,10 +9,11 @@ function AddCarKeyForm({callback}) {
   const [form] = Form.useForm();
   const {t} = useLanguageContext();
   const [loading, setLoading] = useState(false);
-  const {setData} = useDataContext();
+  const {setData, setSearchValue, page} = useDataContext();
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
+
   const openNotificationWithIcon = () => {
     api['success']({
       message: t('success'),
@@ -28,8 +29,9 @@ function AddCarKeyForm({callback}) {
   }
   const addData = async (values) => {
     setLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 700));
     try {
-      const data = await fetchWithRetry('http://localhost:3267/v1/carKey/add', {
+      const items = await fetchWithRetry('http://localhost:3267/v1/carKey/add', {
         method: 'POST',
         headers: {
           "authorization": `Bearer ${sessionStorage.getItem('token')}`,
@@ -37,7 +39,7 @@ function AddCarKeyForm({callback}) {
         },
         body: JSON.stringify(values),
       }, toLogout)
-      setData(data)
+      setData({elements:items.keys, nbPages: items.nbPagesKeys});
       openNotificationWithIcon();
       callback();
     }
@@ -48,7 +50,8 @@ function AddCarKeyForm({callback}) {
 
   const onFinish = async (values) => {
     setError("");
-    values.iPage = 1;
+    setSearchValue("");
+    values.iPage = page;
     values.column = "id";
     addData(values).then(()=> setLoading(false));
   };
@@ -72,8 +75,8 @@ function AddCarKeyForm({callback}) {
         {error && <p style={{color: "red"}}>{error}</p>}
         <Form.Item>
           <Space>
-            <Button onClick={onReset} loading={loading} color="default" variant="filled">{t('reset')}</Button>
-            <Button type="primary" htmlType='submit'>{t('add')}</Button>
+            <Button onClick={onReset}  color="default" variant="filled">{t('reset')}</Button>
+            <Button type="primary" loading={loading} htmlType='submit'>{t('add')}</Button>
           </Space>
         </Form.Item>
       </Form>

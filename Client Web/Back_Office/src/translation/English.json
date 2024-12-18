@@ -53,5 +53,6 @@
   "successMessageAdd": "Successfully added the element",
   "successMessageUpdate": "Successfully updated the element",
   "error" : "Error",
-  "messageError" : "You can't edit more than 1 element"
+  "messageError" : "You can't edit more than 1 element",
+  "search": "Search"
 }

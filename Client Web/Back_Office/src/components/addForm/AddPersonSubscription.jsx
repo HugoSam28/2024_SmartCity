@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 function AddPersonSubscriptionForm({callback}) {
   const [form] = Form.useForm();
   const {t} = useLanguageContext();
+  const [loading, setLoading] = useState(false);
   const [date, setDate] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function AddPersonSubscriptionForm({callback}) {
     form.resetFields();
   }
   const onFinish = async (values) => {
+    setLoading(true);
     setError("");
     values.startingSubscriptionDate = date;
     values.iPage = 1;
@@ -48,6 +50,7 @@ function AddPersonSubscriptionForm({callback}) {
         return response.json();
       })
       .then(data => {
+        setLoading(false);
         console.log(data);
         openNotificationWithIcon();
         callback();
@@ -99,7 +102,7 @@ function AddPersonSubscriptionForm({callback}) {
         <Form.Item>
           <Space>
             <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-            <Button type="primary" htmlType='submit'>{t('add')}</Button>
+            <Button type="primary" loading={loading} htmlType='submit'>{t('add')}</Button>
           </Space>
         </Form.Item>
       </Form>
