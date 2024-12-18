@@ -180,7 +180,7 @@ export const deletePersons = async(req, res) => {
     await personModel.deletePersons(pool, req.val.del);
     const result= {};
     result.persons = await personModel.getAllPersons(pool, req.val.page, req.val.order);
-    if(!result.keys[0]){
+    if(!result.persons[0]){
       result.persons = await personModel.getAllPersons(pool, {iPage: req.val.page.iPage - 1}, req.val.order);
     }
     result.nbPagesPersons = Math.ceil((await personModel.personsCount(pool))/10);
