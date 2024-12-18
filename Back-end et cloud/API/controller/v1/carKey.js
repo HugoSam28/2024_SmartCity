@@ -81,6 +81,9 @@ export const deleteCarKeys = async (req, res) => {
         await carKeyModel.deleteCarKeys(pool, req.val.del);
         const result= {};
         result.keys = await carKeyModel.getAllCarKeys(pool, req.val.page, req.val.order);
+        if(!result.keys[0]){
+          result.keys = await carKeyModel.getAllCarKeys(pool, {iPage: req.val.page.iPage - 1}, req.val.order);
+        }
         result.nbPagesKeys = Math.ceil((await carKeyModel.keysCount(pool))/10);
         if(result.keys[0] && result.nbPagesKeys){
           res.send(result);
@@ -90,6 +93,6 @@ export const deleteCarKeys = async (req, res) => {
         }
     }
     catch(e){
-        cres.status(500).send(e.messages);
+        res.status(500).send(e.messages);
     }
 }

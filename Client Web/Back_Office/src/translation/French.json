@@ -51,5 +51,7 @@
   "model": "Modèle",
   "success": "Nickel",
   "successMessageAdd": "Ajout de l'élément avec succès !",
-  "successMessageUpdate": "Modification de l'élément avec succès !"
+  "successMessageUpdate": "Modification de l'élément avec succès !",
+  "error" : "Erreur",
+  "messageError" : "Vous ne pouvez modifier qu'un seul élément à la fois"
 }

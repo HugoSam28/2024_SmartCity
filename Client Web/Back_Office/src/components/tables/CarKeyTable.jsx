@@ -3,9 +3,10 @@ import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import fetchWithRetry from "../../API/fetchWithRetry.jsx";
 import {Table, Pagination, Button} from "antd";
 import { MdDeleteOutline } from "react-icons/md";
+import {useDataContext} from "../../contexts/DataTransferContext.jsx";
 
 function CarKeyTable() {
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
   const [carKeys, setCarKeys] = useState([]);
   const [nbPages, setNbPages] = useState(0);
   const [orderBy, setOrderBy] = useState('id');
@@ -14,6 +15,7 @@ function CarKeyTable() {
   const [searchValue, setSearchValue] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const {data, rowsToUpdate, setRowsToUpdate} = useDataContext();
   const {t} = useLanguageContext();
 
   const fetchUrls= [
@@ -43,14 +45,20 @@ function CarKeyTable() {
     }
   ];
 
-  const onSelectChange = (newSelectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
   const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(`selectedRowKeys : ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      setSelectedRows(selectedRows);
+    }
   };
+  useEffect(() => {
+    setRowsToUpdate(selectedRows);
+    console.log(rowsToUpdate);
+  }, [selectedRows])
+
+  useEffect(() => {
+    setCarKeys(data);
+  }, [data]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -69,20 +77,22 @@ function CarKeyTable() {
       setError(e.message);
     }
   };
-
+  
 
   const onDelete = async() => {
     setLoading(true);
-    console.log(JSON.stringify({idList : selectedRowKeys}))
     try {
+      const values = [];
+      selectedRows.forEach((row) => {
+        values.push(row.id);
+      })
       const data = await fetchWithRetry(`http://localhost:3267/v1/carKey/delete`,{
         method: 'DELETE',
         headers: {
           "authorization": `Bearer ${sessionStorage.getItem('token')}`,
           "Content-Type": "application/json",
         },
-
-        body: JSON.stringify({idList : selectedRowKeys, iPage: currentPage, column: orderBy}),
+        body: JSON.stringify({idList : values, iPage: currentPage, column: orderBy}),
       });
       //await new Promise((resolve) => setTimeout(resolve,2000));
       setCarKeys(data.keys);
@@ -101,7 +111,8 @@ function CarKeyTable() {
       <div style={{display: 'flex', flexDirection: 'column', height:'86vh', paddingTop: 40}}>
         <Table
             rowKey="id"
-            rowSelection={rowSelection}
+            rowSelection={{ ...rowSelection,
+            }}
             columns={columns}
             dataSource={carKeys}
             pagination={false}

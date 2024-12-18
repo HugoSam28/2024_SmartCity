@@ -1,4 +1,3 @@
-import {useContext, useState} from "react";
 import {useLocation} from "react-router-dom";
 import {Button, Modal, notification} from "antd";
 import { FiEdit } from "react-icons/fi";
@@ -12,17 +11,20 @@ import UpdateCarKeyForm from "./updateForm/UpdateCarKeyForm.jsx";
 import UpdateTripForm from "./updateForm/UpdateTripForm.jsx";
 import UpdateSubscriptionForm from "./updateForm/UpdateSubscriptionForm.jsx";
 import Model from "./Model.jsx";
+import {useDataContext} from "../contexts/DataTransferContext.jsx";
+import {useState} from "react";
 
 
-function AddButton() {
-
+function UpdateButton() {
   const {t} = useLanguageContext();
+  const {rowsToUpdate} = useDataContext();
   const [api, contextHolder] = notification.useNotification();
+
   const openNotificationWithIcon = (type) => {
     api[type]({
-      message: t('success'),
+      message: t('error'),
       description:
-          t('successMessageAdd'),
+          t('messageError'),
     });
   };
   const location = useLocation();
@@ -49,16 +51,13 @@ function AddButton() {
     }
   };
 
-  /*
   const onClick =() => {
-    console.log(dataTransfer)
-    if(dataTransfer.updateRow.length !== 1) {
+    if(rowsToUpdate.length !== 1) {
       openNotificationWithIcon("error");
     }else{
       setModalOpen(true);
     }
-  } */
-
+  }
   const [modalOpen, setModalOpen] = useState(false);
   return (
     <>
@@ -66,7 +65,7 @@ function AddButton() {
       <Button
         size="large"
         icon={<FiEdit />}
-        //onClick={}
+        onClick={onClick}
         style={{border: "1px solid grey" }}
       >{t('update')}</Button>
       <Modal
@@ -81,4 +80,4 @@ function AddButton() {
     </>
   )
 }
-export default AddButton;
+export default UpdateButton;

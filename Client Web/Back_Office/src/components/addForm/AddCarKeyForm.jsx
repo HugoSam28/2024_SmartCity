@@ -3,12 +3,13 @@ import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import fetchWithRetry from "../../API/fetchWithRetry.jsx";
+import {useDataContext} from "../../contexts/DataTransferContext.jsx";
 
 function AddCarKeyForm({callback}) {
   const [form] = Form.useForm();
   const {t} = useLanguageContext();
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({});
+  const {setData} = useDataContext();
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
@@ -37,7 +38,6 @@ function AddCarKeyForm({callback}) {
         body: JSON.stringify(values),
       }, toLogout)
       setData(data)
-      console.log(data);
       openNotificationWithIcon();
       callback();
     }

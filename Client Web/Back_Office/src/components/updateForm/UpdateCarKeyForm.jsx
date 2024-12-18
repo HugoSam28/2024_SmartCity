@@ -1,11 +1,13 @@
 import {Button, Form, Input, InputNumber, notification, Space} from "antd";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
-import {useContext, useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useDataContext} from "../../contexts/DataTransferContext.jsx";
 
 function UpdateCarKeyForm({callback}) {
     const [form] = Form.useForm();
     const {t} = useLanguageContext();
+    const {setData, rowsToUpdate} = useDataContext();
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const [api, contextHolder] = notification.useNotification();
@@ -25,6 +27,8 @@ function UpdateCarKeyForm({callback}) {
         setError("");
         values.iPage = 1;
         values.column = "id";
+        values.id = rowsToUpdate[0]?.id;
+
         console.log(values);
         await fetch('http://localhost:3267/v1/carKey/update', {
             method: 'PATCH',
@@ -45,12 +49,15 @@ function UpdateCarKeyForm({callback}) {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
+                setData(data);
                 openNotificationWithIcon();
                 callback();
             })
             .catch (e => setError(e.message))
     };
+    useEffect(() => {
+      form.resetFields();
+    }, [rowsToUpdate])
 
     return (
         <div id="formContainer">
@@ -65,7 +72,7 @@ function UpdateCarKeyForm({callback}) {
                     name ='id'
                     label="Id"
                     disabled={true}>
-                    <Input disabled />
+                    <Input defaultValue={rowsToUpdate[0]?.id} disabled />
                 </Form.Item>
 
                 <Form.Item
@@ -74,7 +81,7 @@ function UpdateCarKeyForm({callback}) {
                     rules={[
                         {required: true,},
                     ]}>
-                    <InputNumber min={1} style={{width:'100%'}} />
+                    <InputNumber defaultValue={rowsToUpdate[0]?.car_id} min={1} style={{width:'100%'}} />
                 </Form.Item>
                 {error && <p style={{color: "red"}}>{error}</p>}
                 <Form.Item>
