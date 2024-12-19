@@ -133,7 +133,7 @@ function CarKeyTable() {
     }
   }
   return (
-    <div style={{display: 'flex', flexDirection: 'column', height:'86vh', paddingTop: 40}}>
+    <div style={{display: 'flex', flexDirection: 'column', paddingTop: 40}}>
       <Table
         rowKey="id"
         rowSelection={{ ...rowSelection,
