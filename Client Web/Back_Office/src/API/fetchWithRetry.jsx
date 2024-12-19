@@ -4,7 +4,6 @@ const addJitter = (time) => {
 }
 
 async function FetchWithRetry(url, options, onUnauthorized = () => {return null}) {
-
   let attempt = 0;
   const maxRetries = 5;
   const delay = 700;
@@ -15,9 +14,9 @@ async function FetchWithRetry(url, options, onUnauthorized = () => {return null}
       if (response.ok) {
         return await response.json();
       }
-      if(response.status === 401 || response.status === 403) {
+      if(response.status === 401) {
         onUnauthorized();
-        throw new Error(`Unauthorized: ${response.status}`);
+        throw new Error(`Connexion expired: ${response.status}`);
       }
       if (response.status >= 400 && response.status < 500) {
         throw new Error(`Erreur client : ${response.status}`);

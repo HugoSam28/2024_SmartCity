@@ -67,22 +67,29 @@ export function MainMenu({children}) {
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
-        width: "289px",
+        width: 279,
       }}>
         <Menu
           id="menu"
           items={items}
           style={{
             border: "none",
-            fontSize: "17px",
+            fontSize: 16,
+            width: "100%",
           }}
         />
-        <a style={{position: "fixed", bottom:35}} href={"/logout"}>{t('logout')}</a>
+        <a style={{
+          position: "fixed",
+          bottom:35,
+          backgroundColor:"#8f8f8d2F",
+          padding: "6px 10px",
+          borderRadius: 10
+        }} href={"/logout"}>{t('logout')}</a>
       </div>
       <div style={{
         height: "100%",
-        width: "100%-289px",
-        marginLeft: "289px",
+        width: "100%-279",
+        marginLeft: 279,
       }}>
         {children}
       </div>

@@ -9,12 +9,12 @@ function AddCarKeyForm({callback}) {
   const [form] = Form.useForm();
   const {t} = useLanguageContext();
   const [loading, setLoading] = useState(false);
-  const {setData, setSearchValue, page} = useDataContext();
+  const {setData, setSearchValue, orderBy, page} = useDataContext();
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
 
-  const openNotificationWithIcon = () => {
+  const openNotification = () => {
     api['success']({
       message: t('success'),
       description:
@@ -29,7 +29,7 @@ function AddCarKeyForm({callback}) {
   }
   const addData = async (values) => {
     setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 700));
+    await new Promise(resolve => setTimeout(resolve, 500));
     try {
       const items = await fetchWithRetry('http://localhost:3267/v1/carKey/add', {
         method: 'POST',
@@ -40,7 +40,7 @@ function AddCarKeyForm({callback}) {
         body: JSON.stringify(values),
       }, toLogout)
       setData({elements:items.keys, nbPages: items.nbPagesKeys});
-      openNotificationWithIcon();
+      openNotification();
       callback();
     }
     catch (e) {
@@ -52,7 +52,7 @@ function AddCarKeyForm({callback}) {
     setError("");
     setSearchValue("");
     values.iPage = page;
-    values.column = "id";
+    values.column = orderBy;
     addData(values).then(()=> setLoading(false));
   };
   return (

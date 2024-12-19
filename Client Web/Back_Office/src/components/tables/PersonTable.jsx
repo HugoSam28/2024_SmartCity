@@ -7,7 +7,7 @@ import {useDataContext} from "../../contexts/DataTransferContext.jsx";
 
 function PersonTable() {
     const [selectedRows, setSelectedRows] = useState([]);
-    const [person, setperson] = useState([]);
+    const [persons, setPersons] = useState([]);
     const [nbPages, setNbPages] = useState(0);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -21,7 +21,7 @@ function PersonTable() {
 
     useEffect(() => {
         if(data?.elements[0]) {
-            setperson(data?.elements);
+            setPersons(data?.elements);
             setNbPages(data?.nbPages);
         }
     }, [data]);
@@ -38,7 +38,7 @@ function PersonTable() {
     }, [searchValue]);
 
     useEffect(() => {
-        if (orderBy) { // parce que orderBy n'est pas encore init au lancement de la page
+        if (orderBy) {
             fetchData().then(() => setLoading(false));
         }
     }, [orderBy, page]);
@@ -70,13 +70,13 @@ function PersonTable() {
             sortDirections: ['ascend']
         },
         {
-            title: t('email'),
+            title: 'Email',
             dataIndex: 'email',
             sorter: true,
             sortDirections: ['ascend']
         },
         {
-            title: t('phoneNumber'),
+            title: t('number'),
             dataIndex: 'phone_number',
             sorter: true,
             sortDirections: ['ascend']
@@ -88,7 +88,7 @@ function PersonTable() {
             sortDirections: ['ascend']
         },
         {
-            title: t('role'),
+            title: 'Role',
             dataIndex: 'role',
             sorter: true,
             sortDirections: ['ascend']
@@ -101,7 +101,6 @@ function PersonTable() {
         },
         {
             title: t('hasCarLicence'),
-            key: 'has_car_licence',
             dataIndex: 'has_car_licence',
             sorter: true,
             sortDirections: ['ascend'],
@@ -132,7 +131,7 @@ function PersonTable() {
     const fetchData = async () => {
         setError("");
         setLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 700));
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         let lookingFor = 0;
         if(searchValue !== ""){
@@ -146,7 +145,6 @@ function PersonTable() {
                     "Content-Type": "application/json",
                 },
             });
-          console.log(items);
             setData({elements: items.persons, nbPages: items.nbPagesPersons});
         } catch (e) {
             setError(e.message);
@@ -156,7 +154,7 @@ function PersonTable() {
     const onDelete = async() => {
         if(selectedRows.length > 0) {
             setLoading(true);
-            await new Promise(resolve => setTimeout(resolve, 700));
+            await new Promise(resolve => setTimeout(resolve, 500));
             try {
                 const values = [];
                 selectedRows.forEach((row) => {
@@ -192,7 +190,7 @@ function PersonTable() {
                 rowSelection={{ ...rowSelection,
                 }}
                 columns={columns}
-                dataSource={person}
+                dataSource={persons}
                 pagination={false}
                 scroll={{
                     x: 'max-content',
@@ -224,5 +222,5 @@ function PersonTable() {
             <span style={{textAlign: 'center', color: 'red'}} >{error && <p>{error}</p>}</span>
         </div>
     );
-};
+}
 export default PersonTable;

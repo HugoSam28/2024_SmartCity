@@ -19,8 +19,8 @@
   "reset" : "Rénisaliser",
   "number" : "Numéro",
   "birthday" : "Anniversaire",
-  "hasCarLicence" : "Permis de conduire voiture",
-  "hasMotorbikeLicence" : "Permis de conduire moto",
+  "hasCarLicence" : "Permis voiture",
+  "hasMotorbikeLicence" : "Permis scooter",
   "referralCode" : "Code de parrainage",
   "httpError": "Erreur http",
   "carId": "Id de la voiture",
@@ -54,5 +54,10 @@
   "successMessageUpdate": "Modification de l'élément avec succès !",
   "error" : "Erreur",
   "messageError" : "Vous ne pouvez modifier qu'un seul élément à la fois",
-  "search": "Rechercher"
+  "search": "Rechercher",
+  "balance": "Solde",
+  "car": "Voiture",
+  "motorbike": "Scooter",
+  "bike": "Vélo",
+  "electricScooter": "Trottinette"
 }

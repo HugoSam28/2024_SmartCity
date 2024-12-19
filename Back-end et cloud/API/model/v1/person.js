@@ -97,7 +97,7 @@ export const personsSearchCount = async(SQLClient, {value}) => {
   return rows[0]?.count;
 }
 
-export const updateMySelf = async(SQLClient, {id, firstName, lastName, email, phoneNumber, password, hasCarlicence, hasMotorbikelicence}) => {
+export const updateMySelf = async(SQLClient, {id, firstName, lastName, email, phoneNumber, password, hasCarLicence, hasMotorbikeLicence}) => {
   let query = `UPDATE person SET `;
   const querySet = [];
   const queryValues = [];
@@ -121,12 +121,12 @@ export const updateMySelf = async(SQLClient, {id, firstName, lastName, email, ph
       queryValues.push(await util.hash(password));
       querySet.push(`password = $${queryValues.length}`)
   }
-  if (hasCarlicence){
-      queryValues.push(hasCarlicence);
+  if (hasCarLicence){
+      queryValues.push(hasCarLicence);
       querySet.push(`has_car_licence = $${queryValues.length}`)
   }
-  if (hasMotorbikelicence){
-      queryValues.push(hasMotorbikelicence);
+  if (hasMotorbikeLicence){
+      queryValues.push(hasMotorbikeLicence);
       querySet.push(`has_motorbike_licence = $${queryValues.length}`)
   }
   if(queryValues.length > 0){
@@ -138,7 +138,7 @@ export const updateMySelf = async(SQLClient, {id, firstName, lastName, email, ph
   }
 }
 
-export async function updatePerson(SQLClient, {id, firstName, lastName, email, phoneNumber, password, role, birthday, balance, hasCarlicence, hasMotorbikelicence, referralCode}){
+export async function updatePerson(SQLClient, {id, firstName, lastName, email, phoneNumber, password, role, birthday, balance, hasCarLicence, hasMotorbikeLicence, referralCode}){
   let query = `UPDATE person SET `;
   const querySet = [];
   const queryValues = [];
@@ -174,12 +174,12 @@ export async function updatePerson(SQLClient, {id, firstName, lastName, email, p
   queryValues.push(balance);
   querySet.push(`balance = $${queryValues.length}`)
   }
-  if (hasCarlicence){
-      queryValues.push(hasCarlicence);
+  if (hasCarLicence){
+      queryValues.push(hasCarLicence);
       querySet.push(`has_car_licence = $${queryValues.length}`)
   }
-  if (hasMotorbikelicence){
-      queryValues.push(hasMotorbikelicence);
+  if (hasMotorbikeLicence){
+      queryValues.push(hasMotorbikeLicence);
       querySet.push(`has_motorbike_licence = $${queryValues.length}`)
   }
   if(referralCode){

@@ -7,10 +7,10 @@ function UpdateVehicleForm({callback}) {
     const [form] = Form.useForm();
     const {t} = useLanguageContext();
     const vehicleOptions = [
-        { value: 'Voiture', label: 'Voiture' },
-        { value: 'Scooter', label: 'Scooter' },
-        { value: 'Velo', label: 'Velo' },
-        { value: 'Trotinette', label: 'Trotinette' },
+      { value: 'Voiture', label: t('car') },
+      { value: 'Scooter', label: t('motorbike') },
+      { value: 'Velo', label: t('bike') },
+      { value: 'Trotinette', label: t('electricScooter') },
     ];
     const [isAvailable, setIsAvailable] = useState(true);
     const [error, setError] = useState("");

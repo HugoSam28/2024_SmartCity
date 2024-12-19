@@ -14,6 +14,10 @@ function UpdateCarKeyForm({callback}) {
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
 
+  useEffect(() => {
+    form.resetFields();
+  }, [rowsToUpdate]);
+
   const openNotificationWithIcon = () => {
     api['success']({
       message: t('success'),
@@ -29,7 +33,7 @@ function UpdateCarKeyForm({callback}) {
   }
   const updateData = async(values) => {
     setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 700));
+    await new Promise(resolve => setTimeout(resolve, 500));
     try {
       const items = await fetchWithRetry('http://localhost:3267/v1/carKey/update', {
         method: 'PATCH',
@@ -53,12 +57,8 @@ function UpdateCarKeyForm({callback}) {
     setSearchValue("");
     values.iPage = page;
     values.column = orderBy;
-    values.id = rowsToUpdate[0]?.id;
     updateData(values).then(()=> setLoading(false));
   };
-  useEffect(() => {
-    form.resetFields();
-  }, [rowsToUpdate])
 
   return (
     <div id="formContainer">
@@ -68,12 +68,15 @@ function UpdateCarKeyForm({callback}) {
         layout={"vertical"}
         form={form}
         requiredMark={false}
+        initialValues={{
+          id: rowsToUpdate[0]?.id,
+        }}
       >
         <Form.Item
           name ='id'
           label="Id"
           disabled={true}>
-          <Input defaultValue={rowsToUpdate[0]?.id} disabled />
+          <Input disabled />
         </Form.Item>
 
         <Form.Item

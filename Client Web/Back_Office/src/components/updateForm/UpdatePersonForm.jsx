@@ -9,17 +9,19 @@ import {useNavigate} from "react-router-dom";
 function UpdatePersonForm({callback}) {
     const [form] = Form.useForm();
     const {t} = useLanguageContext();
-    const [phonePrefix, setPhonePrefix] = useState('+32');
     const {data, setData, rowsToUpdate, setSearchValue, page, orderBy} = useDataContext();
     const [loading, setLoading] = useState(false);
     const [api, contextHolder] = notification.useNotification();
     const yearsAgo = dayjs().add(-16, 'year');
     const [date, setDate] = useState("");
-    const [carDisabled, setCarDisabled] = useState(rowsToUpdate[0]?.hasCarLicence || false);
-    const [motorbikeDisabled, setMotorbikeDisabled] = useState(rowsToUpdate[0]?.hasMotorbikeLicence || false);
+    const [carLicence, setCarLicence] = useState(rowsToUpdate[0]?.has_car_licence);
+    const [motorbikeLicence, setMotorbikeLicence] = useState(rowsToUpdate[0]?.has_motorbike_licence);
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
+    useEffect(() => {
+      form.resetFields();
+    }, [rowsToUpdate]);
 
     const openNotificationWithIcon = () => {
         api['success']({
@@ -29,65 +31,49 @@ function UpdatePersonForm({callback}) {
         });
     };
 
-    const prefixes = [
-        {value: "+30", label: "+30"},
-        {value: "+31", label: "+31"},
-        {value: "+32", label: "+32"},
-        {value: "+33", label: "+33"},
-        {value: "+34", label: "+34"},
-        {value: "+61", label: "+61"},
-        {value: "+91", label: "+91"}
-    ];
-
-    const onPrefixChange = (value) => {
-        setPhonePrefix(value);
-    }
-    const prefixesSelect = <Select options={prefixes} onChange={onPrefixChange} defaultValue="+32"></Select>
-    const onChange = (date, string) => {
+    const onDateChange = (date, string) => {
         setDate(string);
     };
     const onReset = () => {
-        setCarDisabled(false);
-        setMotorbikeDisabled(false);
+        setCarLicence(rowsToUpdate[0].has_car_licence);
+        setMotorbikeLicence(rowsToUpdate[0].has_motorbike_licence);
         form.resetFields();
     };
-
-    useEffect(() => {
-        form.resetFields();
-    }, [rowsToUpdate])
 
     const toLogout = () => {
         navigate("/logout", {replace: true});
     }
 
+    const updateData = async (values) => {
+      setLoading(true);
+      await new Promise(resolve => setTimeout(resolve, 500));
+      try {
+        const items = await fetchWithRetry('http://localhost:3267/v1/person/update', {
+          method: 'PATCH',
+          headers: {
+            "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }, toLogout)
+        setData({elements: items, nbPages: data.nbPages});
+        openNotificationWithIcon();
+        callback();
+      }
+      catch (e) {
+        setError(e);
+      }
+    }
+
     const onFinish = async (values) => {
         setError("");
-        setLoading(true);
         setSearchValue("");
-        await new Promise(resolve => setTimeout(resolve, 700));
-        values.phoneNumber = phonePrefix + values.phoneNumber;
-        values.birthday = date;
-        values.hasCarLicence = carDisabled
-        values.hasMotorbikeLicence = motorbikeDisabled
+        values.birthday = date === "" ? rowsToUpdate[0].date : date;
+        values.hasCarLicence = carLicence;
+        values.hasMotorbikeLicence = motorbikeLicence;
         values.iPage = page;
         values.column = orderBy;
-
-        try {
-            console.log(values)
-            const items = await fetchWithRetry('http://localhost:3267/v1/person/update', {
-                method: 'PATCH',
-                headers: {
-                    "authorization": `Bearer ${sessionStorage.getItem('token')}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(values),
-            }, toLogout)
-            setData({elements: items, nbPages: data.nbPages});
-            openNotificationWithIcon();
-            callback();
-        } catch (e) {
-            setError(e instanceof Error ? e.message : "Une erreur est survenue");
-        }
+        updateData(values).then(() => setLoading(false));
     };
 
     return (
@@ -99,15 +85,6 @@ function UpdatePersonForm({callback}) {
                 form={form}
                 initialValues={{
                     id: rowsToUpdate[0]?.id,
-                    firstName: rowsToUpdate[0]?.first_name,
-                    lastName: rowsToUpdate[0]?.last_name,
-                    email: rowsToUpdate[0]?.email,
-                    phoneNumber: rowsToUpdate[0]?.phone_number,
-                    birthday: rowsToUpdate[0]?.birthday ? dayjs(rowsToUpdate[0]?.birthday) : null, // Assure que birthday est un objet dayjs
-                    role: rowsToUpdate[0]?.role,
-                    hasCarLicence: rowsToUpdate[0]?.has_car_licence,
-                    hasMotorbikeLicence: rowsToUpdate[0]?.has_motorbike_licence,
-                    referralCode: rowsToUpdate[0]?.referral_code,
                 }}
                 requiredMark={false}
                 style={{ width: '100%' }}
@@ -123,19 +100,19 @@ function UpdatePersonForm({callback}) {
                     name='firstName'
                     label={t('firstName')}
                 >
-                    <Input/>
+                    <Input defaultValue={rowsToUpdate[0]?.first_name}/>
                 </Form.Item>
                 <Form.Item
                     name='lastName'
                     label={t('lastName')}
                 >
-                    <Input/>
+                    <Input defaultValue={rowsToUpdate[0]?.last_name}/>
                 </Form.Item>
                 <Form.Item
                     name='email'
                     label="Email"
                 >
-                    <Input/>
+                    <Input defaultValue={rowsToUpdate[0]?.email} />
                 </Form.Item>
                 <Form.Item
                     name='password'
@@ -147,15 +124,15 @@ function UpdatePersonForm({callback}) {
                     name='phoneNumber'
                     label={t('number')}
                 >
-                    <InputNumber addonBefore={prefixesSelect} min={1} style={{width:'100%'}}/>
+                    <Input defaultValue={rowsToUpdate[0]?.phone_number} />
                 </Form.Item>
 
                 <Form.Item name='birthday' label={t('birthday')}>
                     <DatePicker
                         format="YYYY-MM-DD"
                         maxDate={yearsAgo}
-                        defaultValue={rowsToUpdate[0]?.birthday ? dayjs(rowsToUpdate[0]?.birthday) : null}  // Conversion à dayjs
-                        onChange={onChange}
+                        defaultValue={rowsToUpdate[0]?.birthday ? dayjs(rowsToUpdate[0]?.birthday) : null}
+                        onChange={onDateChange}
                         style={{width: '100%'}}
                     />
                 </Form.Item>
@@ -163,28 +140,32 @@ function UpdatePersonForm({callback}) {
                 <Form.Item
                     name='role'
                     label='Role'>
-                    <Select options={[{value:"ROLE_ADMIN", label:"Admin"}, {value:"ROLE_USER", label:"User"}]} />
+                    <Select defaultValue={rowsToUpdate[0]?.role} options={[{value:"ROLE_ADMIN", label:"Admin"}, {value:"ROLE_USER", label:"User"}]} />
                 </Form.Item>
 
                 <Form.Item
                     name='referralCode'
                     label={t('referralCode')}
                 >
-                    <Input/>
+                    <Input defaultValue={rowsToUpdate[0]?.referral_code}/>
                 </Form.Item>
 
                 <Form.Item
                     name='hasCarLicence'
                     label={t('hasCarLicence')}
                     valuePropName="checked">
-                    <Switch defaultChecked={rowsToUpdate[0]?.hasCarLicence} />
+                    <Switch
+                      defaultChecked={rowsToUpdate[0]?.has_car_licence}
+                      onChange={() => {setCarLicence((carLicence) => !carLicence)}}/>
                 </Form.Item>
 
                 <Form.Item
                     name='hasMotorbikeLicence'
                     label={t('hasMotorbikeLicence')}
                     valuePropName="checked">
-                    <Switch defaultChecked={rowsToUpdate[0]?.hasMotorbikeLicence} />
+                    <Switch
+                      defaultChecked={rowsToUpdate[0]?.has_motorbike_licence}
+                      onChange={() => {setMotorbikeLicence((motorbikeLicence) => !motorbikeLicence)}}/>
                 </Form.Item>
 
                 {error && <p style={{color: "red"}}>{error}</p>}
@@ -197,5 +178,5 @@ function UpdatePersonForm({callback}) {
             </Form>
         </div>
     );
-};
+}
 export default UpdatePersonForm;

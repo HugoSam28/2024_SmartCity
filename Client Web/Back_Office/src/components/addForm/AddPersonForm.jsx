@@ -2,10 +2,14 @@ import { useState } from 'react';
 import {Button, Form, Input, Space, Select, DatePicker, Switch, InputNumber, notification} from 'antd';
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import dayjs from 'dayjs';
+import {useDataContext} from "../../contexts/DataTransferContext.jsx";
+import fetchWithRetry from "../../API/fetchWithRetry.jsx";
+import {useNavigate} from "react-router-dom";
 
 function AddPersonForm({callback}) {
     const [form] = Form.useForm();
     const { t } = useLanguageContext();
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [phonePrefix, setPhonePrefix] = useState('+32');
     const prefixes = [
@@ -19,43 +23,67 @@ function AddPersonForm({callback}) {
     ];
     const yearsAgo = dayjs().add(-16, 'year');
     const [date, setDate] = useState("");
-    const [carDisabled, setCarDisabled] = useState(false);
-    const [motorbikeDisabled, setMotorbikeDisabled] = useState(false);
+    const [carLicence, setCarLicence] = useState(false);
+    const [motorbikeLicence, setMotorbikeLicence] = useState(false);
     const [error, setError] = useState("");
+    const {setData, setSearchValue, orderBy, page} = useDataContext();
     const [api, contextHolder] = notification.useNotification();
-    const openNotificationWithIcon = () => {
+
+    const openNotification = () => {
       api['success']({
         message: t('success'),
         description:
           t('successMessageAdd'),
       });
     };
-
     const onPrefixChange = (value) => {
     setPhonePrefix(value);
   }
-    const prefixesSelect = <Select options={prefixes} onChange={onPrefixChange} defaultValue="+32"></Select>
-    const onChange = (date, string) => {
+    const prefixesSelect = <Select options={prefixes} onChange={onPrefixChange} defaultValue="+32" />
+    const onDateChange = (date, string) => {
       setDate(string);
     };
     const onReset = () => {
-      setCarDisabled(false);
-      setMotorbikeDisabled(false);
+      setCarLicence(false);
+      setMotorbikeLicence(false);
       form.resetFields();
     };
+    const toLogout = () => {
+      navigate("/logout", {replace: true});
+    }
+    const addData = async (values) => {
+      setLoading(true);
+      console.log('YOLO')
+      await new Promise(resolve => setTimeout(resolve, 500));
+      try {
+        const items = await fetchWithRetry('http://localhost:3267/v1/person/add', {
+          method: 'POST',
+          headers: {
+            "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }, toLogout)
+        setData({elements:items.persons, nbPages: items.nbPagesPersons});
+        openNotification();
+        callback();
+      }
+      catch (e) {
+        setError(e.message)
+      }
+    }
     const onFinish = async (values) =>  {
       setError("");
+      setSearchValue("");
       values.phoneNumber = phonePrefix + values.phoneNumber;
       values.birthday = date;
-      values.hasCarLicence = carDisabled
-      values.hasMotorbikeLicence = motorbikeDisabled
-      values.iPage = 1;
-      values.column = "id";
-      setLoading(true);
-      addData(values)
-      .then(()=> setLoading(false))
+      values.hasCarLicence = carLicence;
+      values.hasMotorbikeLicence = motorbikeLicence;
+      values.iPage = page;
+      values.column = orderBy;
+      console.log(values);
+      addData(values).then(()=> setLoading(false))
     };
-
 
     return (
       <div id="formContainer">
@@ -65,7 +93,6 @@ function AddPersonForm({callback}) {
             layout={"vertical"}
             form={form}
             requiredMark={false}
-            style={{ width: '100%' }}
         >
             <Form.Item
               name='firstName'
@@ -112,7 +139,6 @@ function AddPersonForm({callback}) {
               rules={[
                 {required: true,},
               ]}
-
             >
                 <InputNumber addonBefore={prefixesSelect} min={1} style={{width: '100%'}}/>
             </Form.Item>
@@ -127,7 +153,7 @@ function AddPersonForm({callback}) {
                 <DatePicker
                     format="YYYY-MM-DD"
                     maxDate={yearsAgo}
-                    onChange={onChange}
+                    onChange={onDateChange}
                     style={{
                       width: '100%',
                     }}
@@ -140,13 +166,13 @@ function AddPersonForm({callback}) {
               name='hasCarLicence'
               label={t('hasCarLicence')}
             >
-                <Switch onChange={() => {setCarDisabled((carDisabled) => !carDisabled)}}/>
+                <Switch onChange={() => {setCarLicence((carLicence) => !carLicence)}}/>
             </Form.Item>
             <Form.Item
               name='hasMotorbikeLicence'
               label={t('hasMotorbikeLicence')}
             >
-                <Switch onChange={() => {setMotorbikeDisabled((motorbikeDisabled) => !motorbikeDisabled)}}/>
+                <Switch onChange={() => {setMotorbikeLicence((motorbikeLicence) => !motorbikeLicence)}}/>
             </Form.Item>
             {error && <p style={{color: "red"}}>{error}</p>}
             <Form.Item>
@@ -158,5 +184,5 @@ function AddPersonForm({callback}) {
         </Form>
       </div>
     );
-};
+}
 export default AddPersonForm;

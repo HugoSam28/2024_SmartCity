@@ -54,5 +54,10 @@
   "successMessageUpdate": "Successfully updated the element",
   "error" : "Error",
   "messageError" : "You can't edit more than 1 element",
-  "search": "Search"
+  "search": "Search",
+  "balance": "Balance",
+  "car": "Car",
+  "motorbike": "Motorbike",
+  "bike": "Bike",
+  "electricScooter": "Electric scooter"
 }

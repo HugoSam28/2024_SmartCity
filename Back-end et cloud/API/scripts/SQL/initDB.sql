@@ -114,7 +114,7 @@ CREATE TABLE Trip
 CREATE TABLE Sponsoring
 (
     referred INT PRIMARY KEY REFERENCES Person (id) ON DELETE CASCADE,
-    sponsor  INT REFERENCES Person (id) ON DELETE SET NULL CHECK ( sponsor > referred )
+    sponsor  INT REFERENCES Person (id) ON DELETE SET NULL CHECK ( sponsor < referred )
 );
 
 CREATE OR REPLACE FUNCTION sponsor_limit()
@@ -137,7 +137,7 @@ EXECUTE FUNCTION sponsor_limit();
 INSERT INTO Vehicle (location, battery_level, type, price, is_available, fees)
 VALUES (point(4.91336, 50.41501),
         70.4,
-        'Trotinette',
+        'Trottinette',
         0.5,
         TRUE,
         1);
@@ -145,7 +145,7 @@ VALUES (point(4.91336, 50.41501),
 INSERT INTO Vehicle (location, battery_level, type, price, is_available, fees)
 VALUES (point(4.91536, 50.41501),
         60.4,
-        'Trotinette',
+        'Trottinette',
         0.5,
         FALSE,
         1);
@@ -252,10 +252,10 @@ VALUES (3,
        );
 
 INSERT INTO Sponsoring (sponsor, referred)
-VALUES (2, 1);
+VALUES (1, 2);
 
 INSERT INTO Sponsoring (sponsor, referred)
-VALUES (3, 2);
+VALUES (2, 3);
 
 INSERT INTO Trip (person_ID, vehicle_ID, starting_date, ending_date, distance, cost, starting_location, ending_location)
 VALUES (1,
@@ -265,7 +265,7 @@ VALUES (1,
         23.45,
         0.45,
         POINT(4.90997, 50.41512),
-        point(4.90997, 51.41512));
+        POINT(4.90997, 51.41512));
 
 INSERT INTO Trip (person_ID, vehicle_ID, starting_date, ending_date, distance, cost, starting_location, ending_location)
 VALUES (2,
@@ -275,4 +275,4 @@ VALUES (2,
         23.40,
         500.45,
         POINT(4.90997, 50.41512),
-        point(5.90997, 51.41512));
+        POINT(5.90997, 51.41512));

@@ -2,6 +2,7 @@ import Router from 'express-promise-router';
 import {
   registration,
   login,
+  addPerson,
   getMyInfos,
   getProfileInfos,
   getAllPersons,
@@ -32,6 +33,7 @@ const router = Router();
 
 router.post("/registration", PVM, registration); //OK + gestion du referral code si présent
 router.post("/login", LVM, login); //OK
+router.post("/add", checkJWT, admin, PVM, PageVM, OVM, addPerson)
 
 router.get("/infos", checkJWT, getMyInfos); //Récupère toutes les infos du profil
 router.get("/porfile",checkJWT, getProfileInfos) //Récupérer les infos de bases concernant l'utilisateur pour le profil + le code de parrainage

@@ -38,7 +38,7 @@ function CarKeyTable() {
   }, [searchValue]);
 
   useEffect(() => {
-    if (orderBy) { // parce que orderBy n'est pas encore init au lancement de la page
+    if (orderBy) {
       fetchData().then(() => setLoading(false));
     }
   }, [orderBy, page]);
@@ -80,7 +80,7 @@ function CarKeyTable() {
   const fetchData = async () => {
     setError("");
     setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 700));
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     let lookingFor = 0;
     if(searchValue !== ""){
@@ -103,7 +103,7 @@ function CarKeyTable() {
   const onDelete = async() => {
     if(selectedRows.length > 0) {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 700));
+      await new Promise(resolve => setTimeout(resolve, 500));
       try {
         const values = [];
         selectedRows.forEach((row) => {
@@ -171,5 +171,5 @@ function CarKeyTable() {
       <span style={{textAlign: 'center', color: 'red'}} >{error && <p>{error}</p>}</span>
     </div>
   );
-};
+}
 export default CarKeyTable;

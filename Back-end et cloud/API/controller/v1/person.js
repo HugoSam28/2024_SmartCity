@@ -4,42 +4,42 @@ import * as personModel from "../../model/v1/person.js";
 import jwt from 'jsonwebtoken';
 import {addSponsoring} from "../../model/v1/sponsoring.js";
 import * as util from "../../util/argon.js";
-
+const handleReferralCode = async (referred, code) => {
+  let SQLClient;
+  try {
+    SQLClient = await pool.connect();
+    await SQLClient.query("BEGIN");
+    const idSponsor = await personModel.getPersonByReferralCode(SQLClient, code);
+    if(idSponsor){
+      await addSponsoring(SQLClient, {sponsor:idSponsor, referred});
+      await SQLClient.query(
+        "UPDATE Person SET balance = balance+3 WHERE id IN ($1, $2)",
+        [idSponsor, referred]);
+      await SQLClient.query("COMMIT");
+    }
+  } catch (error) {
+    try {
+      if(SQLClient){
+        await SQLClient.query('ROLLBACK');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } finally {
+    if(SQLClient){
+      SQLClient.release();
+    }
+  }
+}
 export const registration = async (req, res) => {
   try {
     const idReferred = await personModel.addPerson(pool, req.val);
     if(req.val.referralCode) {
-      let SQLClient;
-      try {
-        SQLClient = await pool.connect();
-        await SQLClient.query("BEGIN");
-        const idSponsor = await personModel.getPersonByReferralCode(SQLClient, req.val.referralCode);
-        await addSponsoring(SQLClient, idSponsor, idReferred);
-        await SQLClient.query(
-          "UPDATE Person SET balance = balance+3 WHERE id IN ($1, $2)",
-          [idSponsor, idReferred]);
-        await SQLClient.query("COMMIT");
-      } catch (error) {
-        console.error(error);
-        try {
-          if(SQLClient){
-            await SQLClient.query('ROLLBACK');
-          }
-        } catch (err) {
-          console.error(err);
-        } finally {
-          res.sendStatus(500);
-        }
-      } finally {
-        if(SQLClient){
-          SQLClient.release();
-        }
-      }
+      await handleReferralCode(idReferred, req.val.referralCode);
     }
     res.status(201).send({idReferred});
   }
   catch (e) {
-    console.error(e);
     res.sendStatus(500);
   }
 }
@@ -54,6 +54,26 @@ export const login = async (req,res) => {
     const token = jwt.sign(userDetails, process.env.JWTKEY, {expiresIn: "18h"} );
     res.status(201).send(token);
   } catch(e) {
+    res.status(500).send(e.message);
+  }
+}
+export const addPerson = async (req, res) => {
+  try{
+    const result= {};
+    result.id = await personModel.addPerson(pool, req.val);
+    if (req.val.referralCode){
+      await handleReferralCode(result.id, req.val.referralCode);
+    }
+    result.persons = await personModel.getAllPersons(pool, req.val.page, req.val.order);
+    result.nbPagesPersons = Math.ceil((await personModel.personsCount(pool))/10);
+    if(result.id && result.persons && result.nbPagesPersons){
+      res.status(201).send(result);
+    }
+    else{
+      res.sendStatus(404);
+    }
+  }
+  catch(e){
     res.status(500).send(e.message);
   }
 }
