@@ -1,12 +1,17 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import {Button, Form, Input, Space, Select, DatePicker, Switch, InputNumber, notification} from 'antd';
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import dayjs from 'dayjs';
+import {useDataContext} from "../../contexts/DataTransferContext.jsx";
+import fetchWithRetry from "../../API/fetchWithRetry.jsx";
 
 function UpdatePersonForm({callback}) {
     const [form] = Form.useForm();
-    const { t } = useLanguageContext();
+    const {t} = useLanguageContext();
     const [phonePrefix, setPhonePrefix] = useState('+32');
+    const {data, setData, rowsToUpdate, setSearchValue, page, orderBy} = useDataContext();
+    const [loading, setLoading] = useState(false);
+
     const prefixes = [
         {value: "+30", label: "+30"},
         {value: "+31", label: "+31"},
@@ -23,11 +28,11 @@ function UpdatePersonForm({callback}) {
     const [error, setError] = useState("");
     const [api, contextHolder] = notification.useNotification();
     const openNotificationWithIcon = () => {
-      api['success']({
-        message: t('success'),
-        description:
-          t('successMessageUpdate'),
-      });
+        api['success']({
+            message: t('success'),
+            description:
+                t('successMessageUpdate'),
+        });
     };
     const onPrefixChange = (value) => {
         setPhonePrefix(value);
@@ -41,41 +46,42 @@ function UpdatePersonForm({callback}) {
         setMotorbikeDisabled(false);
         form.resetFields();
     };
-    const onFinish = async (values) =>  {
+
+    useEffect(() => {
+        form.resetFields();
+    }, [rowsToUpdate])
+
+    const toLogout = () => {
+        navigate("/logout", {replace: true});
+    }
+    const onFinish = async (values) => {
         setError("");
+        setLoading(true);
+        setSearchValue("");
+        await new Promise(resolve => setTimeout(resolve, 700));
         values.phoneNumber = phonePrefix + values.phoneNumber;
         values.birthday = date;
         values.hasCarLicence = carDisabled
         values.hasMotorbikeLicence = motorbikeDisabled
         values.iPage = 1;
         values.column = "id";
-        await fetch('http://localhost:3267/v1/person/update', {
-            method: 'PATCH',
-            headers: {
-              "authorization": `Bearer ${sessionStorage.getItem('token')}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(values),
-
-        })
-            .then(response => {
-                if (!response?.ok) {
-                    throw new Error(`${t('httpError')} : ${response.status}, ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-              console.log(data);
-              openNotificationWithIcon();
-              callback();
-
-            })
-            .catch (e => {
-              setError(e.message);
-            })
+        try {
+            const items = await fetchWithRetry('http://localhost:3267/v1/person/update', {
+                method: 'PATCH',
+                headers: {
+                    "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values),
+            }, toLogout)
+            setData({elements: items, nbPages: data.nbPages});
+            openNotificationWithIcon();
+            callback();
+        } catch (e) {
+            setError(e);
+        }
     };
 
-    const valeur = {id : 2}
     return (
         <div id="formContainer">
           {contextHolder}
@@ -90,37 +96,37 @@ function UpdatePersonForm({callback}) {
                     name ='id'
                     label="Id"
                     disabled={true}>
-                    <InputNumber defaultValue = {valeur.id} disabled style={{width:'100%'}}/>
+                    <InputNumber defaultValue = {rowsToUpdate[0]?.id} disabled style={{width:'100%'}}/>
                 </Form.Item>
                 <Form.Item
                     name='firstName'
                     label={t('firstName')}
                 >
-                    <Input placeholder="John" />
+                    <Input defaultValue={rowsToUpdate[0]?.firstName} />
                 </Form.Item>
                 <Form.Item
                     name='lastName'
                     label={t('lastName')}
                 >
-                    <Input placeholder="Smith" />
+                    <Input defaultValue={rowsToUpdate[0]?.lastName} />
                 </Form.Item>
                 <Form.Item
                     name='email'
                     label="Email"
                 >
-                    <Input placeholder="johnsmith@mail.com" />
+                    <Input defaultValue={rowsToUpdate[0]?.email} />
                 </Form.Item>
                 <Form.Item
                     name='password'
                     label={t('password')}
                 >
-                    <Input placeholder="Strong.Passw0rd" />
+                    <Input defaultValue={rowsToUpdate[0]?.password} />
                 </Form.Item>
                 <Form.Item
                     name='phoneNumber'
                     label={t('number')}
                 >
-                    <InputNumber addonBefore={prefixesSelect} min={1} style={{width:'100%'}}/>
+                    <InputNumber defaultValue={rowsToUpdate[0]?.phone_number} addonBefore={prefixesSelect} min={1} style={{width:'100%'}}/>
                 </Form.Item>
                 <Form.Item
                     name='birthday'

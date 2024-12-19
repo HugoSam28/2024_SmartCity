@@ -6,6 +6,7 @@ import Logout from "../components/Logout.jsx";
 import Dashboard from "../screens/Dashboard.jsx";
 import CarKeyTable from "../components/tables/CarKeyTable.jsx";
 import TextDashBoard from "../components/TextDashBoard.jsx";
+import PersonTable from "../components/tables/PersonTable.jsx";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Dashboard >
-
+            <PersonTable/>
         </Dashboard>
       </ProtectedRoute>)
   },
