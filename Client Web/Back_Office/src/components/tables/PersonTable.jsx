@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import fetchWithRetry from "../../API/fetchWithRetry.jsx";
-import {Table, Pagination, Button} from "antd";
+import {Table, Pagination, Button, Tag} from "antd";
 import { MdDeleteOutline } from "react-icons/md";
 import {useDataContext} from "../../contexts/DataTransferContext.jsx";
 
@@ -101,15 +101,19 @@ function PersonTable() {
         },
         {
             title: t('hasCarLicence'),
+            key: 'has_car_licence',
             dataIndex: 'has_car_licence',
             sorter: true,
-            sortDirections: ['ascend']
+            sortDirections: ['ascend'],
+            render:(value) => (<Tag color={value ? 'green' : 'volcano' }>{value ? 'True' : 'False'}</Tag>)
         },
         {
             title: t('hasMotorbikeLicence'),
             dataIndex: 'has_motorbike_licence',
             sorter: true,
-            sortDirections: ['ascend']
+            sortDirections: ['ascend'],
+            render:(value) => (<Tag color={value ? 'green' : 'volcano' }>{value ? 'True' : 'False'}</Tag>)
+
         },
         {
             title: t('referralCode'),
@@ -142,7 +146,8 @@ function PersonTable() {
                     "Content-Type": "application/json",
                 },
             });
-            setData({elements: items.keys, nbPages: items.nbPagesKeys});
+          console.log(items);
+            setData({elements: items.persons, nbPages: items.nbPagesPersons});
         } catch (e) {
             setError(e.message);
         }
@@ -165,7 +170,7 @@ function PersonTable() {
                     },
                     body: JSON.stringify({idList : values, iPage: page, column: orderBy}),
                 });
-                setData({elements:items.keys, nbPages: items.nbPagesKeys});
+                setData({elements:items.persons, nbPages: items.nbPagesPersons});
                 setSelectedRows([]);
                 setLoading(false);
             } catch (e) {
