@@ -1,0 +1,15 @@
+    Liste des utilisateurs enregistrés
+
+ROLE_ADMIN : 
+
+    - root@mail.be
+    - root
+
+ROLE_USER :
+
+    - user@mail.be
+    - root
+
+    - user2@mail.be
+    - root
+    
