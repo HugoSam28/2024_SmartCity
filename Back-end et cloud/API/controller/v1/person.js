@@ -90,9 +90,9 @@ export const getProfileInfos = async(req, res) => {
 
 export const getAllPersons = async (req, res) => {
   try{
-    const people = await personModel.getAllPersons(pool, req.val.page, req.val.order);
-    if(people){
-      res.send(people);
+    const persons = await personModel.getAllPersons(pool, req.val.page, req.val.order);
+    if(persons){
+      res.send(persons);
     }
     else{
       res.sendStatus(404);
