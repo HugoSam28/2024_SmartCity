@@ -2,6 +2,8 @@ import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import {Button, Form, Input, InputNumber, notification, Select, Space, Switch} from "antd";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import fetchWithRetry from "../../API/fetchWithRetry.jsx";
+import {useDataContext} from "../../contexts/DataTransferContext.jsx";
 
 function AddVehicleForm({callback}) {
   const [form] = Form.useForm();
@@ -27,9 +29,11 @@ function AddVehicleForm({callback}) {
   const [vehicle, setVehicle] = useState("");
   const [isAvailable, setIsAvailable] = useState(true);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const {setData, setSearchValue, orderBy, page} = useDataContext();
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
-  const openNotificationWithIcon = () => {
+  const openNotification = () => {
     api['success']({
       message: t('success'),
       description:
@@ -40,37 +44,39 @@ function AddVehicleForm({callback}) {
     setIsAvailable(true);
     form.resetFields();
   }
+  const toLogout = () => {
+    navigate("/logout", {replace: true});
+  }
+
+  const addData = async (values) => {
+    setLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 500));
+    try {
+      const items = await fetchWithRetry('http://localhost:3267/v1/vehicle/add', {
+        method: 'POST',
+        headers: {
+          "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }, toLogout)
+      setData({elements:items.vehicles, nbPages: items.nbPagesVehicles});
+      openNotification();
+      callback();
+    }
+    catch (e) {
+      setError(e.message)
+    }
+  }
   const onFinish = async (values) => {
     setError("");
+    setSearchValue("");
     values.isAvailable = isAvailable;
     values.type = vehicle;
-    values.iPage = 1;
-    values.column = "id";
-    console.log(values);
-    await fetch('http://localhost:3267/v1/vehicle/add', {
-      method: 'POST',
-      headers: {
-        "authorization": `Bearer ${sessionStorage.getItem('token')}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
+    values.iPage = page;
+    values.column = orderBy;
+    addData(values).then(()=> setLoading(false));
 
-    })
-      .then(response => {
-        if (!response?.ok) {
-          if(response.status === 401) {
-            navigate("/logout", {replace:true});
-          }
-          throw new Error(`${t('httpError')} : ${response.status}, ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-        openNotificationWithIcon();
-        callback();
-      })
-      .catch (e => setError(e.message))
   };
 
 

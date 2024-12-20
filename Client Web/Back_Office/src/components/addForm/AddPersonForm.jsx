@@ -53,7 +53,6 @@ function AddPersonForm({callback}) {
     }
     const addData = async (values) => {
       setLoading(true);
-      console.log('YOLO')
       await new Promise(resolve => setTimeout(resolve, 500));
       try {
         const items = await fetchWithRetry('http://localhost:3267/v1/person/add', {
@@ -81,7 +80,6 @@ function AddPersonForm({callback}) {
       values.hasMotorbikeLicence = motorbikeLicence;
       values.iPage = page;
       values.column = orderBy;
-      console.log(values);
       addData(values).then(()=> setLoading(false))
     };
 

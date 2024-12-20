@@ -42,7 +42,6 @@ function AddTripForm({callback}) {
             setLoading(true);
             await new Promise(resolve => setTimeout(resolve, 500));
             try {
-                console.log(values);
                 const items = await fetchWithRetry('http://localhost:3267/v1/trip/add', {
                     method: 'POST',
                     headers: {
