@@ -14,40 +14,6 @@ function VehicleTable() {
   const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
   const {t} = useLanguageContext();
 
-  useEffect(() => {
-    setPage(1);
-    setOrderBy("id");
-  },[]);
-
-  useEffect(() => {
-    if(data?.elements[0]) {
-      setCarKeys(data?.elements);
-      setNbPages(data?.nbPages);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    setRowsToUpdate(selectedRows);
-  }, [selectedRows])
-
-  useEffect( () => {
-    if (orderBy) {
-      setPage(1);
-      fetchData().then(() => setLoading(false));
-    }
-  }, [searchValue]);
-
-  useEffect(() => {
-    if (orderBy) {
-      fetchData().then(() => setLoading(false));
-    }
-  }, [orderBy, page]);
-
-  const fetchUrls= [
-    `getAllVehiclesAndPagesCount`,
-    `getSearchVehicles/${searchValue}`,
-  ];
-
   const columns = [
     {
       title: 'Id',
@@ -62,14 +28,14 @@ function VehicleTable() {
       dataIndex: 'location',
       sorter: true,
       sortDirections: ['ascend'],
-      render:(value) => (<p>{value.y}</p>)
+      render:(value) => (<p>{value?.y}</p>)
     },
     {
       title: 'Longitude',
       dataIndex: 'location',
       sorter: true,
       sortDirections: ['ascend'],
-      render:(value) => (<p>{value.x}</p>)
+      render:(value) => (<p>{value?.x}</p>)
     },
     {
       title: t('batteryLevel'),
@@ -91,7 +57,7 @@ function VehicleTable() {
     },
     {
       title: t('isAvailable'),
-      dataIndex: 'location[0]',
+      dataIndex: 'is_available',
       sorter: true,
       sortDirections: ['ascend'],
       render:(value) => (<Tag color={value ? 'green' : 'volcano' }>{value ? 'True' : 'False'}</Tag>)
@@ -120,6 +86,49 @@ function VehicleTable() {
       sorter: true,
       sortDirections: ['ascend']
     }
+  ];
+
+  let validOrderBy = false;
+  let iDataIndex = 0;
+  while (iDataIndex < columns.length && !validOrderBy) {
+    if(orderBy === columns[iDataIndex].dataIndex) {
+      validOrderBy = true;
+    }
+    iDataIndex++;
+  }
+
+  useEffect(() => {
+    setPage(1);
+    setOrderBy("id");
+  },[]);
+
+  useEffect(() => {
+    if(data?.elements[0]) {
+      setCarKeys(data?.elements);
+      setNbPages(data?.nbPages);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setRowsToUpdate(selectedRows);
+  }, [selectedRows])
+
+  useEffect( () => {
+    if (validOrderBy) {
+      setPage(1);
+      fetchData().then(() => setLoading(false));
+    }
+  }, [searchValue]);
+
+  useEffect(() => {
+    if (validOrderBy) {
+      fetchData().then(() => setLoading(false));
+    }
+  }, [orderBy, page]);
+
+  const fetchUrls= [
+    `getAllVehiclesAndPagesCount`,
+    `getSearchVehicles/${searchValue}`,
   ];
 
   const rowSelection = {

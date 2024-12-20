@@ -9,7 +9,7 @@ import {useNavigate} from "react-router-dom";
 function UpdatePersonSubscription({callback}) {
   const [form] = Form.useForm();
   const {t} = useLanguageContext();
-  const {data, setData, rowsToUpdate, setSearchValue, page, orderBy} = useDataContext();
+  const {data, setData, rowsToUpdate, setSearchValue, page, orderBy, setRowsToUpdate} = useDataContext();
   const [loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [date, setDate] = useState("");
@@ -48,6 +48,7 @@ function UpdatePersonSubscription({callback}) {
       setData({elements:items, nbPages: data.nbPages});
       openNotificationWithIcon();
       callback();
+      setRowsToUpdate([]);
     }
     catch (e) {
       setError(e.message);
@@ -59,8 +60,7 @@ function UpdatePersonSubscription({callback}) {
     setSearchValue("");
     values.iPage = page;
     values.column = orderBy;
-    values.starstartingSubscriptionDate = date === "" ? rowsToUpdate[0].date : date;
-    console.log(values);
+    values.startingSubscriptionDate = date === "" ? rowsToUpdate[0].date : date;
     updateData(values).then(()=> setLoading(false));
   };
 

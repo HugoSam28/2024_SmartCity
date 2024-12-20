@@ -8,6 +8,9 @@ import fetchWithRetry from "../../API/fetchWithRetry.jsx";
 function UpdateVehicleForm({callback}) {
     const [form] = Form.useForm();
     const {t} = useLanguageContext();
+    const {data, setData, rowsToUpdate, setSearchValue, page, orderBy, setRowsToUpdate} = useDataContext();
+    console.log(rowsToUpdate[0]?.type);
+    const [vehicle, setVehicle] = useState(rowsToUpdate[0]?.type);
     const vehicleOptions = [
       { value: 'Voiture', label: t('car') },
       { value: 'Scooter', label: t('motorbike') },
@@ -16,9 +19,9 @@ function UpdateVehicleForm({callback}) {
     ];
     const additionalFields = {
     Voiture: [
-      { name: "brand", label: t("brand"), placeholder: "Volvo" },
-      { name: "model", label: t("model"), placeholder: "XC90-2024" },
-      { name: "chassisNumber", label: t("chassisNumber"), placeholder: "dgge53Gsi9zegh0Z2" },
+      { name: "brand", label: t("brand"), placeholder: "Volvo", defaultValue : rowsToUpdate[0]?.brand },
+      { name: "model", label: t("model"), placeholder: "XC90-2024", defaultValue : rowsToUpdate[0]?.model},
+      { name: "chassisNumber", label: t("chassisNumber"), placeholder: "dgge53Gsi9zegh0Z2", defaultValue : rowsToUpdate[0]?.chassis_number},
     ],
     Scooter: [
       { name: "brand", label: t("brand"), placeholder: "Piaggio" },
@@ -26,7 +29,6 @@ function UpdateVehicleForm({callback}) {
       { name: "chassisNumber", label: t("chassisNumber"), placeholder: "dgge53Gsi9zegh0Z2" },
     ],
   };
-    const {data, setData, rowsToUpdate, setSearchValue, page, orderBy} = useDataContext();
     const [loading, setLoading] = useState(false);
     const [isAvailable, setIsAvailable] = useState(true);
     const [error, setError] = useState("");
@@ -46,6 +48,7 @@ function UpdateVehicleForm({callback}) {
     };
     const onReset = () => {
       setIsAvailable(rowsToUpdate[0]?.is_available);
+      setVehicle(rowsToUpdate[0]?.type);
       form.resetFields();
     }
     const toLogout = () => {
@@ -66,6 +69,7 @@ function UpdateVehicleForm({callback}) {
         setData({elements:items, nbPages: data.nbPages});
         openNotificationWithIcon();
         callback();
+        setRowsToUpdate([]);
       }
       catch (e) {
         setError(e.message);
@@ -77,6 +81,11 @@ function UpdateVehicleForm({callback}) {
         values.isAvailable = isAvailable;
         values.iPage = page;
         values.column = orderBy;
+        if (vehicle !== 'Voiture' && vehicle !== 'Scooter') {
+          values.brand = null;
+          values.model = null;
+          values.chassisNumber = null;
+        }
         updateData(values).then(()=> setLoading(false));
     };
 
@@ -89,7 +98,10 @@ function UpdateVehicleForm({callback}) {
                 form={form}
                 requiredMark={false}
                 initialValues={{
-                  id: rowsToUpdate[0]?.id
+                  id: rowsToUpdate[0]?.id,
+                  brand: rowsToUpdate[0]?.brand,
+                  model: rowsToUpdate[0]?.model,
+                  chassisNumber: rowsToUpdate[0]?.chassisNumber,
                 }}
             >
                 <Form.Item
@@ -122,8 +134,10 @@ function UpdateVehicleForm({callback}) {
                     label={t("vehicleType")}
                     >
                     <Select
-                        defaultValue={rowsToUpdate[0]?.type}
-                        options={vehicleOptions}/>
+                        options={vehicleOptions}
+                        defaultValue={vehicle}
+                        onChange={(selected) => setVehicle(selected)}
+                    />
                 </Form.Item>
                 <Form.Item
                     name="price"
@@ -145,6 +159,21 @@ function UpdateVehicleForm({callback}) {
                       defaultChecked={rowsToUpdate[0]?.is_available}
                       onChange={ () => {setIsAvailable((isAvailable) => !isAvailable)}} />
                 </Form.Item>
+                {additionalFields[vehicle] &&
+                  additionalFields[vehicle].map((field) => (
+                    <Form.Item
+                      key={field.name}
+                      name={field.name}
+                      label={field.label}
+                      defaultValue={field.defaultValue}
+                      rules={[{
+                        required: true,
+                      }]}
+                    >
+                      <Input placeholder={field.placeholder} />
+                    </Form.Item>
+                  ))
+                }
                 {error && <p style={{color: "red"}}>{error}</p>}
                 <Form.Item>
                     <Space>

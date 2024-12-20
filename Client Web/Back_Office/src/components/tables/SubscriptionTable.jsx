@@ -14,40 +14,6 @@ function SubscriptionTable() {
   const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
   const {t} = useLanguageContext();
 
-  useEffect(() => {
-    setPage(1);
-    setOrderBy("id");
-  },[]);
-
-  useEffect(() => {
-    if(data?.elements[0]) {
-      setSubscriptions(data?.elements);
-      setNbPages(data?.nbPages);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    setRowsToUpdate(selectedRows);
-  }, [selectedRows])
-
-  useEffect( () => {
-    if (orderBy) {
-      setPage(1);
-      fetchData().then(() => setLoading(false));
-    }
-  }, [searchValue]);
-
-  useEffect(() => {
-    if (orderBy) {
-      fetchData().then(() => setLoading(false));
-    }
-  }, [orderBy, page]);
-
-  const fetchUrls= [
-    `getAllSubscriptionsAndPagesCount`,
-    `getSearchSubscriptions/${searchValue}`,
-  ];
-
   const columns = [
     {
       title: 'Id',
@@ -70,23 +36,66 @@ function SubscriptionTable() {
       sortDirections: ['ascend']
     },
     {
-        title: t('discount'),
-        dataIndex: 'discount',
-        sorter: true,
-        sortDirections: ['ascend']
+      title: t('discount'),
+      dataIndex: 'discount',
+      sorter: true,
+      sortDirections: ['ascend']
     },
     {
-        title: t('paymentRecurrence'),
-        dataIndex: 'payment_recurrence',
-        sorter: true,
-        sortDirections: ['ascend']
+      title: t('paymentRecurrence'),
+      dataIndex: 'payment_recurrence',
+      sorter: true,
+      sortDirections: ['ascend']
     },
     {
-        title: t('vehicleType'),
-        dataIndex: 'vehicle_type',
-        sorter: true,
-        sortDirections: ['ascend']
+      title: t('vehicleType'),
+      dataIndex: 'vehicle_type',
+      sorter: true,
+      sortDirections: ['ascend']
     }
+  ];
+
+  let validOrderBy = false;
+  let iDataIndex = 0;
+  while (iDataIndex < columns.length && !validOrderBy) {
+    if(orderBy === columns[iDataIndex].dataIndex) {
+      validOrderBy = true;
+    }
+    iDataIndex++;
+  }
+
+  useEffect(() => {
+    setPage(1);
+    setOrderBy("id");
+  },[]);
+
+  useEffect(() => {
+    if(data?.elements[0]) {
+      setSubscriptions(data?.elements);
+      setNbPages(data?.nbPages);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setRowsToUpdate(selectedRows);
+  }, [selectedRows])
+
+  useEffect( () => {
+    if (validOrderBy) {
+      setPage(1);
+      fetchData().then(() => setLoading(false));
+    }
+  }, [searchValue]);
+
+  useEffect(() => {
+    if (validOrderBy) {
+      fetchData().then(() => setLoading(false));
+    }
+  }, [orderBy, page]);
+
+  const fetchUrls= [
+    `getAllSubscriptionsAndPagesCount`,
+    `getSearchSubscriptions/${searchValue}`,
   ];
 
   const rowSelection = {

@@ -9,7 +9,7 @@ import {useNavigate} from "react-router-dom";
 function UpdatePersonForm({callback}) {
     const [form] = Form.useForm();
     const {t} = useLanguageContext();
-    const {data, setData, rowsToUpdate, setSearchValue, page, orderBy} = useDataContext();
+    const {data, setData, rowsToUpdate, setSearchValue, page, orderBy, setRowsToUpdate} = useDataContext();
     const [loading, setLoading] = useState(false);
     const [api, contextHolder] = notification.useNotification();
     const yearsAgo = dayjs().add(-16, 'year');
@@ -61,6 +61,7 @@ function UpdatePersonForm({callback}) {
         }
         openNotification();
         callback();
+        setRowsToUpdate([]);
       }
       catch (e) {
         setError(e.message);

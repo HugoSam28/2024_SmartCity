@@ -14,6 +14,56 @@ function PersonSubscriptionTable() {
     const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
     const {t} = useLanguageContext();
 
+  const columns = [
+    {
+      title: 'Id',
+      dataIndex: 'id',
+      fixed: 'left',
+      sorter: true,
+      defaultSortOrder:'ascend',
+      sortDirections: ['ascend'],
+    },
+    {
+      title: t('personId'),
+      dataIndex: 'person_id',
+      sorter: true,
+      sortDirections: ['ascend']
+    },
+    {
+      title: t('subscriptionId'),
+      dataIndex: 'subscription_id',
+      sorter: true,
+      sortDirections: ['ascend']
+    },
+    {
+      title: t('startingSubscriptionDate'),
+      dataIndex: 'starting_subscription_date',
+      sorter: true,
+      sortDirections: ['ascend']
+    },
+    {
+      title: t('email'),
+      dataIndex: 'email',
+      sorter: true,
+      sortDirections: ['ascend']
+    },
+    {
+      title: t('label'),
+      dataIndex: 'label',
+      sorter: true,
+      sortDirections: ['ascend']
+    }
+  ];
+
+  let validOrderBy = false;
+  let iDataIndex = 0;
+  while (iDataIndex < columns.length && !validOrderBy) {
+    if(orderBy === columns[iDataIndex].dataIndex) {
+      validOrderBy = true;
+    }
+    iDataIndex++;
+  }
+
     useEffect(() => {
         setPage(1);
         setOrderBy("id");
@@ -31,14 +81,14 @@ function PersonSubscriptionTable() {
     }, [selectedRows])
 
     useEffect( () => {
-        if (orderBy) {
+        if (validOrderBy) {
             setPage(1);
             fetchData().then(() => setLoading(false));
         }
     }, [searchValue]);
 
     useEffect(() => {
-        if (orderBy) {
+        if (validOrderBy) {
             fetchData().then(() => setLoading(false));
         }
     }, [orderBy, page]);
@@ -46,47 +96,6 @@ function PersonSubscriptionTable() {
     const fetchUrls= [
         `getAllPersonSubscriptionsAndPagesCount`,
         `getSearchPersonSubscriptions/${searchValue}`,
-    ];
-
-    const columns = [
-        {
-            title: 'Id',
-            dataIndex: 'id',
-            fixed: 'left',
-            sorter: true,
-            defaultSortOrder:'ascend',
-            sortDirections: ['ascend'],
-        },
-        {
-            title: t('personId'),
-            dataIndex: 'person_id',
-            sorter: true,
-            sortDirections: ['ascend']
-        },
-        {
-            title: t('subscriptionId'),
-            dataIndex: 'subscription_id',
-            sorter: true,
-            sortDirections: ['ascend']
-        },
-        {
-            title: t('startingSubscriptionDate'),
-            dataIndex: 'starting_subscription_date',
-            sorter: true,
-            sortDirections: ['ascend']
-        },
-        {
-            title: t('email'),
-            dataIndex: 'email',
-            sorter: true,
-            sortDirections: ['ascend']
-        },
-        {
-            title: t('label'),
-            dataIndex: 'label',
-            sorter: true,
-            sortDirections: ['ascend']
-        }
     ];
 
     const rowSelection = {

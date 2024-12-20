@@ -14,40 +14,6 @@ function SponsoringTable() {
   const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
   const {t} = useLanguageContext();
 
-  useEffect(() => {
-    setPage(1);
-    setOrderBy("referred");
-  },[]);
-
-  useEffect(() => {
-    if(data?.elements[0]) {
-      setSponsoring(data?.elements);
-      setNbPages(data?.nbPages);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    setRowsToUpdate(selectedRows);
-  }, [selectedRows])
-
-  useEffect( () => {
-    if (orderBy) {
-      setPage(1);
-      fetchData().then(() => setLoading(false));
-    }
-  }, [searchValue]);
-
-  useEffect(() => {
-    if (orderBy) {
-      fetchData().then(() => setLoading(false));
-    }
-  }, [orderBy, page]);
-
-  const fetchUrls= [
-    `getAllSponsoringAndPagesCount`,
-    `getSearchSponsoring/${searchValue}`,
-  ];
-
   const columns = [
     {
       title: t('referredId'),
@@ -70,12 +36,57 @@ function SponsoringTable() {
       sortDirections: ['ascend']
     },
     {
-        title: t('sponsorEmail'),
-        dataIndex: 'sponsor_email',
-        sorter: true,
-        sortDirections: ['ascend']
+      title: t('sponsorEmail'),
+      dataIndex: 'sponsor_email',
+      sorter: true,
+      sortDirections: ['ascend']
     },
   ];
+
+  let validOrderBy = false;
+  let iDataIndex = 0;
+  while (iDataIndex < columns.length && !validOrderBy) {
+    if(orderBy === columns[iDataIndex].dataIndex) {
+      validOrderBy = true;
+    }
+    iDataIndex++;
+  }
+
+  useEffect(() => {
+    setPage(1);
+    setOrderBy("referred");
+  },[]);
+
+  useEffect(() => {
+    if(data?.elements[0]) {
+      setSponsoring(data?.elements);
+      setNbPages(data?.nbPages);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setRowsToUpdate(selectedRows);
+  }, [selectedRows])
+
+  useEffect( () => {
+    if (validOrderBy) {
+      setPage(1);
+      fetchData().then(() => setLoading(false));
+    }
+  }, [searchValue]);
+
+  useEffect(() => {
+    if (validOrderBy) {
+      fetchData().then(() => setLoading(false));
+    }
+  }, [orderBy, page]);
+
+  const fetchUrls= [
+    `getAllSponsoringAndPagesCount`,
+    `getSearchSponsoring/${searchValue}`,
+  ];
+
+
 
   const rowSelection = {
     onChange: (selectedRowSponsoring, selectedRows) => {

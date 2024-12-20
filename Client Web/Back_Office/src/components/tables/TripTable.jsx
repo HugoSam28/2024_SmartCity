@@ -5,9 +5,9 @@ import {Table, Pagination, Button, Tag} from "antd";
 import { MdDeleteOutline } from "react-icons/md";
 import {useDataContext} from "../../contexts/DataTransferContext.jsx";
 
-function PersonTable() {
+function TripTable() {
     const [selectedRows, setSelectedRows] = useState([]);
-    const [persons, setPersons] = useState([]);
+    const [trip, setTrip] = useState([]);
     const [nbPages, setNbPages] = useState(0);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -24,67 +24,60 @@ function PersonTable() {
       sortDirections: ['ascend'],
     },
     {
-      title: t('firstName'),
-      dataIndex: 'first_name',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: t('lastName'),
-      dataIndex: 'last_name',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: 'Email',
+      title: t('email'),
       dataIndex: 'email',
       sorter: true,
       sortDirections: ['ascend']
     },
     {
-      title: t('number'),
-      dataIndex: 'phone_number',
+      title: t('personId'),
+      dataIndex: 'person_id',
       sorter: true,
       sortDirections: ['ascend']
     },
     {
-      title: t('birthday'),
-      dataIndex: 'birthday',
+      title: 'vehicleId',
+      dataIndex: 'vehicle_id',
       sorter: true,
       sortDirections: ['ascend']
     },
     {
-      title: 'Role',
-      dataIndex: 'role',
+      title: t('startingDate'),
+      dataIndex: 'starting_date',
       sorter: true,
       sortDirections: ['ascend']
     },
     {
-      title: t('balance'),
-      dataIndex: 'balance',
+      title: t('endingDate'),
+      dataIndex: 'ending_date',
       sorter: true,
       sortDirections: ['ascend']
     },
     {
-      title: t('hasCarLicence'),
-      dataIndex: 'has_car_licence',
+      title: t('distance'),
+      dataIndex: 'distance',
+      sorter: true,
+      sortDirections: ['ascend']
+    },
+    {
+      title: t('cost'),
+      dataIndex: 'cost',
+      sorter: true,
+      sortDirections: ['ascend']
+    },
+    {
+      title: t('startingLocation'),
+      dataIndex: 'starting_location',
       sorter: true,
       sortDirections: ['ascend'],
-      render:(value) => (<Tag color={value ? 'green' : 'volcano' }>{value ? 'True' : 'False'}</Tag>)
+      render:(value) => (<p>{value?.y}; {value?.x}</p>)
     },
     {
-      title: t('hasMotorbikeLicence'),
-      dataIndex: 'has_motorbike_licence',
+      title: t('endingLocation'),
+      dataIndex: 'ending_location',
       sorter: true,
       sortDirections: ['ascend'],
-      render:(value) => (<Tag color={value ? 'green' : 'volcano' }>{value ? 'True' : 'False'}</Tag>)
-
-    },
-    {
-      title: t('referralCode'),
-      dataIndex: 'referral_code',
-      sorter: true,
-      sortDirections: ['ascend']
+      render:(value) => (<p>{value?.y}; {value?.x}</p>)
     }
   ];
 
@@ -104,7 +97,7 @@ function PersonTable() {
 
     useEffect(() => {
         if(data?.elements[0]) {
-            setPersons(data?.elements);
+            setTrip(data?.elements);
             setNbPages(data?.nbPages);
         }
     }, [data]);
@@ -127,11 +120,9 @@ function PersonTable() {
     }, [orderBy, page]);
 
     const fetchUrls= [
-        `getAllPersonsAndPagesCount`,
-        `getSearchPersons/${searchValue}`,
+        `getAllTripsAndPagesCount`,
+        `getSearchTrips/${searchValue}`,
     ];
-
-
 
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
@@ -142,21 +133,21 @@ function PersonTable() {
     const fetchData = async () => {
         setError("");
         setLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 700));
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         let lookingFor = 0;
         if(searchValue !== ""){
             lookingFor = 1;
         }
         try {
-            const items = await fetchWithRetry(`http://localhost:3267/v1/person/${fetchUrls[lookingFor]}/${orderBy}/${page}`,{
+            const items = await fetchWithRetry(`http://localhost:3267/v1/trip/${fetchUrls[lookingFor]}/${orderBy}/${page}`,{
                 method: 'GET',
                 headers: {
                     "authorization": `Bearer ${sessionStorage.getItem('token')}`,
                     "Content-Type": "application/json",
                 },
             });
-            setData({elements: items.persons, nbPages: items.nbPagesPersons});
+            setData({elements: items.trips, nbPages: items.nbPagesTrips});
         } catch (e) {
             setError(e.message);
         }
@@ -165,13 +156,13 @@ function PersonTable() {
     const onDelete = async() => {
         if(selectedRows.length > 0) {
             setLoading(true);
-            await new Promise(resolve => setTimeout(resolve, 700));
+            await new Promise(resolve => setTimeout(resolve, 500));
             try {
                 const values = [];
                 selectedRows.forEach((row) => {
                     values.push(row.id);
                 })
-                const items = await fetchWithRetry(`http://localhost:3267/v1/person/delete`,{
+                const items = await fetchWithRetry(`http://localhost:3267/v1/trip/delete`,{
                     method: 'DELETE',
                     headers: {
                         "authorization": `Bearer ${sessionStorage.getItem('token')}`,
@@ -179,7 +170,7 @@ function PersonTable() {
                     },
                     body: JSON.stringify({idList : values, iPage: page, column: orderBy}),
                 });
-                setData({elements:items.persons, nbPages: items.nbPagesPersons});
+                setData({elements:items.trips, nbPages: items.nbPagesTrips});
                 setSelectedRows([]);
                 setLoading(false);
             } catch (e) {
@@ -201,7 +192,7 @@ function PersonTable() {
                 rowSelection={{ ...rowSelection,
                 }}
                 columns={columns}
-                dataSource={persons}
+                dataSource={trip}
                 pagination={false}
                 scroll={{
                     x: 'max-content',
@@ -234,4 +225,4 @@ function PersonTable() {
         </div>
     );
 }
-export default PersonTable;
+export default TripTable;
