@@ -8,7 +8,7 @@ import fetchWithRetry from "../../API/fetchWithRetry.jsx";
 function UpdateVehicleForm({callback}) {
     const [form] = Form.useForm();
     const {t} = useLanguageContext();
-    const {data, setData, rowsToUpdate, setSearchValue, page, orderBy} = useDataContext();
+    const {data, setData, rowsToUpdate, setSearchValue, page, orderBy, setRowsToUpdate} = useDataContext();
     console.log(rowsToUpdate[0]?.type);
     const [vehicle, setVehicle] = useState(rowsToUpdate[0]?.type);
     const vehicleOptions = [
@@ -69,6 +69,7 @@ function UpdateVehicleForm({callback}) {
         setData({elements:items, nbPages: data.nbPages});
         openNotificationWithIcon();
         callback();
+        setRowsToUpdate([]);
       }
       catch (e) {
         setError(e.message);

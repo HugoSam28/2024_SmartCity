@@ -11,6 +11,7 @@ import VehicleTable from "../components/tables/VehicleTable.jsx";
 import SubscriptionTable from "../components/tables/SubscriptionTable.jsx";
 import PersonSubscriptionTable from "../components/tables/PersonSubscriptionTable.jsx"
 import SponsoringTable from "../components/tables/SponsoringTable.jsx"
+import TripTable from "../components/tables/TripTable.jsx"
 
 
 const router = createBrowserRouter([
@@ -88,7 +89,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Dashboard >
-
+          <TripTable />
         </Dashboard>
       </ProtectedRoute>)
   },

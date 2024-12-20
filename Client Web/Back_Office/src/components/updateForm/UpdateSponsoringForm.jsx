@@ -11,7 +11,7 @@ function UpdateSponsoringForm({callback}) {
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const {data, setData, rowsToUpdate, setSearchValue, page, orderBy} = useDataContext();
+    const {data, setData, rowsToUpdate, setSearchValue, page, orderBy, setRowsToUpdate} = useDataContext();
     const [api, contextHolder] = notification.useNotification();
     
     useEffect(() => {
@@ -46,6 +46,7 @@ function UpdateSponsoringForm({callback}) {
           setData({elements:items, nbPages: data.nbPages});
           openNotification();
           callback();
+          setRowsToUpdate([]);
         }
         catch (e) {
           setError(e.message);

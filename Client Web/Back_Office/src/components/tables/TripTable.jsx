@@ -14,6 +14,82 @@ function TripTable() {
     const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
     const {t} = useLanguageContext();
 
+  const columns = [
+    {
+      title: 'Id',
+      dataIndex: 'id',
+      fixed: 'left',
+      sorter: true,
+      defaultSortOrder:'ascend',
+      sortDirections: ['ascend'],
+    },
+    {
+      title: t('email'),
+      dataIndex: 'email',
+      sorter: true,
+      sortDirections: ['ascend']
+    },
+    {
+      title: t('personId'),
+      dataIndex: 'person_id',
+      sorter: true,
+      sortDirections: ['ascend']
+    },
+    {
+      title: 'vehicleId',
+      dataIndex: 'vehicle_id',
+      sorter: true,
+      sortDirections: ['ascend']
+    },
+    {
+      title: t('startingDate'),
+      dataIndex: 'starting_date',
+      sorter: true,
+      sortDirections: ['ascend']
+    },
+    {
+      title: t('endingDate'),
+      dataIndex: 'ending_date',
+      sorter: true,
+      sortDirections: ['ascend']
+    },
+    {
+      title: t('distance'),
+      dataIndex: 'distance',
+      sorter: true,
+      sortDirections: ['ascend']
+    },
+    {
+      title: t('cost'),
+      dataIndex: 'cost',
+      sorter: true,
+      sortDirections: ['ascend']
+    },
+    {
+      title: t('startingLocation'),
+      dataIndex: 'starting_location',
+      sorter: true,
+      sortDirections: ['ascend'],
+      render:(value) => (<p>{value?.y}; {value?.x}</p>)
+    },
+    {
+      title: t('endingLocation'),
+      dataIndex: 'ending_location',
+      sorter: true,
+      sortDirections: ['ascend'],
+      render:(value) => (<p>{value?.y}; {value?.x}</p>)
+    }
+  ];
+
+  let validOrderBy = false;
+  let iDataIndex = 0;
+  while (iDataIndex < columns.length && !validOrderBy) {
+    if(orderBy === columns[iDataIndex].dataIndex) {
+      validOrderBy = true;
+    }
+    iDataIndex++;
+  }
+
     useEffect(() => {
         setPage(1);
         setOrderBy("id");
@@ -31,14 +107,14 @@ function TripTable() {
     }, [selectedRows])
 
     useEffect( () => {
-        if (orderBy) {
+        if (validOrderBy) {
             setPage(1);
             fetchData().then(() => setLoading(false));
         }
     }, [searchValue]);
 
     useEffect(() => {
-        if (orderBy) {
+        if (validOrderBy) {
             fetchData().then(() => setLoading(false));
         }
     }, [orderBy, page]);
@@ -46,74 +122,6 @@ function TripTable() {
     const fetchUrls= [
         `getAllTripsAndPagesCount`,
         `getSearchTrips/${searchValue}`,
-    ];
-
-    const columns = [
-        {
-            title: 'Id',
-            dataIndex: 'id',
-            fixed: 'left',
-            sorter: true,
-            defaultSortOrder:'ascend',
-            sortDirections: ['ascend'],
-        },
-        {
-            title: t('email'),
-            dataIndex: 'email',
-            sorter: true,
-            sortDirections: ['ascend']
-        },
-        {
-            title: t('personId'),
-            dataIndex: 'person_id',
-            sorter: true,
-            sortDirections: ['ascend']
-        },
-        {
-            title: 'vehicleId',
-            dataIndex: 'vehicle_id',
-            sorter: true,
-            sortDirections: ['ascend']
-        },
-        {
-            title: t('startingDate'),
-            dataIndex: 'starting_date',
-            sorter: true,
-            sortDirections: ['ascend']
-        },
-        ,
-        {
-            title: t('endingDate'),
-            dataIndex: 'ending_date',
-            sorter: true,
-            sortDirections: ['ascend']
-        },
-        {
-            title: t('distance'),
-            dataIndex: 'distance',
-            sorter: true,
-            sortDirections: ['ascend']
-        },
-        {
-            title: t('cost'),
-            dataIndex: 'cost',
-            sorter: true,
-            sortDirections: ['ascend']
-        },
-        {
-            title: t('startingLocation'),
-            dataIndex: 'starting_location',
-            sorter: true,
-            sortDirections: ['ascend'],
-            render:(value) => (<p>{value?.y}; {value?.x}</p>)
-        },
-        {
-            title: t('endingLocation'),
-            dataIndex: 'ending_location',
-            sorter: true,
-            sortDirections: ['ascend'],
-            render:(value) => (<p>{value?.y}; {value?.x}</p>)
-        }
     ];
 
     const rowSelection = {

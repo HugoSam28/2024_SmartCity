@@ -9,7 +9,7 @@ function UpdateCarKeyForm({callback}) {
   const [form] = Form.useForm();
   const {t} = useLanguageContext();
   const [loading, setLoading] = useState(false);
-  const {data, setData, rowsToUpdate, setSearchValue, page, orderBy} = useDataContext();
+  const {data, setData, rowsToUpdate, setSearchValue, page, orderBy, setRowsToUpdate} = useDataContext();
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
@@ -46,6 +46,7 @@ function UpdateCarKeyForm({callback}) {
       setData({elements:items, nbPages: data.nbPages});
       openNotificationWithIcon();
       callback();
+      setRowsToUpdate([]);
     }
     catch (e) {
       setError(e.message);
