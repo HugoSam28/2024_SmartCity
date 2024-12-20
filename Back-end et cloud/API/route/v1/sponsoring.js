@@ -25,9 +25,9 @@ import {
 
 const router = Router();
 
-router.get("/getAllSponsoring/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllSponsoring); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllSponsoringAndPagesCount/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllSponsoringAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
-router.get("/getSearchSponsoring/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchSponsoring) //Champ de recherche sur les ligne
+router.get("/getAllSponsoring/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllSponsoring);
+router.get("/getAllSponsoringAndPagesCount/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllSponsoringAndPagesCount);
+router.get("/getSearchSponsoring/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchSponsoring);
 
 router.post("/add", checkJWT, admin, ASVM, PageVM, OVM, addSponsoring);
 

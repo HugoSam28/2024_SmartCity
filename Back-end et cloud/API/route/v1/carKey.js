@@ -24,14 +24,14 @@ import {
 
 const router = Router();
 
-router.get("/getAllKeys/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllCarKeys); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllKeysAndPagesCount/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllCarKeysAndPagesCount); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
-router.get("/getSearchKeys/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchCarKeys); //Champ de recherche sur les clés
+router.get("/getAllKeys/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllCarKeys);
+router.get("/getAllKeysAndPagesCount/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllCarKeysAndPagesCount);
+router.get("/getSearchKeys/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchCarKeys);
 
-router.post("/add", checkJWT, admin, ACKVM, PageVM, OVM, addCarKey); //Ajout d'une ligne avec les infos rentrée
+router.post("/add", checkJWT, admin, ACKVM, PageVM, OVM, addCarKey);
 
-router.patch("/update",checkJWT, admin, UCKVM, PageVM, OVM, updateCarKey); //Modification de la ligne choisie
+router.patch("/update",checkJWT, admin, UCKVM, PageVM, OVM, updateCarKey);
 
-router.delete("/delete", checkJWT, admin, DVM, PageVM, OVM, deleteCarKeys); //Delete des lignes choisies
+router.delete("/delete", checkJWT, admin, DVM, PageVM, OVM, deleteCarKeys);
 
 export default router;

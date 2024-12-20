@@ -25,9 +25,9 @@ import {
 } from "../../middleware/v1/validation/subscription.js"
 
 const router = Router();
-router.get("/getAllSubscriptions/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllSubscriptions); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllSubscriptionsAndPagesCount/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllSubscriptionsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
-router.get("/getSearchSubscriptions/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchSubscriptions) //Champ de recherche sur les ligne
+router.get("/getAllSubscriptions/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllSubscriptions);
+router.get("/getAllSubscriptionsAndPagesCount/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllSubscriptionsAndPagesCount);
+router.get("/getSearchSubscriptions/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchSubscriptions);
 
 router.post("/add", checkJWT, admin, ASVM, PageVM, OVM, addSubscription);
 

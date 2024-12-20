@@ -1,4 +1,4 @@
-import {createBrowserRouter} from 'react-router-dom';
+import {createBrowserRouter, Navigate} from 'react-router-dom';
 
 import LoginScreen from "../screens/Login.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
@@ -9,6 +9,13 @@ import TextDashBoard from "../components/TextDashBoard.jsx";
 import PersonTable from "../components/tables/PersonTable.jsx";
 
 const router = createBrowserRouter([
+  {
+    path: '/',
+    element: (
+      <ProtectedRoute>
+        <Navigate to="/dashboard" replace = {true}/>
+      </ProtectedRoute>)
+  },
   {
     path: '/login',
     element: <LoginScreen/>

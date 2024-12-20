@@ -29,14 +29,14 @@ import {
 
 const router = Router();
 
-router.get("/getAllTrips/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllTrips); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllTripsAndPagesCount/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllTripsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
-router.get("/getSearchTrips/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchTrips) //Champ de recherche sur les ligne
+router.get("/getAllTrips/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllTrips);
+router.get("/getAllTripsAndPagesCount/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllTripsAndPagesCount);
+router.get("/getSearchTrips/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchTrips);
 
-router.get("/getOwnTrips", checkJWT, getOwnTrips); //Récupération de nos voyages avec toutes les infos
+router.get("/getOwnTrips", checkJWT, getOwnTrips);
 
-router.post("/startTrip", checkJWT, STVM, startTrip); //creer trip, vehicleNotavailable
-router.patch("/endTrip", checkJWT, ETVM, endTrip); // faire la fin du trip
+router.post("/startTrip", checkJWT, STVM, startTrip);
+router.patch("/endTrip", checkJWT, ETVM, endTrip);
 
 router.post("/add", checkJWT, admin, ATVM, PageVM, OVM, addTrip);
 router.patch("/update", checkJWT, admin, UTVM, PageVM, OVM, updateTrip);
