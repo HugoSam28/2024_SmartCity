@@ -35,7 +35,7 @@ function UpdateSubscriptionForm({callback}) {
         form.resetFields();
       }, [rowsToUpdate]);
     
-    const openNotificationWithIcon = () => {
+    const openNotification = () => {
       api['success']({
         message: t('success'),
         description:
@@ -61,7 +61,7 @@ function UpdateSubscriptionForm({callback}) {
             body: JSON.stringify(values),
           }, toLogout)
           setData({elements:items, nbPages: data.nbPages});
-          openNotificationWithIcon();
+          openNotification();
           callback();
         }
         catch (e) {

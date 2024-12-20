@@ -98,7 +98,7 @@ function SubscriptionTable() {
   const fetchData = async () => {
     setError("");
     setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 700));
 
     let lookingFor = 0;
     if(searchValue !== ""){
@@ -121,7 +121,7 @@ function SubscriptionTable() {
   const onDelete = async() => {
     if(selectedRows.length > 0) {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 700));
       try {
         const values = [];
         selectedRows.forEach((row) => {

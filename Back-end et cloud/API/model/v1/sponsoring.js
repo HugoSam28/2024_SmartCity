@@ -1,15 +1,14 @@
 export const getAllSponsoring = async(SQLClient, {iPage}, {column}) => {
   const validColumnsQuery = `
-  (SELECT column_name
+  SELECT column_name
   FROM information_schema.columns
-  WHERE table_name = 'sponsoring')
-  UNION ALL
-  (SELECT column_name
-  FROM information_schema.columns
-  WHERE table_name = 'person' AND column_name = 'email')
+  WHERE table_name = 'sponsoring'
 `;
-
 const validColumnsResult = await SQLClient.query(validColumnsQuery);
+
+validColumnsResult.rows.push({column_name:"sponsor_email"});
+validColumnsResult.rows.push({column_name:"referred_email"});
+
 const validColumns = validColumnsResult.rows.map(row => row.column_name);
 
 if (!validColumns.includes(column)) {
@@ -32,16 +31,16 @@ export const sponsoringCount = async(SQLClient) => {
 
 export const getSearchSponsoring = async(SQLClient, {iPage}, {value}, {column}) => {
   const validColumnsQuery = `
-  (SELECT column_name
+  SELECT column_name
   FROM information_schema.columns
-  WHERE table_name = 'sponsoring')
-  UNION ALL
-  (SELECT column_name
-  FROM information_schema.columns
-  WHERE table_name = 'person' AND column_name = 'email')
+  WHERE table_name = 'sponsoring'
 `;
-
 const validColumnsResult = await SQLClient.query(validColumnsQuery);
+
+
+validColumnsResult.rows.push({column_name:"sponsor_email"});
+validColumnsResult.rows.push({column_name:"referred_email"});
+
 const validColumns = validColumnsResult.rows.map(row => row.column_name);
 
 if (!validColumns.includes(column)) {

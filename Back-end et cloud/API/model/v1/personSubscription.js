@@ -1,19 +1,15 @@
 export const getAllPersonSubscriptions = async(SQLClient, {iPage}, {column}) => {
   const validColumnsQuery = `
-  (SELECT column_name
+  SELECT column_name
   FROM information_schema.columns
-  WHERE table_name = 'person_subscription')
-  UNION ALL
-  (SELECT column_name
-  FROM information_schema.columns
-  WHERE table_name = 'person' AND column_name = 'email')
-  UNION ALL
-  (SELECT column_name
-  FROM information_schema.columns
-  WHERE table_name = 'subscription' AND column_name = 'label')
+  WHERE table_name = 'person_subscription'
 `;
 
 const validColumnsResult = await SQLClient.query(validColumnsQuery);
+
+validColumnsResult.rows.push({column_name:"email"});
+validColumnsResult.rows.push({column_name:"label"});
+
 const validColumns = validColumnsResult.rows.map(row => row.column_name);
 
 if (!validColumns.includes(column)) {
@@ -36,20 +32,15 @@ export const personSubscriptionsCount = async(SQLClient) => {
 
 export const getSearchPersonSubscriptions = async(SQLClient, {iPage}, {value}, {column}) => {
   const validColumnsQuery = `
-  (SELECT column_name
+  SELECT column_name
   FROM information_schema.columns
-  WHERE table_name = 'person_subscription')
-  UNION ALL
-  (SELECT column_name
-  FROM information_schema.columns
-  WHERE table_name = 'person' AND column_name = 'email')
-  UNION ALL
-  (SELECT column_name
-  FROM information_schema.columns
-  WHERE table_name = 'subscription' AND column_name = 'label')
+  WHERE table_name = 'person_subscription'
 `;
-
 const validColumnsResult = await SQLClient.query(validColumnsQuery);
+
+validColumnsResult.rows.push({column_name:"email"});
+validColumnsResult.rows.push({column_name:"label"});
+
 const validColumns = validColumnsResult.rows.map(row => row.column_name);
 
 if (!validColumns.includes(column)) {

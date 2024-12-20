@@ -23,7 +23,7 @@ function UpdatePersonForm({callback}) {
       form.resetFields();
     }, [rowsToUpdate]);
 
-    const openNotificationWithIcon = () => {
+    const openNotification = () => {
         api['success']({
             message: t('success'),
             description:
@@ -59,7 +59,7 @@ function UpdatePersonForm({callback}) {
         if (items.length !== 0) {
           setData({elements: items, nbPages: data.nbPages});
         }
-        openNotificationWithIcon();
+        openNotification();
         callback();
       }
       catch (e) {

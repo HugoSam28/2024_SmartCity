@@ -16,7 +16,7 @@ function SponsoringTable() {
 
   useEffect(() => {
     setPage(1);
-    setOrderBy("id");
+    setOrderBy("referred");
   },[]);
 
   useEffect(() => {
@@ -86,7 +86,7 @@ function SponsoringTable() {
   const fetchData = async () => {
     setError("");
     setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 700));
 
     let lookingFor = 0;
     if(searchValue !== ""){
@@ -109,11 +109,11 @@ function SponsoringTable() {
   const onDelete = async() => {
     if(selectedRows.length > 0) {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 700));
       try {
         const values = [];
         selectedRows.forEach((row) => {
-          values.push(row.id);
+          values.push(row.referred);
         })
         const items = await fetchWithRetry(`http://localhost:3267/v1/sponsoring/delete`,{
           method: 'DELETE',
@@ -141,7 +141,7 @@ function SponsoringTable() {
   return (
     <div style={{display: 'flex', flexDirection: 'column', paddingTop: 40}}>
       <Table
-        rowKey="id"
+        rowKey="referred"
         rowSelection={{ ...rowSelection,
         }}
         columns={columns}
