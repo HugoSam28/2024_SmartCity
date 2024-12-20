@@ -79,7 +79,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Dashboard >
-          <
+          <SponsoringTable />
         </Dashboard>
       </ProtectedRoute>)
   },

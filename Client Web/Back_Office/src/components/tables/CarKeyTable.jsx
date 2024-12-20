@@ -37,13 +37,13 @@ function CarKeyTable() {
     }
   ];
 
-  let temp = false;
-  let i = 0;
-  while (i < columns.length && !temp) {
-    if(orderBy === columns[i].dataIndex) {
-      temp = true;
+  let validOrderBy = false;
+  let iDataIndex = 0;
+  while (iDataIndex < columns.length && !validOrderBy) {
+    if(orderBy === columns[iDataIndex].dataIndex) {
+      validOrderBy = true;
     }
-    i++;
+    iDataIndex++;
   }
 
   useEffect(() => {
@@ -63,14 +63,14 @@ function CarKeyTable() {
   }, [selectedRows])
 
   useEffect( () => {
-    if (temp) {
+    if (validOrderBy) {
       setPage(1);
       fetchData().then(() => setLoading(false));
     }
   }, [searchValue]);
 
   useEffect(() => {
-    if (temp) {
+    if (validOrderBy) {
       fetchData().then(() => setLoading(false));
     }
   }, [orderBy, page]);
