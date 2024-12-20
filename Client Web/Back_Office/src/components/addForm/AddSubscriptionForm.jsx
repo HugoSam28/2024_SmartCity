@@ -129,7 +129,7 @@ function AddSubscriptionForm({callback}) {
         {error && <p style={{color: "red"}}>{error}</p>}
         <Form.Item>
           <Space>
-            <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
+            <Button loading={loading} onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
             <Button type="primary" loading={loading} htmlType='submit'>{t('add')}</Button>
           </Space>
         </Form.Item>
