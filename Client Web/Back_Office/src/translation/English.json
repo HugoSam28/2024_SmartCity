@@ -35,6 +35,7 @@
   "fees": "Fees",
   "isAvailable": "Is available",
   "personId" : "Person id",
+  "subscriptionId": "Subscription id",
   "vehicleId" : "Vehicle id",
   "startingDate" : "Starting Date",
   "endingDate" : "Ending Date",
