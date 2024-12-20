@@ -56,12 +56,14 @@ function UpdatePersonForm({callback}) {
           },
           body: JSON.stringify(values),
         }, toLogout)
-        setData({elements: items, nbPages: data.nbPages});
+        if (items.length !== 0) {
+          setData({elements: items, nbPages: data.nbPages});
+        }
         openNotificationWithIcon();
         callback();
       }
       catch (e) {
-        setError(e);
+        setError(e.message);
       }
     }
 

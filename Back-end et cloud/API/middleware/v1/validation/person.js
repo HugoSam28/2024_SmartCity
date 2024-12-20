@@ -68,7 +68,7 @@ export async function personUpdateValidatorMiddleware(req, res, next) {
 // Car un user ne peut pas modifier sa propre date de naissance, ni son role, ni le referralCode
 // un admin ne peut modifier le mot de passe d'un user
 const updatePersonSchemaViaAdmin = vine.object({
-  id: vine.number(),
+  id: vine.number().withoutDecimals().min(1),
   firstName: vine.string().optional(),
   lastName: vine.string().optional(),
   email: vine.string().email().toLowerCase().optional(),
@@ -76,7 +76,7 @@ const updatePersonSchemaViaAdmin = vine.object({
   birthday: vine.date().optional(),
   referralCode: vine.string().optional(),
   balance: vine.number().optional(),
-  role: vine.enum(['ROLE_ADMIN', 'ROLE_USER']),
+  role: vine.enum(['ROLE_ADMIN', 'ROLE_USER']).optional(),
   hasCarLicence: vine.boolean().optional(),
   hasMotorbikeLicence: vine.boolean().optional()
 })
@@ -95,6 +95,7 @@ export async function personUpdateValidatorMiddlewareViaAdmin(req, res, next) {
     hasCarLicence: req.body.hasCarLicence,
     hasMotorbikeLicence: req.body.hasMotorbikeLicence,
   };
+  console.log(req.body);
   try {
     req.val = await updatePersonValidatorViaAdmin.validate(data);
     next();

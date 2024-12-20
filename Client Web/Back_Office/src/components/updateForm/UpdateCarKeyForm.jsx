@@ -48,7 +48,7 @@ function UpdateCarKeyForm({callback}) {
       callback();
     }
     catch (e) {
-      setError(e);
+      setError(e.message);
     }
   }
 
