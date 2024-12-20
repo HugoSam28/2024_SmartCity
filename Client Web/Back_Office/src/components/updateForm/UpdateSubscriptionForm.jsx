@@ -77,8 +77,6 @@ function UpdateSubscriptionForm({callback}) {
         updateData(values).then(()=> setLoading(false));
       };
 
-    const valeur = {id : 2}
-
     return (
         <div id="formContainer">
           {contextHolder}

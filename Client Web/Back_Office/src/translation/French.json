@@ -35,6 +35,7 @@
   "fees": "Frais",
   "isAvailable": "Est disponnible",
   "personId" : "Id de la personne",
+  "subscriptionId": "Id d'abonnement",
   "vehicleId" : "Id du vehicule ",
   "startingDate" : "Date de debut",
   "endingDate" : "Date de fin",

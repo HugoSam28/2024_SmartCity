@@ -7,6 +7,10 @@ import Dashboard from "../screens/Dashboard.jsx";
 import CarKeyTable from "../components/tables/CarKeyTable.jsx";
 import TextDashBoard from "../components/TextDashBoard.jsx";
 import PersonTable from "../components/tables/PersonTable.jsx";
+import VehicleTable from "../components/tables/VehicleTable.jsx";
+import SubscriptionTable from "../components/tables/SubscriptionTable.jsx";
+import PersonSubscriptionTable from "../components/tables/PersonSubscriptionTable.jsx"
+
 
 const router = createBrowserRouter([
   {
@@ -47,7 +51,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Dashboard >
-
+          <VehicleTable/>
         </Dashboard>
       </ProtectedRoute>)
   },
@@ -65,7 +69,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Dashboard >
-
+          <SubscriptionTable />
         </Dashboard>
       </ProtectedRoute>)
   },
@@ -92,7 +96,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Dashboard >
-
+          <PersonSubscriptionTable/>
         </Dashboard>
       </ProtectedRoute>
     )

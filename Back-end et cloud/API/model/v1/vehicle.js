@@ -122,6 +122,15 @@ export const updateInformations = async(SQLClient, {id, lon, lat, batteryLevel, 
       queryValues.push(chassisNumber);
       querySet.push(`chassis_number = $${queryValues.length}`)
     }
+  } else {
+      queryValues.push(null);
+      querySet.push(`brand = $${queryValues.length}`)
+
+      queryValues.push(null);
+      querySet.push(`model = $${queryValues.length}`)
+
+      queryValues.push(null);
+      querySet.push(`chassis_number = $${queryValues.length}`)
   }
   if(queryValues.length > 0){
     queryValues.push(id);
