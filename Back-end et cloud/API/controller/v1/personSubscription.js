@@ -15,6 +15,7 @@ export const getAllPersonSubscriptions = async(req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -32,6 +33,7 @@ export const getAllPersonSubscriptionsAndPagesCount = async(req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -49,6 +51,7 @@ export const getSearchPersonSubscriptions = async(req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -67,6 +70,7 @@ export const getOwnSubscription = async(req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -81,6 +85,7 @@ export const addOwnSubscription = async(req, res) => {
             res.sendStatus(404);
         }
     }catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -99,6 +104,7 @@ export const addPersonSubscription = async(req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -110,6 +116,7 @@ export const updatePersonSubscription = async (req, res) => {
         res.send(personSubscriptions);
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -131,6 +138,7 @@ export const deletePersonSubscription = async (req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
