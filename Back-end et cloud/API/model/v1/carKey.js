@@ -1,15 +1,13 @@
 export const getAllCarKeys= async(SQLClient, {iPage}, {column}) => {
   const validColumnsQuery = `
-    (SELECT column_name
+    SELECT column_name
     FROM information_schema.columns
-    WHERE table_name = 'car_key')
-    UNION ALL
-    (SELECT column_name
-    FROM information_schema.columns
-    WHERE table_name = 'vehicle' AND column_name = 'model')
+    WHERE table_name = 'car_key'
   `;
-
   const validColumnsResult = await SQLClient.query(validColumnsQuery);
+
+  validColumnsResult.rows.push({column_name:"model"});
+
   const validColumns = validColumnsResult.rows.map(row => row.column_name);
 
   if (!validColumns.includes(column)) {
@@ -31,16 +29,14 @@ export const keysCount = async(SQLClient) => {
 
 export const getSearchCarKeys = async(SQLClient, {iPage}, {value}, {column}) => {
   const validColumnsQuery = `
-  (SELECT column_name
+  SELECT column_name
   FROM information_schema.columns
-  WHERE table_name = 'car_key')
-  UNION ALL
-  (SELECT column_name
-  FROM information_schema.columns
-  WHERE table_name = 'vehicle' AND column_name = 'model')
+  WHERE table_name = 'car_key'
 `;
-
 const validColumnsResult = await SQLClient.query(validColumnsQuery);
+
+validColumnsResult.rows.push({column_name:"model"});
+
 const validColumns = validColumnsResult.rows.map(row => row.column_name);
 
 if (!validColumns.includes(column)) {

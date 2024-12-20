@@ -15,7 +15,7 @@ function UpdateCarKeyForm({callback}) {
   const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
-    form.resetFields();
+    onReset();
   }, [rowsToUpdate]);
 
   const openNotificationWithIcon = () => {
@@ -92,7 +92,7 @@ function UpdateCarKeyForm({callback}) {
 
         <Form.Item>
           <Space>
-            <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
+            <Button loading={loading} onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
             <Button loading={loading} type="primary" htmlType='submit'>{t('update')}</Button>
           </Space>
         </Form.Item>

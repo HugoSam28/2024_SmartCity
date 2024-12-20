@@ -29,12 +29,13 @@
   "discount": "Discount",
   "paymentRecurrence": "Payment recurrence",
   "vehicleType": "Vehicle type",
-  "sponsor": "Sponsor id",
-  "referred": "Referred id",
+  "sponsorId": "Sponsor id",
+  "referredId": "Referred id",
   "batteryLevel": "Battery level",
   "fees": "Fees",
   "isAvailable": "Is available",
   "personId" : "Person id",
+  "subscriptionId": "Subscription id",
   "vehicleId" : "Vehicle id",
   "startingDate" : "Starting Date",
   "endingDate" : "Ending Date",
@@ -59,5 +60,7 @@
   "car": "Car",
   "motorbike": "Motorbike",
   "bike": "Bike",
-  "electricScooter": "Electric scooter"
+  "electricScooter": "Electric scooter",
+  "referredEmail": "Referred email",
+  "sponsorEmail": "Sponsor email"
 }

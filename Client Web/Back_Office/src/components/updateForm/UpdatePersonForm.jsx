@@ -23,7 +23,7 @@ function UpdatePersonForm({callback}) {
       form.resetFields();
     }, [rowsToUpdate]);
 
-    const openNotificationWithIcon = () => {
+    const openNotification = () => {
         api['success']({
             message: t('success'),
             description:
@@ -59,7 +59,7 @@ function UpdatePersonForm({callback}) {
         if (items.length !== 0) {
           setData({elements: items, nbPages: data.nbPages});
         }
-        openNotificationWithIcon();
+        openNotification();
         callback();
       }
       catch (e) {
@@ -173,7 +173,7 @@ function UpdatePersonForm({callback}) {
                 {error && <p style={{color: "red"}}>{error}</p>}
                 <Form.Item>
                     <Space>
-                        <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
+                        <Button loading={loading} onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
                         <Button loading={loading} type="primary" htmlType='submit'>{t('update')}</Button>
                     </Space>
                 </Form.Item>

@@ -5,9 +5,9 @@ import {Table, Pagination, Button} from "antd";
 import { MdDeleteOutline } from "react-icons/md";
 import {useDataContext} from "../../contexts/DataTransferContext.jsx";
 
-function SubscriptionTable() {
+function SponsoringTable() {
   const [selectedRows, setSelectedRows] = useState([]);
-  const [subscriptions, setSubscriptions] = useState([]);
+  const [sponsoring, setSponsoring] = useState([]);
   const [nbPages, setNbPages] = useState(0);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -16,12 +16,12 @@ function SubscriptionTable() {
 
   useEffect(() => {
     setPage(1);
-    setOrderBy("id");
+    setOrderBy("referred");
   },[]);
 
   useEffect(() => {
     if(data?.elements[0]) {
-      setSubscriptions(data?.elements);
+      setSponsoring(data?.elements);
       setNbPages(data?.nbPages);
     }
   }, [data]);
@@ -44,53 +44,41 @@ function SubscriptionTable() {
   }, [orderBy, page]);
 
   const fetchUrls= [
-    `getAllSubscriptionsAndPagesCount`,
-    `getSearchSubscriptions/${searchValue}`,
+    `getAllSponsoringAndPagesCount`,
+    `getSearchSponsoring/${searchValue}`,
   ];
 
   const columns = [
     {
-      title: 'Id',
-      dataIndex: 'id',
+      title: t('referredId'),
+      dataIndex: 'referred',
       fixed: 'left',
       sorter: true,
       defaultSortOrder:'ascend',
       sortDirections: ['ascend'],
     },
     {
-      title: t('label'),
-      dataIndex: 'label',
+      title: t('referredEmail'),
+      dataIndex: 'referred_email',
       sorter: true,
       sortDirections: ['ascend']
     },
     {
-      title: t('price'),
-      dataIndex: 'price',
+      title: t('sponsorId'),
+      dataIndex: 'sponsor',
       sorter: true,
       sortDirections: ['ascend']
     },
     {
-        title: t('discount'),
-        dataIndex: 'discount',
+        title: t('sponsorEmail'),
+        dataIndex: 'sponsor_email',
         sorter: true,
         sortDirections: ['ascend']
     },
-    {
-        title: t('paymentRecurrence'),
-        dataIndex: 'payment_recurrence',
-        sorter: true,
-        sortDirections: ['ascend']
-    },
-    {
-        title: t('vehicleType'),
-        dataIndex: 'vehicle_type',
-        sorter: true,
-        sortDirections: ['ascend']
-    }
   ];
 
   const rowSelection = {
-    onChange: (selectedRowSubscriptions, selectedRows) => {
+    onChange: (selectedRowSponsoring, selectedRows) => {
       setSelectedRows(selectedRows);
     }
   };
@@ -105,14 +93,14 @@ function SubscriptionTable() {
       lookingFor = 1;
     }
     try {
-      const items = await fetchWithRetry(`http://localhost:3267/v1/subscription/${fetchUrls[lookingFor]}/${orderBy}/${page}`,{
+      const items = await fetchWithRetry(`http://localhost:3267/v1/sponsoring/${fetchUrls[lookingFor]}/${orderBy}/${page}`,{
         method: 'GET',
         headers: {
           "authorization": `Bearer ${sessionStorage.getItem('token')}`,
           "Content-Type": "application/json",
         },
       });
-      setData({elements: items.subscriptions, nbPages: items.nbPagesSubscriptions});
+      setData({elements: items.sponsoring, nbPages: items.nbPagesSponsoring});
     } catch (e) {
       setError(e.message);
     }
@@ -125,9 +113,9 @@ function SubscriptionTable() {
       try {
         const values = [];
         selectedRows.forEach((row) => {
-          values.push(row.id);
+          values.push(row.referred);
         })
-        const items = await fetchWithRetry(`http://localhost:3267/v1/subscription/delete`,{
+        const items = await fetchWithRetry(`http://localhost:3267/v1/sponsoring/delete`,{
           method: 'DELETE',
           headers: {
             "authorization": `Bearer ${sessionStorage.getItem('token')}`,
@@ -135,7 +123,7 @@ function SubscriptionTable() {
           },
           body: JSON.stringify({idList : values, iPage: page, column: orderBy}),
         });
-        setData({elements:items.subscriptions, nbPages: items.nbPagesSubscriptions});
+        setData({elements:items.sponsoring, nbPages: items.nbPagesSponsoring});
         setSelectedRows([]);
         setLoading(false);
       } catch (e) {
@@ -147,17 +135,17 @@ function SubscriptionTable() {
     if (sorter.field) {
       setOrderBy(sorter.field);
     } else {
-      setOrderBy('id');
+      setOrderBy('referred');
     }
   }
   return (
     <div style={{display: 'flex', flexDirection: 'column', paddingTop: 40}}>
       <Table
-        rowKey="id"
+        rowKey="referred"
         rowSelection={{ ...rowSelection,
         }}
         columns={columns}
-        dataSource={subscriptions}
+        dataSource={sponsoring}
         pagination={false}
         scroll={{
           x: 'max-content',
@@ -190,4 +178,4 @@ function SubscriptionTable() {
     </div>
   );
 }
-export default SubscriptionTable;
+export default SponsoringTable;

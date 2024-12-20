@@ -43,11 +43,6 @@ function AddVehicleForm({callback}) {
   const onFinish = async (values) => {
     setError("");
     values.isAvailable = isAvailable;
-    values.batteryLevel = parseFloat(values.batteryLevel);
-    values.fees = parseInt(values.fees);
-    values.lat = parseFloat(values.lat);
-    values.lon = parseFloat(values.lon);
-    values.price = parseFloat(values.price);
     values.type = vehicle;
     values.iPage = 1;
     values.column = "id";
@@ -162,8 +157,8 @@ function AddVehicleForm({callback}) {
         {error && <p style={{color: "red"}}>{error}</p>}
         <Form.Item>
           <Space>
-            <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-            <Button type="primary" htmlType='submit'>{t('add')}</Button>
+            <Button loading={loading} onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
+            <Button type="primary" loading={loading} htmlType='submit'>{t('add')}</Button>
           </Space>
         </Form.Item>
       </Form>

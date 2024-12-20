@@ -14,40 +14,6 @@ function CarKeyTable() {
   const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
   const {t} = useLanguageContext();
 
-  useEffect(() => {
-    setPage(1);
-    setOrderBy("id");
-  },[]);
-
-  useEffect(() => {
-    if(data?.elements[0]) {
-      setCarKeys(data?.elements);
-      setNbPages(data?.nbPages);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    setRowsToUpdate(selectedRows);
-  }, [selectedRows])
-
-  useEffect( () => {
-    if (orderBy) {
-      setPage(1);
-      fetchData().then(() => setLoading(false));
-    }
-  }, [searchValue]);
-
-  useEffect(() => {
-    if (orderBy) {
-      fetchData().then(() => setLoading(false));
-    }
-  }, [orderBy, page]);
-
-  const fetchUrls= [
-    `getAllKeysAndPagesCount`,
-    `getSearchKeys/${searchValue}`,
-  ];
-
   const columns = [
     {
       title: 'Id',
@@ -71,6 +37,49 @@ function CarKeyTable() {
     }
   ];
 
+  let temp = false;
+  let i = 0;
+  while (i < columns.length && !temp) {
+    if(orderBy === columns[i].dataIndex) {
+      temp = true;
+    }
+    i++;
+  }
+
+  useEffect(() => {
+    setPage(1);
+    setOrderBy("id");
+  },[]);
+
+  useEffect(() => {
+    if(data?.elements[0]) {
+      setCarKeys(data?.elements);
+      setNbPages(data?.nbPages);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setRowsToUpdate(selectedRows);
+  }, [selectedRows])
+
+  useEffect( () => {
+    if (temp) {
+      setPage(1);
+      fetchData().then(() => setLoading(false));
+    }
+  }, [searchValue]);
+
+  useEffect(() => {
+    if (temp) {
+      fetchData().then(() => setLoading(false));
+    }
+  }, [orderBy, page]);
+
+  const fetchUrls= [
+    `getAllKeysAndPagesCount`,
+    `getSearchKeys/${searchValue}`,
+  ];
+
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       setSelectedRows(selectedRows);
@@ -80,7 +89,7 @@ function CarKeyTable() {
   const fetchData = async () => {
     setError("");
     setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 700));
 
     let lookingFor = 0;
     if(searchValue !== ""){
@@ -103,7 +112,7 @@ function CarKeyTable() {
   const onDelete = async() => {
     if(selectedRows.length > 0) {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 700));
       try {
         const values = [];
         selectedRows.forEach((row) => {

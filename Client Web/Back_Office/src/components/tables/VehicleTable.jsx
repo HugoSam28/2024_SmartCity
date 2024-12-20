@@ -62,14 +62,14 @@ function VehicleTable() {
       dataIndex: 'location',
       sorter: true,
       sortDirections: ['ascend'],
-      render:(value) => (<p>{value.y}</p>)
+      render:(value) => (<p>{value?.y}</p>)
     },
     {
       title: 'Longitude',
       dataIndex: 'location',
       sorter: true,
       sortDirections: ['ascend'],
-      render:(value) => (<p>{value.x}</p>)
+      render:(value) => (<p>{value?.x}</p>)
     },
     {
       title: t('batteryLevel'),
@@ -91,7 +91,7 @@ function VehicleTable() {
     },
     {
       title: t('isAvailable'),
-      dataIndex: 'location[0]',
+      dataIndex: 'is_available',
       sorter: true,
       sortDirections: ['ascend'],
       render:(value) => (<Tag color={value ? 'green' : 'volcano' }>{value ? 'True' : 'False'}</Tag>)
@@ -131,7 +131,7 @@ function VehicleTable() {
   const fetchData = async () => {
     setError("");
     setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 700));
 
     let lookingFor = 0;
     if(searchValue !== ""){
@@ -154,7 +154,7 @@ function VehicleTable() {
   const onDelete = async() => {
     if(selectedRows.length > 0) {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 700));
       try {
         const values = [];
         selectedRows.forEach((row) => {
