@@ -11,7 +11,7 @@ function CarKeyTable() {
   const [nbPages, setNbPages] = useState(0);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
+  const {data, setData, setRowsToUpdate, searchValue, setSearchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
   const {t} = useLanguageContext();
 
   const columns = [
@@ -47,8 +47,9 @@ function CarKeyTable() {
   }
 
   useEffect(() => {
-    setPage(1);
+    setSearchValue("");
     setOrderBy("id");
+    setPage(1);
   },[]);
 
   useEffect(() => {
@@ -104,6 +105,7 @@ function CarKeyTable() {
         },
       });
       setData({elements: items.keys, nbPages: items.nbPagesKeys});
+      setError("");
     } catch (e) {
       setError(e.message);
     }

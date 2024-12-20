@@ -1,103 +1,103 @@
 import {useEffect, useState} from "react";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import fetchWithRetry from "../../API/fetchWithRetry.jsx";
-import {Table, Pagination, Button, Tag} from "antd";
+import {Table, Pagination, Button} from "antd";
 import { MdDeleteOutline } from "react-icons/md";
 import {useDataContext} from "../../contexts/DataTransferContext.jsx";
 
 function TripTable() {
     const [selectedRows, setSelectedRows] = useState([]);
-    const [trip, setTrip] = useState([]);
+    const [trips, setTrips] = useState([]);
     const [nbPages, setNbPages] = useState(0);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
+    const {data, setData, setRowsToUpdate, searchValue, setSearchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
     const {t} = useLanguageContext();
 
-  const columns = [
-    {
-      title: 'Id',
-      dataIndex: 'id',
-      fixed: 'left',
-      sorter: true,
-      defaultSortOrder:'ascend',
-      sortDirections: ['ascend'],
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: t('personId'),
-      dataIndex: 'person_id',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: t('vehicleId'),
-      dataIndex: 'vehicle_id',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: t('startingDate'),
-      dataIndex: 'starting_date',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: t('endingDate'),
-      dataIndex: 'ending_date',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: 'Distance',
-      dataIndex: 'distance',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: t('cost'),
-      dataIndex: 'cost',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: t('startingLocation'),
-      dataIndex: 'starting_location',
-      sorter: true,
-      sortDirections: ['ascend'],
-      render:(value) => (<p>{value?.y}; {value?.x}</p>)
-    },
-    {
-      title: t('endingLocation'),
-      dataIndex: 'ending_location',
-      sorter: true,
-      sortDirections: ['ascend'],
-      render:(value) => (<p>{value?.y}; {value?.x}</p>)
+    const columns = [
+      {
+        title: 'Id',
+        dataIndex: 'id',
+        fixed: 'left',
+        sorter: true,
+        defaultSortOrder:'ascend',
+        sortDirections: ['ascend'],
+      },
+      {
+        title: 'Email',
+        dataIndex: 'email',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: t('personId'),
+        dataIndex: 'person_id',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: t('vehicleId'),
+        dataIndex: 'vehicle_id',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: t('startingDate'),
+        dataIndex: 'starting_date',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: t('endingDate'),
+        dataIndex: 'ending_date',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: 'Distance',
+        dataIndex: 'distance',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: t('cost'),
+        dataIndex: 'cost',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: t('startingLocation'),
+        dataIndex: 'starting_location',
+        sorter: true,
+        sortDirections: ['ascend'],
+        render:(value) => (<p>{value?.y}; {value?.x}</p>)
+      },
+      {
+        title: t('endingLocation'),
+        dataIndex: 'ending_location',
+        sorter: true,
+        sortDirections: ['ascend'],
+        render:(value) => (<p>{value?.y}; {value?.x}</p>)
+      }
+    ];
+    let validOrderBy = false;
+    let iDataIndex = 0;
+    while (iDataIndex < columns.length && !validOrderBy) {
+      if(orderBy === columns[iDataIndex].dataIndex) {
+        validOrderBy = true;
+      }
+      iDataIndex++;
     }
-  ];
-
-  let validOrderBy = false;
-  let iDataIndex = 0;
-  while (iDataIndex < columns.length && !validOrderBy) {
-    if(orderBy === columns[iDataIndex].dataIndex) {
-      validOrderBy = true;
-    }
-    iDataIndex++;
-  }
 
     useEffect(() => {
-        setPage(1);
-        setOrderBy("id");
+      setSearchValue("");
+      setOrderBy("id");
+      setPage(1);
     },[]);
 
     useEffect(() => {
         if(data?.elements[0]) {
-            setTrip(data?.elements);
+            setTrips(data?.elements);
             setNbPages(data?.nbPages);
         }
     }, [data]);
@@ -148,6 +148,7 @@ function TripTable() {
                 },
             });
             setData({elements: items.trips, nbPages: items.nbPagesTrips});
+            setError("");
         } catch (e) {
             setError(e.message);
         }
@@ -195,7 +196,7 @@ function TripTable() {
                 rowSelection={{ ...rowSelection,
                 }}
                 columns={columns}
-                dataSource={trip}
+                dataSource={trips}
                 pagination={false}
                 scroll={{
                     x: 'max-content',

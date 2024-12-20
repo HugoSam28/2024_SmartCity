@@ -11,7 +11,7 @@ function SponsoringTable() {
   const [nbPages, setNbPages] = useState(0);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
+  const {data, setData, setRowsToUpdate, searchValue, setSearchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
   const {t} = useLanguageContext();
 
   const columns = [
@@ -53,8 +53,9 @@ function SponsoringTable() {
   }
 
   useEffect(() => {
-    setPage(1);
+    setSearchValue("");
     setOrderBy("referred");
+    setPage(1);
   },[]);
 
   useEffect(() => {
@@ -86,8 +87,6 @@ function SponsoringTable() {
     `getSearchSponsoring/${searchValue}`,
   ];
 
-
-
   const rowSelection = {
     onChange: (selectedRowSponsoring, selectedRows) => {
       setSelectedRows(selectedRows);
@@ -112,6 +111,7 @@ function SponsoringTable() {
         },
       });
       setData({elements: items.sponsoring, nbPages: items.nbPagesSponsoring});
+      setError("");
     } catch (e) {
       setError(e.message);
     }

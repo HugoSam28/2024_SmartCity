@@ -11,95 +11,97 @@ function PersonTable() {
     const [nbPages, setNbPages] = useState(0);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
+    const {data, setData, setRowsToUpdate, searchValue, setSearchValue,page, setPage, orderBy, setOrderBy} = useDataContext();
     const {t} = useLanguageContext();
 
-  const columns = [
-    {
-      title: 'Id',
-      dataIndex: 'id',
-      fixed: 'left',
-      sorter: true,
-      defaultSortOrder:'ascend',
-      sortDirections: ['ascend'],
-    },
-    {
-      title: t('firstName'),
-      dataIndex: 'first_name',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: t('lastName'),
-      dataIndex: 'last_name',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: t('number'),
-      dataIndex: 'phone_number',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: t('birthday'),
-      dataIndex: 'birthday',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: 'Role',
-      dataIndex: 'role',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: t('balance'),
-      dataIndex: 'balance',
-      sorter: true,
-      sortDirections: ['ascend']
-    },
-    {
-      title: t('hasCarLicence'),
-      dataIndex: 'has_car_licence',
-      sorter: true,
-      sortDirections: ['ascend'],
-      render:(value) => (<Tag color={value ? 'green' : 'volcano' }>{value ? 'True' : 'False'}</Tag>)
-    },
-    {
-      title: t('hasMotorbikeLicence'),
-      dataIndex: 'has_motorbike_licence',
-      sorter: true,
-      sortDirections: ['ascend'],
-      render:(value) => (<Tag color={value ? 'green' : 'volcano' }>{value ? 'True' : 'False'}</Tag>)
 
-    },
-    {
-      title: t('referralCode'),
-      dataIndex: 'referral_code',
-      sorter: true,
-      sortDirections: ['ascend']
-    }
-  ];
+    const columns = [
+      {
+        title: 'Id',
+        dataIndex: 'id',
+        fixed: 'left',
+        sorter: true,
+        defaultSortOrder:'ascend',
+        sortDirections: ['ascend'],
+      },
+      {
+        title: t('firstName'),
+        dataIndex: 'first_name',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: t('lastName'),
+        dataIndex: 'last_name',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: 'Email',
+        dataIndex: 'email',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: t('number'),
+        dataIndex: 'phone_number',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: t('birthday'),
+        dataIndex: 'birthday',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: 'Role',
+        dataIndex: 'role',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: t('balance'),
+        dataIndex: 'balance',
+        sorter: true,
+        sortDirections: ['ascend']
+      },
+      {
+        title: t('hasCarLicence'),
+        dataIndex: 'has_car_licence',
+        sorter: true,
+        sortDirections: ['ascend'],
+        render:(value) => (<Tag color={value ? 'green' : 'volcano' }>{value ? 'True' : 'False'}</Tag>)
+      },
+      {
+        title: t('hasMotorbikeLicence'),
+        dataIndex: 'has_motorbike_licence',
+        sorter: true,
+        sortDirections: ['ascend'],
+        render:(value) => (<Tag color={value ? 'green' : 'volcano' }>{value ? 'True' : 'False'}</Tag>)
 
-  let validOrderBy = false;
-  let iDataIndex = 0;
-  while (iDataIndex < columns.length && !validOrderBy) {
-    if(orderBy === columns[iDataIndex].dataIndex) {
-      validOrderBy = true;
+      },
+      {
+        title: t('referralCode'),
+        dataIndex: 'referral_code',
+        sorter: true,
+        sortDirections: ['ascend']
+      }
+    ];
+
+    let validOrderBy = false;
+    let iDataIndex = 0;
+    while (iDataIndex < columns.length && !validOrderBy) {
+      if(orderBy === columns[iDataIndex].dataIndex) {
+        validOrderBy = true;
+      }
+      iDataIndex++;
     }
-    iDataIndex++;
-  }
 
     useEffect(() => {
-        setPage(1);
-        setOrderBy("id");
+      setSearchValue("");
+      setOrderBy("id");
+      setPage(1);
     },[]);
 
     useEffect(() => {
@@ -154,6 +156,7 @@ function PersonTable() {
                 },
             });
             setData({elements: items.persons, nbPages: items.nbPagesPersons});
+            setError("");
         } catch (e) {
             setError(e.message);
         }

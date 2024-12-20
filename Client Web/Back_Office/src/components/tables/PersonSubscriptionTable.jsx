@@ -6,13 +6,13 @@ import { MdDeleteOutline } from "react-icons/md";
 import {useDataContext} from "../../contexts/DataTransferContext.jsx";
 
 function PersonSubscriptionTable() {
-    const [selectedRows, setSelectedRows] = useState([]);
-    const [personSubscription, setPersonSubscription] = useState([]);
-    const [nbPages, setNbPages] = useState(0);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
-    const {t} = useLanguageContext();
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [personSubscriptions, setPersonSubscriptions] = useState([]);
+  const [nbPages, setNbPages] = useState(0);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const {data, setData, setRowsToUpdate, searchValue, setSearchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
+  const {t} = useLanguageContext();
 
   const columns = [
     {
@@ -65,13 +65,14 @@ function PersonSubscriptionTable() {
   }
 
     useEffect(() => {
-        setPage(1);
-        setOrderBy("id");
+      setSearchValue("");
+      setOrderBy("id");
+      setPage(1);
     },[]);
 
     useEffect(() => {
         if(data?.elements[0]) {
-            setPersonSubscription(data?.elements);
+            setPersonSubscriptions(data?.elements);
             setNbPages(data?.nbPages);
         }
     }, [data]);
@@ -122,6 +123,7 @@ function PersonSubscriptionTable() {
                 },
             });
             setData({elements: items.personSubscriptions, nbPages: items.nbPagesPersonSubscriptions});
+            setError("");
         } catch (e) {
             setError(e.message);
         }
@@ -167,7 +169,7 @@ function PersonSubscriptionTable() {
                 rowSelection={{ ...rowSelection,
                 }}
                 columns={columns}
-                dataSource={personSubscription}
+                dataSource={personSubscriptions}
                 pagination={false}
                 scroll={{
                     x: 'max-content',

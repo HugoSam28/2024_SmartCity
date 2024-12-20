@@ -11,7 +11,7 @@ function SubscriptionTable() {
   const [nbPages, setNbPages] = useState(0);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
+  const {data, setData, setRowsToUpdate, searchValue, setSearchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
   const {t} = useLanguageContext();
 
   const columns = [
@@ -54,7 +54,6 @@ function SubscriptionTable() {
       sortDirections: ['ascend']
     }
   ];
-
   let validOrderBy = false;
   let iDataIndex = 0;
   while (iDataIndex < columns.length && !validOrderBy) {
@@ -65,8 +64,9 @@ function SubscriptionTable() {
   }
 
   useEffect(() => {
-    setPage(1);
+    setSearchValue("");
     setOrderBy("id");
+    setPage(1);
   },[]);
 
   useEffect(() => {
@@ -122,6 +122,7 @@ function SubscriptionTable() {
         },
       });
       setData({elements: items.subscriptions, nbPages: items.nbPagesSubscriptions});
+      setError("");
     } catch (e) {
       setError(e.message);
     }

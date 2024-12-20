@@ -7,12 +7,13 @@ import {useDataContext} from "../../contexts/DataTransferContext.jsx";
 
 function VehicleTable() {
   const [selectedRows, setSelectedRows] = useState([]);
-  const [carKeys, setCarKeys] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
   const [nbPages, setNbPages] = useState(0);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const {data, setData, setRowsToUpdate, searchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
+  const {data, setData, setRowsToUpdate, searchValue, setSearchValue, page, setPage, orderBy, setOrderBy} = useDataContext();
   const {t} = useLanguageContext();
+
 
   const columns = [
     {
@@ -98,13 +99,14 @@ function VehicleTable() {
   }
 
   useEffect(() => {
-    setPage(1);
+    setSearchValue("");
     setOrderBy("id");
+    setPage(1);
   },[]);
 
   useEffect(() => {
     if(data?.elements[0]) {
-      setCarKeys(data?.elements);
+      setVehicles(data?.elements);
       setNbPages(data?.nbPages);
     }
   }, [data]);
@@ -155,6 +157,7 @@ function VehicleTable() {
         },
       });
       setData({elements: items.vehicles, nbPages: items.nbPagesVehicles});
+      setError("");
     } catch (e) {
       setError(e.message);
     }
@@ -167,7 +170,7 @@ function VehicleTable() {
       selectedRows.forEach((row) => {
         values.push(row.id);
       })
-      const items = await fetchWithRetry(`http://localhost:3267/v1/carKey/delete`,{
+      const items = await fetchWithRetry(`http://localhost:3267/v1/vehicle/delete`,{
         method: 'DELETE',
         headers: {
           "authorization": `Bearer ${sessionStorage.getItem('token')}`,
@@ -201,7 +204,7 @@ function VehicleTable() {
         rowSelection={{ ...rowSelection,
         }}
         columns={columns}
-        dataSource={carKeys}
+        dataSource={vehicles}
         pagination={false}
         scroll={{
           x: 'max-content',
