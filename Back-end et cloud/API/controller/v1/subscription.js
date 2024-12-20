@@ -46,6 +46,7 @@ export const getAllSubscriptions = async(req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -75,6 +76,7 @@ export const getAllSubscriptionsAndPagesCount = async(req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -92,6 +94,7 @@ export const  getSearchSubscriptions = async(req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -132,6 +135,7 @@ export const addSubscription = async(req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -143,6 +147,7 @@ export const updateSubscription = async (req, res) => {
         res.send(subscriptions);
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -164,6 +169,7 @@ export const deleteSubscriptions = async (req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }

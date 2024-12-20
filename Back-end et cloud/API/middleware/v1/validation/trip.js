@@ -20,6 +20,7 @@ export const startTripValidatorMiddelware = async(req, res, next) => {
     req.val = await startTripValidator.validate(data);
     next();
   } catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -42,6 +43,7 @@ export const endTripValidatorMiddelware = async(req, res, next) => {
     req.val = await endTripValidator.validate(data);
     next();
   } catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -77,6 +79,7 @@ export const addTripValidatorMiddelware = async(req, res, next) => {
     next();
   }
   catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -105,8 +108,8 @@ export const updateTripValidatorMiddelware = async(req, res, next) => {
     cost: req.body.cost,
     endingDate: req.body.endingDate,
     startingLocationLon: req.body.startingLocationLon,
-    startingLocationLon: req.body.startingLocationLon,
-    endingLocationLat: req.body.endingLocationLon,
+    startingLocationLat: req.body.startingLocationLat,
+    endingLocationLon: req.body.endingLocationLon,
     endingLocationLat: req.body.endingLocationLat
   }
   try {
@@ -114,6 +117,7 @@ export const updateTripValidatorMiddelware = async(req, res, next) => {
     next();
   }
   catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }

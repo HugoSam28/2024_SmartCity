@@ -3,33 +3,33 @@ const addJitter = (time) => {
   return time + jitter;
 }
 
-async function FetchWithRetry(url, options, onUnauthorized = () => {return null}) {
-  let attempt = 0;
+async function FetchWithRetry(url, options, onUnauthorized = () => {return null}, attempt =0) {
   const maxRetries = 5;
   const delay = 700;
 
-  while (attempt < maxRetries) {
-    try {
-      const response = await fetch(url, options);
-      if (response.ok) {
-        return await response.json();
-      }
-      if(response.status === 401) {
-        onUnauthorized();
-        throw new Error(`Connexion expired: ${response.status}`);
-      }
-      if (response.status >= 400 && response.status < 500) {
-        throw new Error(`Erreur client : ${response.status}`);
-      }
-      console.error(`Tentative ${attempt + 1} échouée: http : ${response.status}`);
-    } catch (err) {
-      console.error(`Erreur lors de la tentative ${attempt + 1}: ${err.message}`);
-      throw err;
+  try {
+    const response = await fetch(url, options);
+    if (response.ok) {
+      return await response.json();
     }
-    attempt++;
-    const waitTime = addJitter(delay * (2 ** attempt));
-    await new Promise((resolve) => setTimeout(resolve, waitTime));
+    if(attempt < maxRetries) {
+      if (response.status >= 500) {
+        attempt++;
+        const waitTime = addJitter(delay * (2 ** attempt));
+        await new Promise((resolve) => setTimeout(resolve, waitTime));
+        await FetchWithRetry(url, options, onUnauthorized, attempt);
+      } else {
+        if(response.status === 401) {
+          onUnauthorized();
+        }
+      }
+    }
+
+  } catch (e) {
+    console.error(`Erreur lors de la tentative ${attempt + 1}: ${e.message}`);
+    throw e;
   }
   throw new Error('Les tentatives ont échouées');
 }
+
 export default FetchWithRetry;
