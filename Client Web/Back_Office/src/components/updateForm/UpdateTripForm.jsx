@@ -1,70 +1,88 @@
 import {Button, Form, Input, Space, DatePicker, InputNumber, notification} from "antd";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
+import {useDataContext} from "../../contexts/DataTransferContext.jsx";
+import fetchWithRetry from "../../API/fetchWithRetry.jsx";
 
 function UpdateTripForm({callback}) {
     const [form] = Form.useForm();
     const {t} = useLanguageContext();
+    const {data, setData, rowsToUpdate, setSearchValue, page, orderBy, setRowsToUpdate} = useDataContext();
+    const [loading, setLoading] = useState(false);
+    const [api, contextHolder] = notification.useNotification();
+    const [dateStart, setDateStart] = useState("");
+    const [dateEnd, setDateEnd] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const [startingDate, setStartingDate] = useState("");
-    const [endingDate, setEndingDate] = useState("");
-    const [api, contextHolder] = notification.useNotification();
-    const openNotificationWithIcon = () => {
-      api['success']({
-        message: t('success'),
-        description:
-          t('successMessageUpdate'),
-      });
-    };
-    const onReset = () => {
+
+    useEffect(() => {
         form.resetFields();
-    }
-    const onChangeStart = (date, string) => {
-        setStartingDate(string);
+    }, [rowsToUpdate]);
+
+    const openNotification = () => {
+        api['success']({
+            message: t('success'),
+            description:
+                t('successMessageUpdate'),
+        });
     };
 
-    const onChangeEnd = (date, string) => {
-        setEndingDate(string);
+    const onDateChangeStart = (date, string) => {
+        setDateStart(string);
     };
+
+    const onDateChangeEnd = (date, string) => {
+        setDateEnd(string);
+    };
+
+    const onReset = () => {
+        form.resetFields();
+    };
+
+    const toLogout = () => {
+        navigate("/logout", {replace: true});
+    }
+
+    const updateData = async (values) => {
+        setLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 500));
+        try {
+            const items = await fetchWithRetry('http://localhost:3267/v1/trip/update', {
+                method: 'PATCH',
+                headers: {
+                    "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values),
+            }, toLogout)
+            if (items.length !== 0) {
+                setData({elements: items, nbPages: data.nbPages});
+            }
+            openNotification();
+            callback();
+            setRowsToUpdate([]);
+        }
+        catch (e) {
+            setError(e.message);
+        }
+    }
 
     const onFinish = async (values) => {
         setError("");
-        values.iPage = 1;
-        values.column = "id";
-        values.startingDate = startingDate;
-        values.endingDate = endingDate;
-        values.startingLocation = [values.startingLocationLat, values.startingLocationLon]
-        values.endingLocation = [values.endingLocationLat, values.endingLocationLon]
-
-        await fetch('http://localhost:3267/v1/trip/update', {
-            method: 'PATCH',
-            headers: {
-                "authorization": `Bearer ${sessionStorage.getItem('token')}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(values),
-
-        })
-            .then(response => {
-                if (!response?.ok) {
-                    if(response.status === 401) {
-                        navigate("/logout", {replace:true});
-                    }
-                    throw new Error(`${t('httpError')} : ${response.status}, ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                openNotificationWithIcon();
-                callback();
-            })
-            .catch (e => setError(e.message))
+        setSearchValue("");
+        values.startingDate = dateStart === "" ? rowsToUpdate[0].date : dateStart;
+        values.endingDate = dateEnd === "" ? rowsToUpdate[0].date : dateEnd;
+        values.endingLocationLat = values.endingLocationLat === undefined?rowsToUpdate[0]?.ending_location.y:values.endingLocationLat;
+        values.endingLocationLon = values.endingLocationLon === undefined?rowsToUpdate[0]?.ending_location.x:values.endingLocationLon;
+        values.startingLocationLat = values.startingLocationLat === undefined?rowsToUpdate[0]?.starting_location.y:values.startingLocationLat;
+        values.startingLocationLon = values.startingLocationLon === undefined?rowsToUpdate[0]?.starting_location.x:values.startingLocationLon;
+        values.iPage = page;
+        values.column = orderBy;
+        updateData(values).then(() => setLoading(false));
     };
-    const valeur = {id : 2}
+
     return (
         <div id="formContainer">
           {contextHolder}
@@ -73,26 +91,30 @@ function UpdateTripForm({callback}) {
                 layout={"vertical"}
                 form={form}
                 requiredMark={false}
+                initialValues={{
+                    id: rowsToUpdate[0]?.id,
+                }}
+                style={{ width: '100%' }}
             >
                 <Form.Item
                     name ='id'
                     label="Id"
                     disabled={true}>
-                    <Input defaultValue = {valeur.id} disabled />
+                    <Input disabled />
                 </Form.Item>
 
                 <Form.Item
                     name='personId'
                     label={t('personId')}
                     >
-                    <InputNumber placeholder="21" min={1} style={{width:'100%'}} />
+                    <InputNumber defaultValue={rowsToUpdate[0]?.person_id} min={1} style={{width:'100%'}} />
                 </Form.Item>
 
                 <Form.Item
                     name='vehicleId'
                     label={t('vehicleId')}
                     >
-                    <InputNumber placeholder="21" min={1} style={{width:'100%'}}/>
+                    <InputNumber defaultValue={rowsToUpdate[0]?.vehicle_id} min={1} style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
@@ -101,7 +123,8 @@ function UpdateTripForm({callback}) {
                     >
                     <DatePicker
                         showTime
-                        onChange={onChangeStart}
+                        defaultValue={rowsToUpdate[0]?.starting_date ? dayjs(rowsToUpdate[0]?.starting_date) : null}
+                        onChange={onDateChangeStart}
                         maxDate={dayjs()}
                         style={{width:'100%'}}
                     />
@@ -113,7 +136,8 @@ function UpdateTripForm({callback}) {
                     >
                     <DatePicker
                         showTime
-                        onChange={onChangeEnd}
+                        defaultValue={rowsToUpdate[0]?.ending_date ? dayjs(rowsToUpdate[0]?.ending_date) : null}
+                        onChange={onDateChangeEnd}
                         maxDate={dayjs()}
                         style={{width:'100%'}}
                     />
@@ -121,58 +145,52 @@ function UpdateTripForm({callback}) {
 
                 <Form.Item
                     name='distance'
-                    label={t('Distance')}
+                    label={t('distance')}
                     >
-                    <InputNumber min={0} placeholder="2000" style={{width:'100%'}}/>
+                    <InputNumber min={0} defaultValue={rowsToUpdate[0]?.distance} style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
                     name='cost'
                     label={t('cost')}
                     >
-                    <InputNumber placeholder="2.2" min={0} style={{width:'100%'}}/>
+                    <InputNumber defaultValue={rowsToUpdate[0]?.cost} min={0} style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
                     name='startingLocationLat'
                     label={t('startingLocationLat')}
                     >
-                    <InputNumber placeholder="50.342326" style={{width:'100%'}}/>
+                    <InputNumber defaultValue={rowsToUpdate[0]?.starting_location.y} style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
                     name='startingLocationLon'
                     label={t('startingLocationLon')}
-                    rules={[
-                        {required: true,},
-                    ]}>
-                    <InputNumber placeholder="20.389483" style={{width:'100%'}}/>
+                    >
+                    <InputNumber defaultValue={rowsToUpdate[0]?.starting_location.x} style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
                     name='endingLocationLat'
                     label={t('endingLocationLat')}
-                    rules={[
-                        {required: true,},
-                    ]}>
-                    <InputNumber placeholder="50.342326" style={{width:'100%'}}/>
+                    >
+                    <InputNumber defaultValue={rowsToUpdate[0]?.ending_location.y} style={{width:'100%'}}/>
                 </Form.Item>
 
                 <Form.Item
-                    name='endingLocationLong'
-                    label={t('endingLocationLong')}
-                    rules={[
-                        {required: true,},
-                    ]}>
-                    <InputNumber placeholder="20.389483" style={{width:'100%'}}/>
+                    name='endingLocationLon'
+                    label={t('endingLocationLon')}
+                    >
+                    <InputNumber defaultValue={rowsToUpdate[0]?.ending_location.x} style={{width:'100%'}}/>
                 </Form.Item>
 
                 {error && <p style={{color: "red"}}>{error}</p>}
 
                 <Form.Item>
                     <Space>
-                        <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-                        <Button type="primary" htmlType='submit'>{t('update')}</Button>
+                        <Button loading={loading} onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
+                        <Button loading={loading} type="primary" htmlType='submit'>{t('update')}</Button>
                     </Space>
                 </Form.Item>
             </Form>
