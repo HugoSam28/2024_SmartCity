@@ -93,7 +93,6 @@ export async function personUpdateValidatorMiddlewareViaAdmin(req, res, next) {
     hasCarLicence: req.body.hasCarLicence,
     hasMotorbikeLicence: req.body.hasMotorbikeLicence,
   };
-  console.log(req.body);
   try {
     req.val = await updatePersonValidatorViaAdmin.validate(data);
     next();

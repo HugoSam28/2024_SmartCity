@@ -3,16 +3,19 @@ import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
+import fetchWithRetry from "../../API/fetchWithRetry.jsx";
+import {useDataContext} from "../../contexts/DataTransferContext.jsx";
 
 function AddPersonSubscriptionForm({callback}) {
   const [form] = Form.useForm();
   const {t} = useLanguageContext();
   const [loading, setLoading] = useState(false);
+  const {setData, setSearchValue, orderBy, page} = useDataContext();
   const [date, setDate] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
-  const openNotificationWithIcon = () => {
+  const openNotification = () => {
     api['success']({
       message: t('success'),
       description:
@@ -25,37 +28,37 @@ function AddPersonSubscriptionForm({callback}) {
   const onReset = () => {
     form.resetFields();
   }
-  const onFinish = async (values) => {
+  const toLogout = () => {
+    navigate("/logout", {replace: true});
+  }
+  const addData = async (values) => {
     setLoading(true);
-    setError("");
-    values.startingSubscriptionDate = date;
-    values.iPage = 1;
-    values.column = "id";
-    await fetch('http://localhost:3267/v1/personSubscription/add', {
-      method: 'POST',
-      headers: {
-        "authorization": `Bearer ${sessionStorage.getItem('token')}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
+    await new Promise(resolve => setTimeout(resolve, 500));
+    try {
+      const items = await fetchWithRetry('http://localhost:3267/v1/personSubscription/add', {
+        method: 'POST',
+        headers: {
+          "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }, toLogout)
+      setData({elements:items.personSubscriptions, nbPages: items.nbPagesPersonSubscriptions});
+      openNotification();
+      callback();
+    }
+    catch (e) {
+      setError(e.message)
+    }
+  }
 
-    })
-      .then(response => {
-        if (!response?.ok) {
-          if(response.status === 401) {
-            navigate("/logout", {replace:true});
-          }
-          throw new Error(`${t('httpError')} : ${response.status}, ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        setLoading(false);
-        console.log(data);
-        openNotificationWithIcon();
-        callback();
-      })
-      .catch (e => setError(e.message))
+  const onFinish = async (values) => {
+    setError("");
+    setSearchValue("");
+    values.iPage = page;
+    values.column = orderBy;
+    values.startingSubscriptionDate = date;
+    addData(values).then(()=> setLoading(false));
   };
   return (
     <div id="formContainer">
@@ -67,7 +70,7 @@ function AddPersonSubscriptionForm({callback}) {
         requiredMark={'optional'}
       >
         <Form.Item
-          name='persoId'
+          name='personId'
           label={t('personId')}
           rules={[
             {required: true,},
@@ -75,11 +78,11 @@ function AddPersonSubscriptionForm({callback}) {
           <InputNumber placeholder="21" style={{width: '100%'}} min={1} />
         </Form.Item>
         <Form.Item
-          name='vehicleId'
-          label={t('vehicleId')}
-          rules={[
-            {required: true,},
-          ]}>
+            name='subscriptionId'
+            label={t('subscriptionId')}
+            rules={[
+              {required: true,},
+            ]}>
           <InputNumber placeholder="3" style={{width: '100%'}} min={1} />
         </Form.Item>
         <Form.Item
