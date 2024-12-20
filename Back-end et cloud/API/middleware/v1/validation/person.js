@@ -65,8 +65,6 @@ export async function personUpdateValidatorMiddleware(req, res, next) {
   }
 }
 
-// Car un user ne peut pas modifier sa propre date de naissance, ni son role, ni le referralCode
-// un admin ne peut modifier le mot de passe d'un user
 const updatePersonSchemaViaAdmin = vine.object({
   id: vine.number(),
   firstName: vine.string().optional(),

@@ -1,0 +1,16 @@
+    Liste des utilisateurs enregistrés
+
+ROLE_ADMIN : 
+
+    - root@mail.be
+    - root
+
+//CE ROLE N'A PAS DE DROITS D'ACCES DANS LE BACK OFFICE
+ROLE_USER :
+
+    - user@mail.be
+    - root
+
+    - user2@mail.be
+    - root
+    

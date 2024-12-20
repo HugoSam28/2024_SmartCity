@@ -31,19 +31,19 @@ import {
 
 const router = Router();
 
-router.post("/registration", PVM, registration); //OK + gestion du referral code si présent
-router.post("/login", LVM, login); //OK
-router.post("/add", checkJWT, admin, PVM, PageVM, OVM, addPerson)
+router.post("/registration", PVM, registration);
+router.post("/login", LVM, login);
+router.post("/add", checkJWT, admin, PVM, PageVM, OVM, addPerson);
 
-router.get("/infos", checkJWT, getMyInfos); //Récupère toutes les infos du profil
-router.get("/porfile",checkJWT, getProfileInfos) //Récupérer les infos de bases concernant l'utilisateur pour le profil + le code de parrainage
-router.get("/getAllPersons/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllPersons); //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut)
-router.get("/getAllPersonsAndPagesCount/:column/:iPage",checkJWT, admin, PageVM, OVM, getAllPersonsAndPagesCount) //Récupère toutes les lignes en les triant sur la colonne choisie (avec une par défaut) + le nombres de pages
-router.get("/getSearchPersons/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchPersons) //Champ de recherche sur les ligne
+router.get("/infos", checkJWT, getMyInfos);
+router.get("/porfile",checkJWT, getProfileInfos);-
+router.get("/getAllPersons/:column/:iPage", checkJWT, admin, PageVM, OVM, getAllPersons);-
+router.get("/getAllPersonsAndPagesCount/:column/:iPage",checkJWT, admin, PageVM, OVM, getAllPersonsAndPagesCount);
+router.get("/getSearchPersons/:search/:column/:iPage", checkJWT, admin, PageVM, SVM, OVM, getSearchPersons);
 
-router.patch("/updateMySelf", checkJWT, PUVM, PageVM, OVM, updateMySelf); //Modification de son propre compte
+router.patch("/updateMySelf", checkJWT, PUVM, PageVM, OVM, updateMySelf);
 router.patch("/update", checkJWT, admin, PUVMVA, PageVM, OVM, updatePerson);
-router.patch("/updateBalance",checkJWT, PUVM, updatePersonalBalance) //Ajout de crédits à notre balance
+router.patch("/updateBalance",checkJWT, PUVM, updatePersonalBalance);
 
 router.delete("/delete", checkJWT, admin, DVM, PageVM, OVM, deletePersons);
 
