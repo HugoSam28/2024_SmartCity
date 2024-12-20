@@ -70,6 +70,11 @@ export const updateVehicleValidatorMiddleware = async (req, res, next) => {
     chassisNumber: req.body.chassisNumber
   }
   try {
+    if(data.type === 'Voiture' || data.type === 'Scooter') {
+      if(!(data.brand && data.model && data.chassisNumber)) {
+        throw Error("Ce type de vehicle doit avoir les champs : brand, model et chassisNumber");
+      }
+    }
     req.val = await updateValidator.validate(data);
     next();
   }

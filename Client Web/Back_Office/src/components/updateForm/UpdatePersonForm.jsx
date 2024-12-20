@@ -173,7 +173,7 @@ function UpdatePersonForm({callback}) {
                 {error && <p style={{color: "red"}}>{error}</p>}
                 <Form.Item>
                     <Space>
-                        <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
+                        <Button loading={loading} onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
                         <Button loading={loading} type="primary" htmlType='submit'>{t('update')}</Button>
                     </Space>
                 </Form.Item>
