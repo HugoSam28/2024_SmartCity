@@ -92,7 +92,7 @@ export const updateSubscription = async(SQLClient, {id, label, price, discount, 
 }
 
 export const deleteSubscriptions = async(SQLClient, {idList}) => {
-  return await SQLClient.query(`DELETE FROM car_key WHERE id = ANY($1)`, [idList]);
+  return await SQLClient.query(`DELETE FROM subscription WHERE id = ANY($1)`, [idList]);
 }
 
 export const getOthersSubscription = async(SQLClient, ownRows) => {
