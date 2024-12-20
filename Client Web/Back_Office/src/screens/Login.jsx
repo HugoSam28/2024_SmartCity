@@ -16,10 +16,10 @@ export default function LoginScreen() {
   }
 
   const handleLogin = async (values) => {
-    setError(""); // Reset error
+    setError("");
 
-    const maxRetries = 5; // Nombre maximum de retries
-    let retryCount = 0; // Compteur de retries
+    const maxRetries = 5;
+    let retryCount = 0;
 
     const loginWithRetry = async () => {
       try {
@@ -30,13 +30,11 @@ export default function LoginScreen() {
           },
           body: JSON.stringify(values),
         });
-
-        // Gérer les réponses 400 et autres erreurs client
         if (response.status === 400) {
-          throw new Error(t("badRequestError")); // Message d'erreur utilisateur
+          throw new Error(t("badRequestError"));
         }
         if (!response.ok) {
-          throw new Error(t("connectionApiError")); // Autres erreurs génériques
+          throw new Error(t("connectionApiError"));
         }
         const token = await response.text();
         const decodedToken = jwt_decode(token);
@@ -49,7 +47,7 @@ export default function LoginScreen() {
       } catch (error) {
         if (retryCount < maxRetries && error.message !== t("badRequestError") && error.message !== t("wrongPassword")) {
           retryCount++;
-          const waitTime = Math.pow(2, retryCount) * 500; // Backoff exponentiel
+          const waitTime = Math.pow(2, retryCount) * 500;
           setError(`Retrying... (${retryCount})`);
           await new Promise(resolve => setTimeout(resolve, waitTime));
           return loginWithRetry();

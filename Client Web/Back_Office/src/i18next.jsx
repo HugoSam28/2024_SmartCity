@@ -16,11 +16,7 @@ const resources = {
 i18next.use(initReactI18next)
   .init({
     resources,
-    lng:"fr", //default language
+    lng:"fr",
   });
 
 export default i18next;
-
-/*
-https://dev.to/anyiamchimdia/creating-multilingual-react-apps-with-i18n-a-step-by-step-guide-to-internationalisation-107o
-*/
