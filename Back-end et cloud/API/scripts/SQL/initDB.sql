@@ -269,7 +269,7 @@ VALUES (1,
 
 INSERT INTO Trip (person_ID, vehicle_ID, starting_date, ending_date, distance, cost, starting_location, ending_location)
 VALUES (2,
-        4,
+        6,
         '2023-10-17 14:14:00',
         '2023-10-17 14:24:00',
         23.40,
