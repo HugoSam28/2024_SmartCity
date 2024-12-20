@@ -1,7 +1,9 @@
+import {Button, Form, InputNumber, Select, notification, Space} from "antd";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
-import {Button, Form, InputNumber, notification, Select, Space} from "antd";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import fetchWithRetry from "../../API/fetchWithRetry.jsx";
+import {useDataContext} from "../../contexts/DataTransferContext.jsx";
 
 function AddSubscriptionForm({callback}) {
   const [form] = Form.useForm();
@@ -23,10 +25,12 @@ function AddSubscriptionForm({callback}) {
     { value: 'Velo', label: 'Velo' },
     { value: 'Trotinette', label: 'Trotinette' },
   ];
+  const [loading, setLoading] = useState(false);
+  const {setData, setSearchValue, orderBy, page} = useDataContext();
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
-  const openNotificationWithIcon = () => {
+  const openNotification = () => {
     api['success']({
       message: t('success'),
       description:
@@ -36,34 +40,35 @@ function AddSubscriptionForm({callback}) {
   const onReset = () => {
     form.resetFields();
   }
+  const toLogout = () => {
+    navigate("/logout", {replace: true});
+  }
+  const addData = async (values) => {
+    setLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 500));
+    try {
+      const items = await fetchWithRetry('http://localhost:3267/v1/subscription/add', {
+        method: 'POST',
+        headers: {
+          "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }, toLogout)
+      setData({elements:items.subscriptions, nbPages: items.nbPagesSubscriptions});
+      openNotification();
+      callback();
+    }
+    catch (e) {
+      setError(e.message)
+    }
+  }
   const onFinish = async (values) => {
     setError("");
-    values.iPage = 1;
-    values.column = "id";
-    await fetch('http://localhost:3267/v1/subscription/add', {
-      method: 'POST',
-      headers: {
-        "authorization": `Bearer ${sessionStorage.getItem('token')}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-
-    })
-      .then(response => {
-        if (!response?.ok) {
-          if(response.status === 401) {
-            navigate("/logout", {replace:true});
-          }
-          throw new Error(`${t('httpError')} : ${response.status}, ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-        openNotificationWithIcon();
-        callback();
-      })
-      .catch (e => setError(e.message))
+    setSearchValue("");
+    values.iPage = page;
+    values.column = orderBy;
+    addData(values).then(()=> setLoading(false));
   };
   return (
     <div id="formContainer">
@@ -91,7 +96,7 @@ function AddSubscriptionForm({callback}) {
           rules={[
             {required:true}
           ]}>
-          <InputNumber placeholder="20" style={{width: '100%'}} min={1} />
+          <InputNumber placeholder="21" min={1} style={{width:'100%'}} />
         </Form.Item>
         <Form.Item
           name="discount"
@@ -99,7 +104,7 @@ function AddSubscriptionForm({callback}) {
           rules={[
             {required:true}
           ]}>
-          <InputNumber placeholder={`0 < ${t("discount")} <= 1`} style={{width: '100%'}} min={1} />
+          <InputNumber placeholder={`0 < ${t("discount")} <= 1`} style={{width: '100%'}} min={0} max={1} />
         </Form.Item>
         <Form.Item
           name="paymentRecurrence"
@@ -125,7 +130,7 @@ function AddSubscriptionForm({callback}) {
         <Form.Item>
           <Space>
             <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-            <Button type="primary" htmlType='submit'>{t('add')}</Button>
+            <Button type="primary" loading={loading} htmlType='submit'>{t('add')}</Button>
           </Space>
         </Form.Item>
       </Form>
