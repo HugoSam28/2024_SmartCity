@@ -130,9 +130,6 @@ function PersonTable() {
         `getAllPersonsAndPagesCount`,
         `getSearchPersons/${searchValue}`,
     ];
-
-
-
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             setSelectedRows(selectedRows);
