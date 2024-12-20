@@ -59,8 +59,7 @@ function UpdatePersonSubscription({callback}) {
     setSearchValue("");
     values.iPage = page;
     values.column = orderBy;
-    values.starstartingSubscriptionDate = date === "" ? rowsToUpdate[0].date : date;
-    console.log(values);
+    values.startingSubscriptionDate = date === "" ? rowsToUpdate[0].date : date;
     updateData(values).then(()=> setLoading(false));
   };
 
