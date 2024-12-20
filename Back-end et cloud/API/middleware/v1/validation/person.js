@@ -29,6 +29,7 @@ export async function personValidatorMiddleware(req, res, next) {
     next();
   }
   catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -61,6 +62,7 @@ export async function personUpdateValidatorMiddleware(req, res, next) {
     req.val = await updatePersonValidator.validate(data);
     next();
   } catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -97,6 +99,7 @@ export async function personUpdateValidatorMiddlewareViaAdmin(req, res, next) {
     req.val = await updatePersonValidatorViaAdmin.validate(data);
     next();
   } catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -114,6 +117,7 @@ export async function loginValidatorMiddleware(req, res, next) {
     req.val = await loginValidator.validate(data);
     next();
   } catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }

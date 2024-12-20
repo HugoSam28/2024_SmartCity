@@ -17,7 +17,8 @@ const handleReferralCode = async (referred, code) => {
         [idSponsor, referred]);
       await SQLClient.query("COMMIT");
     }
-  } catch (error) {
+  } catch (e) {
+    console.error(e);
     try {
       if(SQLClient){
         await SQLClient.query('ROLLBACK');
@@ -54,6 +55,7 @@ export const login = async (req,res) => {
     const token = jwt.sign(userDetails, process.env.JWTKEY, {expiresIn: "18h"} );
     res.status(201).send(token);
   } catch(e) {
+    console.error(e);
     res.status(500).send(e.message);
   }
 }
@@ -74,6 +76,7 @@ export const addPerson = async (req, res) => {
     }
   }
   catch(e){
+    console.error(e);
     res.status(500).send(e.message);
   }
 }
@@ -89,6 +92,7 @@ export const getMyInfos = async(req, res) => {
     }
   }
   catch(e){
+    console.error(e);
     res.status(500).send(e.message);
   }
 }
@@ -104,6 +108,7 @@ export const getProfileInfos = async(req, res) => {
     }
   }
   catch(e){
+    console.error(e);
     res.status(500).send(e.message);
   }
 }
@@ -119,6 +124,7 @@ export const getAllPersons = async (req, res) => {
     }
   }
   catch(e) {
+    console.error(e);
     res.status(500).send(e.message);
   }
 }
@@ -137,6 +143,7 @@ export const getAllPersonsAndPagesCount = async(req, res) => {
     }
   }
   catch(e){
+    console.error(e);
     res.status(500).send(e.message);
   }
 }
@@ -154,6 +161,7 @@ export const getSearchPersons = async(req, res) => {
     }
   }
   catch(e){
+    console.error(e);
     res.status(500).send(e.message);
   }
 }
@@ -165,6 +173,7 @@ export const updateMySelf = async(req, res) => {
     res.send(people);
   }
   catch(e){
+    console.error(e);
     res.status(500).send(e.message);
   }
 }
@@ -176,6 +185,7 @@ export const updatePerson = async(req, res) => {
     res.send(people);
   }
   catch(e){
+    console.error(e);
     res.status(500).send(e.message);
   }
 }
@@ -191,6 +201,7 @@ export const updatePersonalBalance = async(req, res) =>{
     }
   }
   catch(e){
+    console.error(e);
     res.status(500).send(e.message);
   }
 }
@@ -212,6 +223,7 @@ export const deletePersons = async(req, res) => {
     }
   }
   catch(e){
+    console.error(e);
     res.status(500).send(e.message);
   }
 }

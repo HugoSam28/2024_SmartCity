@@ -1,7 +1,9 @@
+import {Button, Form, Input, InputNumber, Select, notification, Space} from "antd";
 import {useLanguageContext} from "../../contexts/LanguageContext.jsx";
-import {Button, Form, Input, InputNumber, notification, Select, Space} from "antd";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useDataContext} from "../../contexts/DataTransferContext.jsx";
+import fetchWithRetry from "../../API/fetchWithRetry.jsx";
 
 function UpdateSubscriptionForm({callback}) {
     const [form] = Form.useForm();
@@ -23,9 +25,16 @@ function UpdateSubscriptionForm({callback}) {
         { value: 'Velo', label: 'Velo' },
         { value: 'Trotinette', label: 'Trotinette' },
     ];
+    const [loading, setLoading] = useState(false);
+    const {data, setData, rowsToUpdate, setSearchValue, page, orderBy} = useDataContext();
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const [api, contextHolder] = notification.useNotification();
+    
+    useEffect(() => {
+        form.resetFields();
+      }, [rowsToUpdate]);
+    
     const openNotificationWithIcon = () => {
       api['success']({
         message: t('success'),
@@ -36,35 +45,38 @@ function UpdateSubscriptionForm({callback}) {
     const onReset = () => {
         form.resetFields();
     }
-    const onFinish = async (values) => {
-        setError("");
-        values.iPage = 1;
-        values.column = "id";
-        await fetch('http://localhost:3267/v1/subscription/update', {
+    const toLogout = () => {
+        navigate("/logout", {replace: true});
+    }
+    const updateData = async(values) => {
+        setLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 500));
+        try {
+          const items = await fetchWithRetry('http://localhost:3267/v1/subscription/update', {
             method: 'PATCH',
             headers: {
-                "authorization": `Bearer ${sessionStorage.getItem('token')}`,
-                "Content-Type": "application/json",
+              "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+              "Content-Type": "application/json",
             },
             body: JSON.stringify(values),
+          }, toLogout)
+          setData({elements:items, nbPages: data.nbPages});
+          openNotificationWithIcon();
+          callback();
+        }
+        catch (e) {
+          setError(e.message);
+        }
+      }
 
-        })
-            .then(response => {
-                if (!response?.ok) {
-                    if(response.status === 401) {
-                        navigate("/logout", {replace:true});
-                    }
-                    throw new Error(`${t('httpError')} : ${response.status}, ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                openNotificationWithIcon();
-                callback();
-            })
-            .catch (e => setError(e.message))
-    };
+      const onFinish = async (values) => {
+        setError("");
+        setSearchValue("");
+        values.iPage = page;
+        values.column = orderBy;
+        updateData(values).then(()=> setLoading(false));
+      };
+
     const valeur = {id : 2}
 
     return (
@@ -75,55 +87,52 @@ function UpdateSubscriptionForm({callback}) {
                 layout={"vertical"}
                 form={form}
                 requiredMark={false}
+                initialValues={{
+                    id: rowsToUpdate[0]?.id,
+                  }}
+                style={{ width: '100%' }}
             >
                 <Form.Item
                     name ='id'
                     label="Id"
                     disabled={true}>
-                    <Input defaultValue = {valeur.id} disabled />
+                    <Input disabled style={{width:'100%'}}/>
                 </Form.Item>
                 <Form.Item
                     name="label"
                     label={t("label")}
                     >
-                    <Select
-                        defaultValue="Gold"
-                        options={labelOptions}
-                    />
+                    <Select defaultValue={rowsToUpdate[0]?.label} options={labelOptions} />
                 </Form.Item>
                 <Form.Item
                     name="price"
                     label={t("price")}
                     >
-                    <InputNumber placeholder="20" min={0} style={{width:'100%'}} />
+                    <InputNumber defaultValue={rowsToUpdate[0]?.price} min={0} style={{width:'100%'}} />
                 </Form.Item>
                 <Form.Item
                     name="discount"
                     label={t("discount")}
                     >
-                    <InputNumber placeholder={`0 < ${t("discount")} <= 1`} style={{width:'100%'}} />
+                    <InputNumber defaultValue={rowsToUpdate[0]?.discount} style={{width:'100%'}} />
                 </Form.Item>
                 <Form.Item
                     name="paymentRecurrence"
                     label={t("paymentRecurrence")}
                     >
-                    <Select
-                        defaultValue=""
-                        options={recurrenceOptions}/>
+                    <Select defaultValue={rowsToUpdate[0]?.payment_recurrence} options={recurrenceOptions} />
                 </Form.Item>
                 <Form.Item
                     name="vehicleType"
                     label={t("vehicleType")}
                     >
-                    <Select
-                        defaultValue=""
-                        options={vehicleOptions}/>
+                    <Select defaultValue={rowsToUpdate[0]?.vehicle_type} options={vehicleOptions} />
                 </Form.Item>
                 {error && <p style={{color: "red"}}>{error}</p>}
                 <Form.Item>
                     <Space>
                         <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
-                        <Button type="primary" htmlType='submit'>{t('update')}</Button>
+                        <Button loading={loading} type="primary" htmlType='submit'>{t('update')}</Button>
                     </Space>
                 </Form.Item>
             </Form>
