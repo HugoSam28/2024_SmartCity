@@ -127,29 +127,32 @@ function SubscriptionTable() {
     }
   };
 
+  const deleteData = async () => {
+    setLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 700));
+    try {
+      const values = [];
+      selectedRows.forEach((row) => {
+        values.push(row.id);
+      })
+      const items = await fetchWithRetry(`http://localhost:3267/v1/subscription/delete`,{
+        method: 'DELETE',
+        headers: {
+          "authorization": `Bearer ${sessionStorage.getItem('token')}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({idList : values, iPage: page, column: orderBy}),
+      });
+      setData({elements:items.subscriptions, nbPages: items.nbPagesSubscriptions});
+      setSelectedRows([]);
+      setLoading(false);
+    } catch (e) {
+      setError(e.message);
+    }
+  }
   const onDelete = async() => {
     if(selectedRows.length > 0) {
-      setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 700));
-      try {
-        const values = [];
-        selectedRows.forEach((row) => {
-          values.push(row.id);
-        })
-        const items = await fetchWithRetry(`http://localhost:3267/v1/subscription/delete`,{
-          method: 'DELETE',
-          headers: {
-            "authorization": `Bearer ${sessionStorage.getItem('token')}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({idList : values, iPage: page, column: orderBy}),
-        });
-        setData({elements:items.subscriptions, nbPages: items.nbPagesSubscriptions});
-        setSelectedRows([]);
-        setLoading(false);
-      } catch (e) {
-        setError(e.message);
-      }
+      deleteData().then(() => setLoading(false));
     }
   }
   const handleTableChange = (pagination, filters, sorter) => {

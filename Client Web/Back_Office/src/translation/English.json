@@ -44,6 +44,8 @@
   "startingLocationLon" : "Starting location longitude",
   "endingLocationLat" : "Ending location latitude",
   "endingLocationLon" : "Ending location longitude",
+  "startingLocation" : "Starting location",
+  "endingLocation" : "Ending location",
   "startingSubscriptionDate": "Starting subscription date",
   "dashboard": "Dashboard",
   "badRequestError": "Bad request: Please type a valid email and password",
