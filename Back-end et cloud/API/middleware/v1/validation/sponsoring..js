@@ -62,7 +62,7 @@ export const addSponsoringValidatorMiddleware = async (req, res, next) => {
  */
 
 const updateSchema = vine.object({
-  sponsor: vine.number().withoutDecimals().min(1).optional(),
+  sponsor: vine.number().withoutDecimals().min(1),
   referred: vine.number().withoutDecimals().min(1),
 })
 const updateValidator = vine.compile(updateSchema);

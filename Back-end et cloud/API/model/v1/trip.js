@@ -1,16 +1,15 @@
 
 export const getAllTrips = async(SQLClient, {iPage}, {column}) => {
   const validColumnsQuery = `
-  (SELECT column_name
+  SELECT column_name
   FROM information_schema.columns
-  WHERE table_name = 'trip')
-  UNION ALL
-  (SELECT column_name
-  FROM information_schema.columns
-  WHERE table_name = 'person' AND column_name = 'email')
+  WHERE table_name = 'trip'
 `;
-
 const validColumnsResult = await SQLClient.query(validColumnsQuery);
+
+
+validColumnsResult.rows.push({column_name:"email"});
+
 const validColumns = validColumnsResult.rows.map(row => row.column_name);
 
 if (!validColumns.includes(column)) {
@@ -33,16 +32,14 @@ export const tripsCount = async(SQLClient) => {
 
 export const getSearchTrips = async(SQLClient, {iPage}, {value}, {column}) => {
   const validColumnsQuery = `
-    (SELECT column_name
+    SELECT column_name
     FROM information_schema.columns
-    WHERE table_name = 'trip')
-    UNION ALL
-    (SELECT column_name
-    FROM information_schema.columns
-    WHERE table_name = 'person' AND column_name = 'email')
+    WHERE table_name = 'trip'
   `;
-
   const validColumnsResult = await SQLClient.query(validColumnsQuery);
+
+  validColumnsResult.rows.push({column_name:"email"});
+  
   const validColumns = validColumnsResult.rows.map(row => row.column_name);
 
   if (!validColumns.includes(column)) {

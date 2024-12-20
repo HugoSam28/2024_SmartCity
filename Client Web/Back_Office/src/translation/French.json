@@ -29,8 +29,8 @@
   "discount": "Réduction",
   "paymentRecurrence": "Recurrence de paiement",
   "vehicleType": "Type de véhicle",
-  "sponsor": "Id du sponsor",
-  "referred": "Id du parrainé",
+  "sponsorId": "Id du sponsor",
+  "referredId": "Id du parrainé",
   "batteryLevel": "Niveau de batterie",
   "fees": "Frais",
   "isAvailable": "Est disponnible",
@@ -60,5 +60,7 @@
   "car": "Voiture",
   "motorbike": "Scooter",
   "bike": "Vélo",
-  "electricScooter": "Trottinette"
+  "electricScooter": "Trottinette",
+  "referredEmail": "Email du parrainé",
+  "sponsorEmail": "Email du sponsor"
 }

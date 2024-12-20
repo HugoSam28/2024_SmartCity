@@ -35,7 +35,7 @@ function UpdateSubscriptionForm({callback}) {
         form.resetFields();
       }, [rowsToUpdate]);
     
-    const openNotificationWithIcon = () => {
+    const openNotification = () => {
       api['success']({
         message: t('success'),
         description:
@@ -61,7 +61,7 @@ function UpdateSubscriptionForm({callback}) {
             body: JSON.stringify(values),
           }, toLogout)
           setData({elements:items, nbPages: data.nbPages});
-          openNotificationWithIcon();
+          openNotification();
           callback();
         }
         catch (e) {
@@ -129,7 +129,7 @@ function UpdateSubscriptionForm({callback}) {
                 {error && <p style={{color: "red"}}>{error}</p>}
                 <Form.Item>
                     <Space>
-                        <Button onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
+                        <Button loading={loading} onClick={onReset} color="default" variant="filled">{t('reset')}</Button>
                         <Button loading={loading} type="primary" htmlType='submit'>{t('update')}</Button>
                     </Space>
                 </Form.Item>
