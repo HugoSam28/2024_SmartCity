@@ -24,7 +24,7 @@ function TripTable() {
       sortDirections: ['ascend'],
     },
     {
-      title: t('email'),
+      title: 'Email',
       dataIndex: 'email',
       sorter: true,
       sortDirections: ['ascend']
@@ -36,7 +36,7 @@ function TripTable() {
       sortDirections: ['ascend']
     },
     {
-      title: 'vehicleId',
+      title: t('vehicleId'),
       dataIndex: 'vehicle_id',
       sorter: true,
       sortDirections: ['ascend']
@@ -54,7 +54,7 @@ function TripTable() {
       sortDirections: ['ascend']
     },
     {
-      title: t('distance'),
+      title: 'Distance',
       dataIndex: 'distance',
       sorter: true,
       sortDirections: ['ascend']

@@ -44,6 +44,8 @@
   "startingLocationLon" : "Longitude de l’emplacement de départ",
   "endingLocationLat" : "Latitude de l’emplacement de fin",
   "endingLocationLon" : "Longitude de l’emplacement de fin",
+  "startingLocation" : "Emplacement de départ",
+  "endingLocation" : "Emplacement de fin",
   "startingSubscriptionDate": "Date de début d'abonnement",
   "dashboard": "Tableau de bord",
   "badRequestError": "Mauvaise requête: Veuillez entre un mail et un mot de passe valides",

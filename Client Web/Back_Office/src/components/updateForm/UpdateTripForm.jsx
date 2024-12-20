@@ -144,8 +144,8 @@ function UpdateTripForm({callback}) {
                 </Form.Item>
 
                 <Form.Item
-                    name='distance'
-                    label={t('distance')}
+                    name='istance'
+                    label={'Distance'}
                     >
                     <InputNumber min={0} defaultValue={rowsToUpdate[0]?.distance} style={{width:'100%'}}/>
                 </Form.Item>
