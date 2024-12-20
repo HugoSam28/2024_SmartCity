@@ -35,6 +35,7 @@ export const addSponsoringValidatorMiddleware = async (req, res, next) => {
     next();
   }
   catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -75,6 +76,7 @@ export const updateSponsoringValidatorMiddleware = async (req, res, next) => {
     next();
   }
   catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }

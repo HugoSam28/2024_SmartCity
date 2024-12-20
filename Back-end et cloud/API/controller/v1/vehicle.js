@@ -10,6 +10,8 @@ export const getAllVehicles = async (req, res) => {
             res.sendStatus(404);
         }
     } catch (e){
+    console.error(e);
+
       res.status(500).send(e.message);
     }
 }
@@ -44,6 +46,8 @@ export const getSearchVehicles = async(req, res) => {
         }
       }
       catch(e){
+        console.error(e);
+
         res.status(500).send(e.message);
       }
 }
@@ -57,6 +61,8 @@ export const getVehiclesAroundMe = async (req, res) => {
         res.sendStatus(404);
     }
   }catch (e){
+    console.error(e);
+
     res.status(500).send(e.message);
 }
 }
@@ -70,6 +76,8 @@ export const getVehicleById = async (req, res) => {
             res.sendStatus(404);
         }
     } catch (e){
+      console.error(e);
+
       res.status(500).send(e.message);
     }
 }
@@ -83,6 +91,7 @@ export const addVehicle = async (req, res) => {
     res.status(201).send(result);
   }
   catch(e){
+    console.error(e);
     res.status(500).send(e.message);
   }
 }
@@ -94,6 +103,7 @@ export const updateInformations = async (req, res) => {
         res.send(vehicles);
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -115,6 +125,7 @@ export const deleteVehicles = async (req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }
@@ -124,6 +135,7 @@ export const updateStatus = async (req, res) => {
         await vehicleModel.updateStatus(pool, req.session.id);
         res.sendStatus(204);
     } catch (e){
+      console.error(e);
       res.status(500).send(e.message);
     }
 }

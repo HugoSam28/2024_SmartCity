@@ -12,6 +12,7 @@ export const pageValidatorMiddleware = async (req, res, next) => {
     req.val = {...req.val, page: await pageValidator.validate(data)}
     next();
   } catch (e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -38,6 +39,7 @@ export async function deleteValidatorMiddleware(req, res, next) {
     req.val = { ...req.val, del:await deleteValidator.validate(data)}
     next();
   } catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -54,6 +56,7 @@ export const searchValidatorMiddleware = async (req, res, next) => {
     req.val = { ...req.val, search: await searchValidator.validate(data)}
     next();
   } catch (e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -70,6 +73,7 @@ export const orderValidatorMiddleware = async (req, res, next) => {
     req.val = { ...req.val, order: await orderValidator.validate(data)};
     next();
   } catch (e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -86,6 +90,7 @@ export const idValidatorMiddleware = async (req, res, next) => {
     next();
   }
   catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }

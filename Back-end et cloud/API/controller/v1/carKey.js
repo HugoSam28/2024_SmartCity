@@ -14,6 +14,7 @@ export const getAllCarKeys = async(req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.messages);
     }
 }
@@ -31,6 +32,7 @@ export const getAllCarKeysAndPagesCount = async(req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.messages);
     }
 }
@@ -48,6 +50,7 @@ export const getSearchCarKeys = async(req, res) => {
         }
     }
     catch(e){
+        console.error(e);
         res.status(500).send(e.messages);
     }
 }
@@ -61,6 +64,7 @@ export const addCarKey = async(req, res) => {
         res.status(201).send(result);
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.messages);
     }
 }
@@ -72,6 +76,7 @@ export const updateCarKey = async (req, res) => {
         res.send(carKeys);
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.messages);
     }
 }
@@ -93,6 +98,7 @@ export const deleteCarKeys = async (req, res) => {
         }
     }
     catch(e){
+        console.error(e);
         res.status(500).send(e.messages);
     }
 }

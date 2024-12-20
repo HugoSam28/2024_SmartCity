@@ -35,6 +35,7 @@ export const getAllSponsoring = async (req, res) => {
         }
     }
     catch(e){
+      console.error(e);
       res.status(500).send(e.messages);
     }
 }
@@ -65,6 +66,8 @@ export const getAllSponsoringAndPagesCount = async(req, res) => {
         }
     }
     catch(e){
+      console.error(e);
+
       res.status(500).send(e.messages);
     }
 }
@@ -82,6 +85,8 @@ export const getSearchSponsoring = async(req, res) => {
         }
     }
     catch(e){
+      console.error(e);
+
       res.status(500).send(e.messages);
     }
 }
@@ -123,6 +128,8 @@ export const addSponsoring = async (req, res) => {
         }
     }
     catch(e){
+      console.error(e);
+
       res.status(500).send(e.messages);
     }
 }
@@ -155,6 +162,8 @@ export const deleteSponsoring = async (req, res) => {
         }
     }
     catch(e){
+      console.error(e);
+
       res.status(500).send(e.messages);
     }
 }

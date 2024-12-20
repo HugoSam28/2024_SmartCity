@@ -36,6 +36,7 @@ export const addVehicleValidatorMiddleware = async (req, res, next) => {
     next();
   }
   catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -73,6 +74,7 @@ export const updateVehicleValidatorMiddleware = async (req, res, next) => {
     next();
   }
   catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -90,6 +92,7 @@ export const vehicleIdValidatorMiddleware = async (req, res, next) => {
     next();
   }
   catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
@@ -111,6 +114,7 @@ export const latLonValidatorMiddleware = async (req, res, next) => {
     next();
   }
   catch(e) {
+    console.error(e);
     res.status(400).send(e.messages);
   }
 }
