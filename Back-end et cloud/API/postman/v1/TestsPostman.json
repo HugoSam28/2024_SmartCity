@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "55b20d11-d7c2-4874-b549-981939020827",
+		"_postman_id": "71bf96c2-925e-41dc-8e37-fa73a0fb0871",
 		"name": "SmartCityApiTests",
 		"description": "Pré-requis pour lancer l'ensemble des tests :  \n\\- faire npm run initDB avant l'ensemble des tests pour réinitialiser la DB  \n\\- faire npm start express pour lancer l'API  \n  \nVous pouvez ensuite lancer l'ensemble des tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -2998,7 +2998,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"idList\":[2],\r\n    \"iPage\":1,\r\n    \"column\":\"discount\"\r\n}",
+							"raw": "{\r\n    \"idList\":[3],\r\n    \"iPage\":1,\r\n    \"column\":\"discount\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
