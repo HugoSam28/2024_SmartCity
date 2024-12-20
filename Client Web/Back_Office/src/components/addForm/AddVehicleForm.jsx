@@ -43,11 +43,6 @@ function AddVehicleForm({callback}) {
   const onFinish = async (values) => {
     setError("");
     values.isAvailable = isAvailable;
-    values.batteryLevel = parseFloat(values.batteryLevel);
-    values.fees = parseInt(values.fees);
-    values.lat = parseFloat(values.lat);
-    values.lon = parseFloat(values.lon);
-    values.price = parseFloat(values.price);
     values.type = vehicle;
     values.iPage = 1;
     values.column = "id";

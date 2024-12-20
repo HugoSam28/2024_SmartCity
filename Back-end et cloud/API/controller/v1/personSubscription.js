@@ -117,7 +117,6 @@ export const updatePersonSubscription = async (req, res) => {
     }
     catch(e){
       console.error(e);
-      res.status(500).send(e.message);
     }
 }
 
