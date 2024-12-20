@@ -27,15 +27,11 @@ function VehicleTable() {
     {
       title: 'Latitude',
       dataIndex: 'location',
-      sorter: true,
-      sortDirections: ['ascend'],
       render:(value) => (<p>{value?.y}</p>)
     },
     {
       title: 'Longitude',
       dataIndex: 'location',
-      sorter: true,
-      sortDirections: ['ascend'],
       render:(value) => (<p>{value?.x}</p>)
     },
     {
