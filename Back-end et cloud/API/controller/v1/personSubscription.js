@@ -116,7 +116,7 @@ export const updatePersonSubscription = async (req, res) => {
 
 export const deletePersonSubscription = async (req, res) => {
     try{
-        await subscriptionModel.deleteSubscriptions(pool, req.val.del);
+        await personSubscriptionModel.deletePersonSubscription(pool, req.val.del);
         const result= {};
         result.personSubscriptions = await personSubscriptionModel.getAllPersonSubscriptions(pool, req.val.page, req.val.order);
         if(!result.personSubscriptions[0]){
