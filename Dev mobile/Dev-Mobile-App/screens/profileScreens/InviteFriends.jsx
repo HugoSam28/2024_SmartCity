@@ -1,29 +1,15 @@
-import {View, Text, Image, Share, Alert,TouchableOpacity} from "react-native";
+import { Text, Image, Share, Alert } from "react-native";
 import {useContext} from "react";
 import ThemeContext from "../../provider/Theme";
 import {Colors, GlobalStyles} from "../../components/styles";
 import BackButton from "../../components/buttons/BackButton";
 import ActionButton from "../../components/buttons/ActionButton";
-import {useEffect} from "react";
-import * as Clipboard from 'expo-clipboard'
-import {Tooltip} from "react-native-paper";
+import ClipboardToast from "react-native-clipboard-toast";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 export default function InviteFriends({ navigation }) {
   const theme = useContext(ThemeContext);
 
-  //IMPORTANT ! PERMET DE MASQUER LA TAB BAR
-  useEffect(() => {
-    navigation.getParent()?.setOptions({
-      tabBarStyle: {
-        display: "none"
-      }
-    });
-    return () => navigation.getParent()?.setOptions({
-      tabBarStyle: {
-        backgroundColor: Colors(theme).backgroundColor
-      }
-    });
-  }, [navigation]);
   const styles = GlobalStyles(theme);
 
   const handleShare = async () => {
@@ -36,12 +22,9 @@ export default function InviteFriends({ navigation }) {
       Alert.alert(error.message);
     }
   }
-  const handleCopy = async () => {
-    await Clipboard.setStringAsync('3XH9S8V2');
-  }
   return (
     <>
-      <View style={{...styles.container, alignItems: "center"}}>
+      <SafeAreaView style={{...styles.container,  alignItems: "center"}}>
         <BackButton onPress={() => navigation.goBack()} />
 
         <Image
@@ -66,7 +49,7 @@ export default function InviteFriends({ navigation }) {
         />
         <Text style={{
           ...styles.subtitle,
-          marginTop: 265,
+          marginTop: 220,
           textAlign: "center",
           fontSize: 33,
           fontFamily: "RobotoCondensedBold",
@@ -80,34 +63,32 @@ export default function InviteFriends({ navigation }) {
         >
           En donnant ce code à ton pote lors de son inscription, chacun recevra 3€ sur son compte 👀
         </Text>
-
-        <Tooltip title="Copié !" enterTouchDelay={1} leaveTouchDelay={1000} theme={theme}>
-          <TouchableOpacity
-            style={{
-              marginTop: 90,
-              height: 54,
-              width:200,
-              borderRadius: 15,
-              justifyContent: "center",
-              backgroundColor: Colors(theme).containerBackgroundColor,
-            }}
-            onPress={handleCopy}
-          >
-            <Text
-              style={{
-                ...styles.subtitle,
-                fontSize:30,
-                textAlign: "center",
-                color: Colors(theme).text,}}
-            >
-              3XH9S8V2
-            </Text>
-          </TouchableOpacity>
-        </Tooltip>
-
+        <ClipboardToast
+          textToShow='3XH9S8V2'
+          textToCopy='3XH9S8V2'
+          toastText='Copié !'
+          containerStyle={{
+            marginTop: 90,
+            height: 54,
+            width:180,
+            borderRadius: 15,
+            justifyContent: "center",
+            backgroundColor: Colors(theme).containerBackgroundColor,
+          }}
+          textStyle={{
+            ...styles.subtitle,
+            fontSize:27,
+            textAlign: "center",
+            color: Colors(theme).text
+          }}
+          accessibilityLabel={"Clique ici pour copier ton code de parrainage"}
+          toastPosition={'top'}
+          toastDuration={2000}
+        />
+        <Text style={{...styles.text, fontSize: 14, postition: 'absolute', bottom: -85, textAlign: 'center', }}>Tu peux parrainer jusqu’à 10 personnes !</Text>
         <ActionButton onPress={handleShare} text={'Partager'} />
-      </View>
-      <Text style={{...styles.text, fontSize: 14, postition: 'absolute', bottom: 139, textAlign: 'center', }}>Tu peux parrainer jusqu’à 10 personnes !</Text>
+      </SafeAreaView>
+
     </>
   );
 }

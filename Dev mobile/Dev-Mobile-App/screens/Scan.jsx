@@ -1,4 +1,4 @@
-import { Text, View} from 'react-native'
+import { Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { GlobalStyles } from '../components/styles'
 import { useContext } from 'react'
@@ -9,8 +9,8 @@ export default function Scan(){
   const styles = GlobalStyles(theme);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Scan</Text>
-    </View>
+    </SafeAreaView>
   )
 }

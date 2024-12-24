@@ -11,7 +11,7 @@ export default function LoadStyles() {
   })
 }
 
-// Couleurs globales
+// Couleurs globales ! Ne pas utiliser en dehors du Colors(theme) !
 const lightColors = {
   backgroundColor: "#FAFDFF",           // Couleur de fond
   text: "#000095",                      // Texte principal
@@ -33,7 +33,6 @@ const darkColors = {
 
 };
 
-// Calcule clair/foncé
 export function Colors(theme){
   return (
     {
@@ -46,10 +45,9 @@ export function Colors(theme){
       containerInArrayColor: theme === 'light' ? lightColors.containerInArrayColor : darkColors.containerInArrayColor,
       selected: theme === 'light' ? lightColors.selected : darkColors.selected,
     }
-  )
-};
+  );
+}
 
-// Tailles et espacements
 export const Sizes = {
   extraSmall: 12,
   small: 15,
@@ -58,7 +56,6 @@ export const Sizes = {
   extraLarge: 45,
 };
 
-// Styles globaux
 export function GlobalStyles(theme){
   return StyleSheet.create({
     title: {
@@ -77,7 +74,7 @@ export function GlobalStyles(theme){
       color: Colors(theme).text,
     },
     container: {
-      flex: 1,
+      height: '100%',
       backgroundColor: Colors(theme).backgroundColor,
       padding: Sizes.medium,
     },

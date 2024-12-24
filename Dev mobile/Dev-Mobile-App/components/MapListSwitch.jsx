@@ -1,4 +1,4 @@
-import { Colors, GlobalStyles } from "./styles";
+import { Colors } from "./styles";
 import { useContext, useState } from "react";
 import ThemeContext from "../provider/Theme";
 import { StyleSheet } from "react-native";
@@ -9,7 +9,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function MapListSwitch({screen}) {
   const theme = useContext(ThemeContext);
-  const styles = GlobalStyles();
   const styleColors = Colors(theme)
 
   const [screenValue, setScreenValue] = useState(screen);
@@ -27,7 +26,7 @@ export default function MapListSwitch({screen}) {
         buttons={[
           {
             value: 'map',
-            icon:({ size, color }) => (
+            icon:() => (
               <Ionicons
                 name={screenValue === 'map' ? 'map' : 'map-outline'}
                 size={27}
@@ -46,8 +45,7 @@ export default function MapListSwitch({screen}) {
           },
           {
             value: 'list',
-
-            icon:({ size, color }) => (
+            icon:() => (
               <Ionicons
                 name={screenValue === 'list' ? 'list' : 'list-outline'}
                 size={27}
