@@ -1,10 +1,12 @@
-import {View, Text, Image, Platform} from "react-native";
+import {View, Text, Image, Share, Alert,TouchableOpacity} from "react-native";
 import {useContext} from "react";
 import ThemeContext from "../../provider/Theme";
 import {Colors, GlobalStyles} from "../../components/styles";
 import BackButton from "../../components/buttons/BackButton";
 import ActionButton from "../../components/buttons/ActionButton";
 import {useEffect} from "react";
+import * as Clipboard from 'expo-clipboard'
+import {Tooltip} from "react-native-paper";
 
 export default function InviteFriends({ navigation }) {
   const theme = useContext(ThemeContext);
@@ -22,8 +24,21 @@ export default function InviteFriends({ navigation }) {
       }
     });
   }, [navigation]);
-
   const styles = GlobalStyles(theme);
+
+  const handleShare = async () => {
+    try {
+      await Share.share({
+        message: `J'ai une superbe offre pour toi ! Inscris toi vite chez ShareCrash avec mon code de parrainage (3XH9S8V2), et démarre avec 3€ sur ton compte!\nhttps://scharecrash.com/register`
+      })
+    }
+    catch (error) {
+      Alert.alert(error.message);
+    }
+  }
+  const handleCopy = async () => {
+    await Clipboard.setStringAsync('3XH9S8V2');
+  }
   return (
     <>
       <View style={{...styles.container, alignItems: "center"}}>
@@ -66,28 +81,31 @@ export default function InviteFriends({ navigation }) {
           En donnant ce code à ton pote lors de son inscription, chacun recevra 3€ sur son compte 👀
         </Text>
 
-        <View
-          style={{
-            marginTop: 90,
-            height: 54,
-            width:200,
-            borderRadius: 15,
-            justifyContent: "center",
-            backgroundColor: Colors(theme).containerBackgroundColor,
-          }}
-        >
-          <Text
+        <Tooltip title="Copié !" enterTouchDelay={1} leaveTouchDelay={1000} theme={theme}>
+          <TouchableOpacity
             style={{
-              ...styles.subtitle,
-              fontSize:30,
-              textAlign: "center",
-              color: Colors(theme).text,}}
+              marginTop: 90,
+              height: 54,
+              width:200,
+              borderRadius: 15,
+              justifyContent: "center",
+              backgroundColor: Colors(theme).containerBackgroundColor,
+            }}
+            onPress={handleCopy}
           >
-            3XH9S8V2
-          </Text>
-        </View>
+            <Text
+              style={{
+                ...styles.subtitle,
+                fontSize:30,
+                textAlign: "center",
+                color: Colors(theme).text,}}
+            >
+              3XH9S8V2
+            </Text>
+          </TouchableOpacity>
+        </Tooltip>
 
-        <ActionButton onPress={() => navigation.goBack()} text={'Partager'} />
+        <ActionButton onPress={handleShare} text={'Partager'} />
       </View>
       <Text style={{...styles.text, fontSize: 14, postition: 'absolute', bottom: 139, textAlign: 'center', }}>Tu peux parrainer jusqu’à 10 personnes !</Text>
     </>
