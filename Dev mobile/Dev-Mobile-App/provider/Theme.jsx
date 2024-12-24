@@ -7,7 +7,7 @@ export default ThemeContext;
 /*
  !!!!!! Comment appliquer le theme :
 
-import { GlobalStyles, colors } from "../components/styles";
+import { GlobalStyles, Colors } from "../components/styles";
 import { useContext } from "react";
 import ThemeContext from "../provider/Theme";
 
@@ -24,14 +24,13 @@ export const myComponent(){
         Le corps du texte (et pas du Christ 👀)
       </Text>
       <Another Component
-        iconColor: colors(theme).accentColor
-        // autre props
+        iconColor: Colors(theme).accentColor
+        // autres props
       />
       // reste du code
     </View>
   )
 }
-
 
 cfr: /components/styles.jsx
 

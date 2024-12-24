@@ -1,10 +1,10 @@
-import Scan from '../screens/scan'
-import MapListNavigator from '../components/mapListNavigator'
-import Profile from '../screens/profile'
+import Scan from '../screens/Scan'
+import MapListNavigator from './MapListNavigator'
+import Profile from '../screens/Profile'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { colors } from "./styles";
+import { Colors } from "./styles";
 import React, {useContext} from "react";
 import ThemeContext from "../provider/Theme";
 import { View, Text } from "react-native";
@@ -17,7 +17,7 @@ const Tab = createBottomTabNavigator();
 
 export default function TabsMenu() {
   const theme = useContext(ThemeContext);
-  const stylesColors = colors(theme);
+  const stylesColors = Colors(theme);
 
   const screenOptions = {
     headerShown: false,
@@ -91,7 +91,7 @@ export default function TabsMenu() {
                     fontFamily: focused ? 'RobotoMonoBold' : 'RobotoMono',
                     color: focused ? stylesColors.accentColor : stylesColors.iconColor,
                   }}
-                >Profil</Text>
+                >Profile</Text>
               ),
               tabBarIcon: ({focused}) => {
                 return (

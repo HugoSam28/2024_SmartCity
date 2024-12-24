@@ -1,13 +1,15 @@
-import { Text, View } from 'react-native'
-import { GlobalStyles } from "../components/styles";
-import { useContext } from "react";
-import ThemeContext from "../provider/Theme";
+import {View, Text} from "react-native";
+import {useContext} from "react";
+import ThemeContext from "../../provider/Theme";
+import {GlobalStyles} from "../../components/styles";
+import BackButton from "../../components/buttons/BackButton";
 
-export default function Profile(){
+export default function History({ navigation }) {
   const theme = useContext(ThemeContext);
   const styles = GlobalStyles(theme);
   return (
     <View style={styles.container}>
+      <BackButton onPress={() => navigation.goBack()} />
       <Text style={styles.title}>Pute = Thoams</Text>
       <Text style={styles.subtitle}>Hugo le Supreme leader</Text>
       <Text style={styles.text}>
@@ -15,5 +17,5 @@ export default function Profile(){
         Le corps du texte (et pas du Christ 👀)
       </Text>
     </View>
-  )
+  );
 }

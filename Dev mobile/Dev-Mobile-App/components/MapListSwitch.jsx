@@ -1,4 +1,4 @@
-import { colors, GlobalStyles } from "./styles";
+import { Colors, GlobalStyles } from "./styles";
 import { useContext, useState } from "react";
 import ThemeContext from "../provider/Theme";
 import { StyleSheet } from "react-native";
@@ -10,12 +10,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function MapListSwitch({screen}) {
   const theme = useContext(ThemeContext);
   const styles = GlobalStyles();
-  const styleColors = colors(theme)
+  const styleColors = Colors(theme)
 
   const [screenValue, setScreenValue] = useState(screen);
   const navigation = useNavigation();
   const buttonStyle = {
-    slected: styleColors.accentColor,
+    selected: styleColors.accentColor,
     notSelected: styleColors.mutedColor,
   }
 
@@ -31,10 +31,10 @@ export default function MapListSwitch({screen}) {
               <Ionicons
                 name={screenValue === 'map' ? 'map' : 'map-outline'}
                 size={27}
-                color={screenValue === 'map' ? styleColors.accentColor : styleColors.mutedColor} />
+                color={screenValue === 'map' ? buttonStyle.selected : buttonStyle.notSelected} />
             ),
-            checkedColor: styleColors.accentColor,
-            uncheckedColor: styleColors.mutedColor,
+            checkedColor: buttonStyle.selected,
+            uncheckedColor: buttonStyle.notSelected,
             onPress: () => {
               setScreenValue('map');
               navigation.navigate("Map");
@@ -51,10 +51,10 @@ export default function MapListSwitch({screen}) {
               <Ionicons
                 name={screenValue === 'list' ? 'list' : 'list-outline'}
                 size={27}
-                color={screenValue === 'list' ? styleColors.accentColor : styleColors.mutedColor} />
+                color={screenValue === 'list' ? buttonStyle.selected : buttonStyle.notSelected} />
             ),
-            checkedColor: styleColors.accentColor,
-            uncheckedColor: styleColors.mutedColor,
+            checkedColor: buttonStyle.selected,
+            uncheckedColor: buttonStyle.notSelected,
             onPress: () => {
               setScreenValue('list');
               navigation.navigate("List");

@@ -4,7 +4,8 @@ import { useFonts} from "expo-font";
 export default function LoadStyles() {
   const [loaded] = useFonts({
     Podkova: require("../assets/fonts/Podkova-Regular.ttf"),
-    RobotoCondensed: require("../assets/fonts/RobotoCondensed-Regular.ttf"),
+    RobotoCondensed: require("../assets/fonts/RobotoCondensed.ttf"),
+    RobotoCondensedBold: require("../assets/fonts/RobotoCondensed-Bold.ttf"),
     RobotoMono: require("../assets/fonts/RobotoMono-Regular.ttf"),
     RobotoMonoBold: require("../assets/fonts/RobotoMono-Bold.ttf"),
   })
@@ -16,7 +17,7 @@ const lightColors = {
   text: "#000095",                      // Texte principal
   iconColor: "#000095",                 // Couleur des icones
   mutedColor: "#666666",                // Texte secondaire
-  containerBackGroundColor: "#ECF3FF",  // Encadrer
+  containerBackgroundColor: "#ECF3FF",  // Encadrer
   containerInArrayColor: "#D3E9FF",     // Bouton dans les encadrer
   selected: "#D3E9FF",
 }
@@ -25,7 +26,7 @@ const darkColors = {
   text: "#F2F6FF",
   iconColor: "#F2F6FF",
   mutedColor: "#666666",
-  containerBackGroundColor: "#29334D",
+  containerBackgroundColor: "#29334D",
   containerInArrayColor: "#333F5E",
   selected: "#333F5E",
 
@@ -33,7 +34,7 @@ const darkColors = {
 };
 
 // Calcule clair/foncé
-export function colors(theme){
+export function Colors(theme){
   return (
     {
       accentColor: "#1E5AFF",
@@ -41,7 +42,7 @@ export function colors(theme){
       text: theme === 'light' ? lightColors.text : darkColors.text,
       iconColor: theme === 'light' ? lightColors.iconColor : darkColors.iconColor,
       mutedColor: theme === 'light' ? lightColors.mutedColor : darkColors.mutedColor,
-      containerBackGroundColor: theme === 'light' ? lightColors.containerBackGroundColor : darkColors.containerBackGroundColor,
+      containerBackgroundColor: theme === 'light' ? lightColors.containerBackgroundColor : darkColors.containerBackgroundColor,
       containerInArrayColor: theme === 'light' ? lightColors.containerInArrayColor : darkColors.containerInArrayColor,
       selected: theme === 'light' ? lightColors.selected : darkColors.selected,
     }
@@ -54,7 +55,7 @@ export const Sizes = {
   small: 15,
   medium: 26,
   large: 35,
-  extraLarge: 47,
+  extraLarge: 45,
 };
 
 // Styles globaux
@@ -63,24 +64,29 @@ export function GlobalStyles(theme){
     title: {
       fontSize: Sizes.extraLarge,
       fontFamily: "Podkova",
-      color: colors(theme).text,
+      color: Colors(theme).text,
     },
     subtitle: {
       fontFamily: "RobotoCondensed",
       fontSize: Sizes.medium,
-      color: colors(theme).text,
+      color: Colors(theme).text,
     },
     text: {
       fontSize: Sizes.small,
       fontFamily: "RobotoMono",
-      color: colors(theme).text,
+      color: Colors(theme).text,
     },
     container: {
       flex: 1,
-      backgroundColor: colors(theme).backgroundColor,
+      backgroundColor: Colors(theme).backgroundColor,
       padding: Sizes.medium,
-      alignItems: 'center',
-      justifyContent: 'center',
     },
+    subContainer: {
+      flexDirection: "column",
+      backgroundColor: Colors(theme).containerBackgroundColor,
+      borderRadius: Sizes.small,
+      padding: Sizes.small,
+      gap: 25,
+    }
   });
 }
