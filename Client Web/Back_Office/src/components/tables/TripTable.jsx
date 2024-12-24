@@ -68,16 +68,12 @@ function TripTable() {
       {
         title: t('startingLocation'),
         dataIndex: 'starting_location',
-        sorter: true,
-        sortDirections: ['ascend'],
-        render:(value) => (<p>{value?.y}; {value?.x}</p>)
+        render:(value) => (<p>{value?.y} ; {value?.x}</p>)
       },
       {
         title: t('endingLocation'),
         dataIndex: 'ending_location',
-        sorter: true,
-        sortDirections: ['ascend'],
-        render:(value) => (<p>{value?.y}; {value?.x}</p>)
+        render:(value) => (<p>{value?.y} ; {value?.x}</p>)
       }
     ];
     let validOrderBy = false;
