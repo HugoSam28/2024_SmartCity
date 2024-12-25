@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { useFonts} from "expo-font";
+import {StyleSheet} from "react-native";
+import {useFonts} from "expo-font";
 
 export default function LoadStyles() {
   const [loaded] = useFonts({

@@ -1,0 +1,19 @@
+export const fr = {
+  search: "Rechercher",
+  profile: "Profil",
+  account: "Compte",
+  subscriptions: "Abonnements",
+  history: "Historique",
+  inviteFriends: "Inviter des amis",
+  settings: "Paramètres",
+  help: "Aide",
+  inviteYourFriends: "Invite tes amis !",
+  inviteTextView: "En donnant ce code à ton pote lors de son inscription, chacun recevra 3€ sur son compte \uD83D\uDC40",
+  max10Friends: "Tu peux parrainer jusqu'à 10 personnes !",
+  share: "Partager",
+  theme: "Thème",
+  languages: "Langues",
+  light: "Clair",
+  dark: "Sombre",
+  auto: "Système"
+}

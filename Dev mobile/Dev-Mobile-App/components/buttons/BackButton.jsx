@@ -1,12 +1,11 @@
-import {useContext} from 'react';
 import {TouchableOpacity} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {Colors} from '../styles'
-import ThemeContext from "../../provider/Theme";
+import {useThemeContext} from "../../provider/Theme";
 
 
 export default function BackButton({ onPress }) {
-  const theme = useContext(ThemeContext);
+  const {theme} = useThemeContext();
   return (
     <TouchableOpacity
       style={{

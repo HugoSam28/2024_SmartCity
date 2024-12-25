@@ -5,8 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import { Colors } from "./styles";
-import React, {useContext} from "react";
-import ThemeContext from "../provider/Theme";
+import {useThemeContext} from "../provider/Theme";
 import { View, Text } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Account from "../screens/profileScreens/Account";
@@ -16,13 +15,15 @@ import InviteFriends from "../screens/profileScreens/InviteFriends";
 import Settings from "../screens/profileScreens/Settings";
 import Help from "../screens/profileScreens/Help";
 import ProfileMenu from "../screens/profileScreens/Profile";
+import {useLanguageContext} from "../provider/LanguageContext";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 export function MainTabs() {
-  const theme = useContext(ThemeContext);
+  const {theme} = useThemeContext();
   const stylesColors = Colors(theme);
+  const {i18n} = useLanguageContext();
 
   const screenOptions = {
     headerShown: false,
@@ -69,7 +70,7 @@ export function MainTabs() {
                     fontFamily: focused ? 'RobotoMonoBold' : 'RobotoMono',
                     color: focused ? stylesColors.accentColor : stylesColors.iconColor,
                   }}
-                >Search</Text>
+                >{i18n.t('search')}</Text>
               ),
               tabBarIcon: ({focused}) => {
                 return (
@@ -95,7 +96,7 @@ export function MainTabs() {
                     fontFamily: focused ? 'RobotoMonoBold' : 'RobotoMono',
                     color: focused ? stylesColors.accentColor : stylesColors.iconColor,
                   }}
-                >Profile</Text>
+                >{i18n.t('profile')}</Text>
               ),
               tabBarIcon: ({focused}) => {
                 return (
@@ -116,34 +117,32 @@ export default function TabsMenu() {
     <NavigationContainer>
       <Stack.Navigator id='Profile' screenOptions={{ headerShown: false }}>
         <Stack.Screen
-          name='tab'
+          name='Tab'
           component={MainTabs}
         />
         <Stack.Screen
-          name='account'
+          name='Account'
           component={Account}
         />
         <Stack.Screen
-          name='susbscriptions'
+          name='Susbscriptions'
           component={Subscriptions}
         />
         <Stack.Screen
-          name='history'
+          name='History'
           component={History}
         />
         <Stack.Screen
-          name='inviteFriends'
+          name='InviteFriends'
           component={InviteFriends}
         />
         <Stack.Screen
-          name='settings'
+          name='Settings'
           component={Settings}
-          options={{tabBarStyle: { display: 'none' }}}
         />
         <Stack.Screen
-          name='help'
+          name='Help'
           component={Help}
-          options={{tabBarStyle: { display: 'none' }}}
         />
       </Stack.Navigator>
     </NavigationContainer>

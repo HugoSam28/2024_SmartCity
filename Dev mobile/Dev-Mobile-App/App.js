@@ -1,18 +1,16 @@
 import TabsMenu from "./components/TabsMenu";
-import { useColorScheme } from "react-native";
-import ThemeContext from "./provider/Theme";
+import {ThemeProvider} from "./provider/Theme";
 import LoadStyles from "./components/styles";
-import {PaperProvider} from "react-native-paper";
+import {LanguageProvider} from "./provider/LanguageContext";
 
 export default function App() {
-  const theme = useColorScheme();
   return (
-    <PaperProvider>
-      <ThemeContext.Provider value={theme}>
+    <LanguageProvider>
+      <ThemeProvider>
         <LoadStyles/>
         <TabsMenu/>
-      </ThemeContext.Provider>
-    </PaperProvider>
+      </ThemeProvider>
+    </LanguageProvider>
   );
 }
 

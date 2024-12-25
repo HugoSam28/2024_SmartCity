@@ -1,21 +1,22 @@
-import React, {useContext} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {SafeAreaView} from "react-native-safe-area-context"; // Utilisation des icônes d'Ionicons
 import { GlobalStyles, Colors } from "../../components/styles";
-import ThemeContext from "../../provider/Theme";
-
+import {useThemeContext} from "../../provider/Theme";
+import {useLanguageContext} from "../../provider/LanguageContext";
 
 export default function ProfileMenu({ navigation }) {
+  const {i18n} = useLanguageContext();
+
   const menuItems = [
-    { icon: 'person-outline', label: 'Compte', screen: 'account' },
-    { icon: 'list-outline', label: 'Abonnements', screen: 'subscriptions' },
-    { icon: 'car-outline', label: 'Historique', screen: 'history' },
-    { icon: 'person-add-outline', label: 'Inviter des amis', screen: 'inviteFriends' },
-    { icon: 'settings-outline', label: 'Paramètres', screen: 'settings' },
-    { icon: 'help-circle-outline', label: 'Aide', screen: 'help' },
+    { icon: 'person-outline', label: i18n.t('account'), screen: 'Account' },
+    { icon: 'list-outline', label: i18n.t('subscriptions'), screen: 'Subscriptions' },
+    { icon: 'car-outline', label: i18n.t('history'), screen: 'History' },
+    { icon: 'person-add-outline', label: i18n.t('inviteFriends'), screen: 'InviteFriends' },
+    { icon: 'settings-outline', label: i18n.t('settings'), screen: 'Settings' },
+    { icon: 'help-circle-outline', label: i18n.t('help'), screen: 'Help' },
   ];
-  const theme = useContext(ThemeContext);
+  const {theme} = useThemeContext();
   const styles = GlobalStyles(theme);
 
   return (

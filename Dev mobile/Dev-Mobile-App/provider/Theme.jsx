@@ -1,8 +1,30 @@
-import { createContext } from 'react';
+import {createContext, useState, useEffect, useContext} from 'react';
+import { useColorScheme } from 'react-native';
 
-const ThemeContext = createContext('light');
+const ThemeContext = createContext({});
 
-export default ThemeContext;
+export const ThemeProvider = ({ children }) => {
+  const systemTheme = useColorScheme();
+  const [userThemeChoice, setUserThemeChoice] = useState('auto');
+  const [currentTheme, setCurrentTheme] = useState('');
+
+  useEffect(() => {
+    if (userThemeChoice === 'auto') {
+      setCurrentTheme(systemTheme);
+    } else {
+      setCurrentTheme(userThemeChoice);
+    }
+  }, [userThemeChoice, systemTheme]);
+
+  return (
+    <ThemeContext.Provider value={{ theme: currentTheme, userThemeChoice, setTheme: setUserThemeChoice }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+export const useThemeContext = () => useContext(ThemeContext);
+
 
 /*
  !!!!!! Comment appliquer le theme :
@@ -12,7 +34,7 @@ import { useContext } from "react";
 import ThemeContext from "../provider/Theme";
 
 export const myComponent(){
-  const theme = useContext(ThemeContext);
+  const {theme} = useThemeContext();
   const styles = GlobalStyles(theme);
 
   return (

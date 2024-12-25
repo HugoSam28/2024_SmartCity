@@ -1,6 +1,6 @@
 import { Colors } from "./styles";
-import { useContext, useState } from "react";
-import ThemeContext from "../provider/Theme";
+import {useState} from "react";
+import {useThemeContext} from "../provider/Theme";
 import { StyleSheet } from "react-native";
 import { SegmentedButtons } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -8,7 +8,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function MapListSwitch({screen}) {
-  const theme = useContext(ThemeContext);
+  const {theme} = useThemeContext();
   const styleColors = Colors(theme)
 
   const [screenValue, setScreenValue] = useState(screen);
@@ -17,7 +17,6 @@ export default function MapListSwitch({screen}) {
     selected: styleColors.accentColor,
     notSelected: styleColors.mutedColor,
   }
-
   return (
     <SafeAreaView style={segmentedButtonStyle.container}>
       <SegmentedButtons

@@ -1,11 +1,10 @@
 import {View, Text} from "react-native";
-import {useContext} from "react";
-import ThemeContext from "../../provider/Theme";
+import {useThemeContext} from "../../provider/Theme";
 import {GlobalStyles} from "../../components/styles";
 import BackButton from "../../components/buttons/BackButton";
 
 export default function Account({ navigation }) {
-  const theme = useContext(ThemeContext);
+  const {theme} = useThemeContext();
   const styles = GlobalStyles(theme);
   return (
     <View style={styles.container}>

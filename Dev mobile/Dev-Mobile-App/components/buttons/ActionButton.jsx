@@ -1,12 +1,9 @@
-
 import {Platform, Text, TouchableOpacity} from "react-native";
-import React, {useContext} from "react";
 import {Colors, GlobalStyles} from "../styles";
-import {useTheme} from "react-native-paper";
-import ThemeContext from "../../provider/Theme";
+import {useThemeContext} from "../../provider/Theme";
 
 export default function ActionButton({ onPress, text }) {
-  const theme = useContext(ThemeContext);
+  const {theme} = useThemeContext();
   const styles = GlobalStyles(theme);
   return (
     <TouchableOpacity

@@ -1,16 +1,16 @@
 import { Text, Image, Share, Alert } from "react-native";
-import {useContext} from "react";
-import ThemeContext from "../../provider/Theme";
+import {useThemeContext} from "../../provider/Theme";
 import {Colors, GlobalStyles} from "../../components/styles";
 import BackButton from "../../components/buttons/BackButton";
 import ActionButton from "../../components/buttons/ActionButton";
 import ClipboardToast from "react-native-clipboard-toast";
 import {SafeAreaView} from "react-native-safe-area-context";
+import {useLanguageContext} from "../../provider/LanguageContext";
 
 export default function InviteFriends({ navigation }) {
-  const theme = useContext(ThemeContext);
-
+  const {theme} = useThemeContext();
   const styles = GlobalStyles(theme);
+  const {i18n} = useLanguageContext();
 
   const handleShare = async () => {
     try {
@@ -24,7 +24,7 @@ export default function InviteFriends({ navigation }) {
   }
   return (
     <>
-      <SafeAreaView style={{...styles.container,  alignItems: "center"}}>
+      <SafeAreaView style={{...styles.container, alignItems: "center"}}>
         <BackButton onPress={() => navigation.goBack()} />
 
         <Image
@@ -53,7 +53,7 @@ export default function InviteFriends({ navigation }) {
           textAlign: "center",
           fontSize: 33,
           fontFamily: "RobotoCondensedBold",
-        }}>Invite tes amis !</Text>
+        }}>{i18n.t('inviteYourFriends')}</Text>
         <Text
           style={{
             ...styles.text,
@@ -61,7 +61,7 @@ export default function InviteFriends({ navigation }) {
             fontSize: 16,
             marginTop: 70}}
         >
-          En donnant ce code à ton pote lors de son inscription, chacun recevra 3€ sur son compte 👀
+          {i18n.t('inviteTextView')}
         </Text>
         <ClipboardToast
           textToShow='3XH9S8V2'
@@ -82,13 +82,12 @@ export default function InviteFriends({ navigation }) {
             color: Colors(theme).text
           }}
           accessibilityLabel={"Clique ici pour copier ton code de parrainage"}
-          toastPosition={'top'}
-          toastDuration={2000}
+          toastPosition={'center'}
+          toastDuration={1000}
         />
-        <Text style={{...styles.text, fontSize: 14, postition: 'absolute', bottom: -85, textAlign: 'center', }}>Tu peux parrainer jusqu’à 10 personnes !</Text>
-        <ActionButton onPress={handleShare} text={'Partager'} />
+        <ActionButton onPress={handleShare} text={i18n.t('share')} />
       </SafeAreaView>
-
+      <Text style={{...styles.text, fontSize: 14, postition: 'absolute', bottom: 140, textAlign: 'center', }}>{i18n.t('max10Friends')}</Text>
     </>
   );
 }
