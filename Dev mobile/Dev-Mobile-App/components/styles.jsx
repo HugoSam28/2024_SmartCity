@@ -18,8 +18,9 @@ const lightColors = {
   iconColor: "#000095",                 // Couleur des icones
   mutedColor: "#666666",                // Texte secondaire
   containerBackgroundColor: "#ECF3FF",  // Encadrer
-  containerInArrayColor: "#D3E9FF",     // Bouton dans les encadrer
-  selected: "#D3E9FF",
+  containerInArrayColor: "#e0edff",     // Bouton dans les encadrer
+  selected: "#e0edff",
+  shadowColor: "#5b5b5b",
 }
 const darkColors = {
   backgroundColor: "#1C2335",
@@ -29,6 +30,7 @@ const darkColors = {
   containerBackgroundColor: "#29334D",
   containerInArrayColor: "#333F5E",
   selected: "#333F5E",
+  shadowColor: "#000000",
 
 
 };
@@ -44,6 +46,7 @@ export function Colors(theme){
       containerBackgroundColor: theme === 'light' ? lightColors.containerBackgroundColor : darkColors.containerBackgroundColor,
       containerInArrayColor: theme === 'light' ? lightColors.containerInArrayColor : darkColors.containerInArrayColor,
       selected: theme === 'light' ? lightColors.selected : darkColors.selected,
+      shadowColor: theme === 'light' ? lightColors.shadowColor : darkColors.shadowColor,
     }
   );
 }

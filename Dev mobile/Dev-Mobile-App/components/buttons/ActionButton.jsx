@@ -10,8 +10,8 @@ export default function ActionButton({ onPress, text }) {
       style={{
         position: "absolute",
         bottom: Platform.OS === "ios" ? 50 : 45,
-        height: 60,
         left:26,
+        height: 60,
         width: '100%',
         backgroundColor: Colors(theme).accentColor,
         borderRadius: 15,
