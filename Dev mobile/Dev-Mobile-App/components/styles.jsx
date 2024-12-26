@@ -84,6 +84,28 @@ export function GlobalStyles(theme){
       borderRadius: Sizes.small,
       padding: Sizes.small,
       gap: 25,
+    },
+    profileContainer: {
+      height: '100%',
+      backgroundColor: Colors(theme).backgroundColor,
+      padding: Sizes.medium,
+      paddingTop: 95
+    },
+    label: {
+      fontFamily: "RobotoCondensed",
+      fontSize: Sizes.medium,
+      color: Colors(theme).text,
+      marginBottom: 7,
+      marginLeft: 2,
+    },
+    input: {
+      height: Sizes.extraLarge,
+      width: '100%',
+      padding: 10,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: Colors(theme).mutedColor,
+      color: Colors(theme).text,
     }
   });
 }

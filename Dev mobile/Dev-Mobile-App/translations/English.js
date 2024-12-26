@@ -15,5 +15,12 @@ export const en = {
   languages: "Languages",
   light: "Light",
   dark: "Dark",
-  auto: "System"
+  auto: "System",
+  anyQuestion: "Any questions ?",
+  helpText: "Our customer service team will get back to you to help !",
+  lastName: "Last name",
+  firstName: "First name",
+  email: "Email",
+  phoneNumber: "Phone number",
+  submit: "Submit",
 }

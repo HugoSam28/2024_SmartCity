@@ -15,5 +15,13 @@ export const fr = {
   languages: "Langues",
   light: "Clair",
   dark: "Sombre",
-  auto: "Système"
+  auto: "Système",
+  anyQuestion: "Une question ?",
+  helpText: "Notre service client reviendra vers vous pour vous aider !",
+  lastName: "Nom",
+  firstName: "Prénom",
+  email: "Email",
+  phoneNumber: "Numéro de téléphone",
+  submit: "Envoyer",
+
 }

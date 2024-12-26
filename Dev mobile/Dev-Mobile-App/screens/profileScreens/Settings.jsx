@@ -1,4 +1,4 @@
-import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import {useThemeContext} from "../../provider/Theme";
 import {Colors, GlobalStyles} from "../../components/styles";
 import BackButton from "../../components/buttons/BackButton";
