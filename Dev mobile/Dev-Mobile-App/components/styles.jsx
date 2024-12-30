@@ -109,6 +109,29 @@ export function GlobalStyles(theme){
       borderWidth: 1,
       borderColor: Colors(theme).mutedColor,
       color: Colors(theme).text,
+    },
+    button: {
+      height: 30,
+      width: '45%',
+      borderRadius: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    flexContainer: {
+      flexDirection: 'row', // Aligne les enfants horizontalement
+      justifyContent: 'space-between', // Espace entre les composants
+      paddingLeft: 10,
+      paddingRight: 10
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '100%',
+      height: 50,
+      backgroundColor: '#f1f1f1',
+      borderRadius: 8,
+      paddingHorizontal: 10,
+      marginTop: 20,
     }
   });
 }

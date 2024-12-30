@@ -38,4 +38,8 @@ export const en = {
   required: "This field is required",
   finish: "Finish",
   wrongLogin: "Wrong email or password",
+  add: "Add",
+  withdraw: "Withdraw",
+  credit: "Credits",
+  amount: "Amount"
 }

@@ -37,6 +37,10 @@ export const fr = {
   validEmail: 'Veuillez entrer un email valide',
   required: "Ce champ est requis",
   finish: "Terminer",
-  wrongLogin: "Email ou mot de passe incorrect"
+  wrongLogin: "Email ou mot de passe incorrect",
+  add: "Ajouter",
+  withdraw: "Retirer",
+  credit: "Crédits",
+  amount: "Montant"
 
 }

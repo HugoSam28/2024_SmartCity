@@ -1,4 +1,4 @@
-import Scan from '../screens/Scan'
+import Scan from '../screens/Scan';
 import MapListNavigator from './MapListNavigator'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -180,7 +180,7 @@ export default function TabsMenu() {
     () => ({
       register: async (values) => {
         try {
-          await FetchWithRetry('http://192.168.1.54:3267/v1/person/registration', {
+          await FetchWithRetry(`http://${process.env.EXPO_PUBLIC_rAPI_URL}:${process.env.EXPO_PUBLIC_PORT}/v1/person/registration`, {
             method: 'POST',
             headers: {
               "Content-Type": "application/json",
@@ -194,7 +194,7 @@ export default function TabsMenu() {
         dispatch({ type: 'REGISTER' });
       },
       logIn: async (values) => {
-        const token = await FetchWithRetry('http://192.168.1.54:3267/v1/person/login', {
+        const token = await FetchWithRetry(`http://${process.env.EXPO_PUBLIC_API_URL}:${process.env.EXPO_PUBLIC_PORT}/v1/person/login`, {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
@@ -212,6 +212,9 @@ export default function TabsMenu() {
         SecureStore.setItem('userToken', '');
         dispatch({type: 'SIGN_OUT'})
       },
+      userToken: async () => {
+        return await SecureStore.getItemAsync('userToken');       
+      }
     }),
     []
   );

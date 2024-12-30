@@ -1,4 +1,4 @@
-import {View, Text, TextInput, Linking} from "react-native";
+import {View, Text, TextInput, Linking, ScrollView, TouchableOpacity, StyleSheet} from "react-native";
 import {useThemeContext} from "../../provider/Theme";
 import {Colors, GlobalStyles} from "../../components/styles";
 import BackButton from "../../components/buttons/BackButton";
@@ -33,65 +33,85 @@ Kind regards,\n${lastName} ${firstName}, ${email} | ${phoneNumber}`
   }
 
   return (
-    <SafeAreaView style={styles.profileContainer}>
-      <BackButton onPress={() => navigation.goBack()} />
-      <Text style={{...styles.title}}>{i18n.t('anyQuestion')}</Text>
-      <Text style={{...styles.text, marginTop:10, color: Colors(theme).mutedColor}}>
-        {i18n.t('helpText')}
-      </Text>
+    <ScrollView style={{backgroundColor: Colors(theme).backgroundColor}}>
+      <SafeAreaView style={styles.profileContainer}>
+        <BackButton onPress={() => navigation.goBack()} />
+        <Text style={{...styles.title}}>{i18n.t('anyQuestion')}</Text>
+        <Text style={{...styles.text, marginTop:10, color: Colors(theme).mutedColor}}>
+          {i18n.t('helpText')}
+        </Text>
 
-      <View style={{...styles.subContainer, paddingTop: 20, marginTop: 30}}>
-        <View>
-          <Text style={styles.label}>{i18n.t('firstName')}</Text>
-          <TextInput
-            name={'firstName'}
-            label={i18n.t('firstName')}
-            placeholder={'John'}
-            style={styles.input}
-            value={firstName}
-            onChangeText={setFirstName}
-            keyboardAppearance={theme}
-          />
+        <View style={{...styles.subContainer, paddingTop: 20, marginTop: 30}}>
+          <View>
+            <Text style={styles.label}>{i18n.t('firstName')}</Text>
+            <TextInput
+              name={'firstName'}
+              label={i18n.t('firstName')}
+              placeholder={'John'}
+              placeholderTextColor={Colors(theme).text}
+              style={styles.input}
+              value={firstName}
+              onChangeText={setFirstName}
+              keyboardAppearance={theme}
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>{i18n.t('lastName')}</Text>
+            <TextInput
+              name={'lastName'}
+              label={i18n.t('lastName')}
+              placeholder={'Smith'}
+              placeholderTextColor={Colors(theme).text}
+              style={styles.input}
+              value={lastName}
+              onChangeText={setLastName}
+              keyboardAppearance={theme}
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>{i18n.t('email')}</Text>
+            <TextInput
+              name={'email'}
+              label={i18n.t('email')}
+              placeholder={'johnsmith@gmail.com'}
+              placeholderTextColor={Colors(theme).text}
+              style={styles.input}
+              value={email}
+              onChangeText={setEmail}
+              keyboardAppearance={theme}
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>{i18n.t('phoneNumber')}</Text>
+            <TextInput
+              name={'phoneNumber'}
+              label={i18n.t('phoneNumber')}
+              placeholder={'+32123456789'}
+              placeholderTextColor={Colors(theme).text}
+              style={styles.input}
+              value={phoneNumber}
+              keyboardType={'phone-pad'}
+              onChangeText={setPhoneNumber}
+              keyboardAppearance={theme}
+            />
+          </View>
         </View>
-        <View>
-          <Text style={styles.label}>{i18n.t('lastName')}</Text>
-          <TextInput
-            name={'lastName'}
-            label={i18n.t('lastName')}
-            placeholder={'Smith'}
-            style={styles.input}
-            value={lastName}
-            onChangeText={setLastName}
-            keyboardAppearance={theme}
-          />
-        </View>
-        <View>
-          <Text style={styles.label}>{i18n.t('email')}</Text>
-          <TextInput
-            name={'email'}
-            label={i18n.t('email')}
-            placeholder={'johnsmith@gmail.com'}
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            keyboardAppearance={theme}
-          />
-        </View>
-        <View>
-          <Text style={styles.label}>{i18n.t('phoneNumber')}</Text>
-          <TextInput
-            name={'phoneNumber'}
-            label={i18n.t('phoneNumber')}
-            placeholder={'+32123456789'}
-            style={styles.input}
-            value={phoneNumber}
-            keyboardType={'phone-pad'}
-            onChangeText={setPhoneNumber}
-            keyboardAppearance={theme}
-          />
-        </View>
-      </View>
-      <ActionButton onPress={openDefaultMailApp} text={i18n.t('submit')} />
-    </SafeAreaView>
+        <ActionButton onPress={openDefaultMailApp}  />
+        <TouchableOpacity style={{...loginStyles.button, backgroundColor: Colors(theme).accentColor, marginTop: 40}} onPress={openDefaultMailApp}>
+          <Text>{i18n.t('submit')}</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </ScrollView>
   );
 }
+
+const loginStyles = StyleSheet.create({
+  button: {
+      height: 50,
+      width: '100%',
+      borderRadius: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginVertical:20
+    }
+  })

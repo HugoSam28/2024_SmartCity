@@ -101,13 +101,14 @@ export default function Register({navigation}) {
           <>
             <Text style={{...styles.label, marginBottom: -10}}>{i18n.t('firstName')}</Text>
             <View style={{
-              ...loginStyles.inputContainer,
+              ...styles.inputContainer,
               backgroundColor: Colors(theme).containerBackgroundColor
             }}>
               <Ionicons name="person-outline" color={Colors(theme).iconColor} size={25} style={loginStyles.icon} />
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="John"
+                placeholderTextColor={Colors(theme).text}
                 onChangeText={handleChange('firstName')}
                 onBlur={handleBlur('firstName')}
                 value={values.firstName}
@@ -119,13 +120,14 @@ export default function Register({navigation}) {
 
             <Text style={{...styles.label, marginTop: 20, marginBottom: -10}}>{i18n.t('lastName')}</Text>
             <View style={{
-              ...loginStyles.inputContainer,
+              ...styles.inputContainer,
               backgroundColor: Colors(theme).containerBackgroundColor
             }}>
               <Ionicons name="person-outline" color={Colors(theme).iconColor} size={25} style={loginStyles.icon} />
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="Smith"
+                placeholderTextColor={Colors(theme).text}
                 onChangeText={handleChange('lastName')}
                 onBlur={handleBlur('lastName')}
                 value={values.lastName}
@@ -137,13 +139,14 @@ export default function Register({navigation}) {
 
             <Text style={{...styles.label, marginTop: 20, marginBottom: -10}}>{i18n.t('email')}</Text>
             <View style={{
-              ...loginStyles.inputContainer,
+              ...styles.inputContainer,
               backgroundColor: Colors(theme).containerBackgroundColor
             }}>
               <Ionicons name="mail-outline" color={Colors(theme).iconColor} size={25} style={loginStyles.icon} />
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="john.smith@gmail.com"
+                placeholderTextColor={Colors(theme).text}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 onChangeText={handleChange('email')}
@@ -157,13 +160,14 @@ export default function Register({navigation}) {
 
             <Text style={{...styles.label, marginTop: 20, marginBottom: -10}}>{i18n.t('password')}</Text>
             <View style={{
-              ...loginStyles.inputContainer,
+              ...styles.inputContainer,
               backgroundColor: Colors(theme).containerBackgroundColor
             }}>
               <Ionicons name="lock-closed-outline" color={Colors(theme).iconColor} size={25} style={loginStyles.icon} />
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="Strong.passw0rd"
+                placeholderTextColor={Colors(theme).text}
                 secureTextEntry
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
@@ -176,13 +180,14 @@ export default function Register({navigation}) {
 
             <Text style={{...styles.label, marginTop: 20, marginBottom: -10}}>{i18n.t('phoneNumber')}</Text>
             <View style={{
-              ...loginStyles.inputContainer,
+              ...styles.inputContainer,
               backgroundColor: Colors(theme).containerBackgroundColor
             }}>
               <Ionicons name="call-outline" color={Colors(theme).iconColor} size={25} style={loginStyles.icon} />
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="+32123456789"
+                placeholderTextColor={Colors(theme).text}
                 keyboardType={'phone-pad'}
                 onChangeText={handleChange('phoneNumber')}
                 onBlur={handleBlur('phoneNumber')}
@@ -195,7 +200,7 @@ export default function Register({navigation}) {
 
             <Text style={{...styles.label, marginTop: 20, marginBottom: -10}}>{i18n.t('birthday')}</Text>
             <View style={{
-              ...loginStyles.inputContainer,
+              ...styles.inputContainer,
               backgroundColor: Colors(theme).containerBackgroundColor
             }}>
               <Ionicons name="calendar-outline" color={Colors(theme).iconColor} size={25} style={loginStyles.icon} />
@@ -211,6 +216,7 @@ export default function Register({navigation}) {
                   flex:1,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  backgroundColor:'rgba(28, 35, 53, 0.75)'
                 }}>
                   <View style={{
                     margin: 20,
@@ -252,7 +258,7 @@ export default function Register({navigation}) {
                       }}
                       onPress={() => setOpenModal(false)}
                     >
-                      <Text style={{...styles.subtitle, fontSize:18, color: '#FAFDFF'}}>{i18n.t('finish')}</Text>
+                      <Text style={{...styles.text, fontSize:18, color: '#FAFDFF'}}>{i18n.t('finish')}</Text>
                     </Pressable>
                   </View>
                 </View>
@@ -270,13 +276,14 @@ export default function Register({navigation}) {
 
             <Text style={{...styles.label, marginTop: 20, marginBottom: -10}}>{i18n.t('referralCode')}</Text>
             <View style={{
-              ...loginStyles.inputContainer,
+              ...styles.inputContainer,
               backgroundColor: Colors(theme).containerBackgroundColor
             }}>
               <Feather name="users" color={Colors(theme).iconColor} size={25} style={loginStyles.icon} />
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="8404B98D"
+                placeholderTextColor={Colors(theme).text}
                 onChangeText={handleChange('referralCode')}
                 onBlur={handleBlur('referralCode')}
                 value={values.referralCode}
@@ -288,7 +295,7 @@ export default function Register({navigation}) {
 
             <Text style={{...styles.label, marginTop: 20, marginBottom: -10}}>{i18n.t('hasCarLicence')}</Text>
             <View style={{
-              ...loginStyles.inputContainer,
+              ...styles.inputContainer,
               backgroundColor: Colors(theme).containerBackgroundColor
             }}>
               <Ionicons name="car-outline" color={Colors(theme).iconColor} size={25} style={loginStyles.icon} />
@@ -306,7 +313,7 @@ export default function Register({navigation}) {
 
             <Text style={{...styles.label, marginTop: 20, marginBottom: -10}}>{i18n.t('hasMotorbikeLicence')}</Text>
             <View style={{
-              ...loginStyles.inputContainer,
+              ...styles.inputContainer,
               backgroundColor: Colors(theme).containerBackgroundColor
             }}>
               <MaterialIcons name="two-wheeler" color={Colors(theme).iconColor} size={25} style={loginStyles.icon} />
@@ -331,7 +338,7 @@ export default function Register({navigation}) {
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Text style={styles.text}>
-                {i18n.t('haveAccount')} <Text style={loginStyles.loginLink}>{i18n.t('login')}</Text>
+                {i18n.t('haveAccount')} <Text style={loginStyles.loginLink}>{i18n.t('logIn')}</Text>
               </Text>
             </TouchableOpacity>
           </>
@@ -347,16 +354,6 @@ const loginStyles = StyleSheet.create({
     width: 270,
     resizeMode: 'contain',
     marginBottom: 0,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    height: 50,
-    backgroundColor: '#f1f1f1',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    marginTop: 20,
   },
   icon: {
     marginRight: 8,
