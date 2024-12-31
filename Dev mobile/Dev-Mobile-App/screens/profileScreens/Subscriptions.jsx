@@ -1,18 +1,66 @@
-import {View, Text} from "react-native";
+import {View, Text, ScrollView} from "react-native";
 import {useThemeContext} from "../../provider/Theme";
-import {GlobalStyles} from "../../components/styles";
+import {Colors, GlobalStyles} from "../../components/styles";
 import BackButton from "../../components/buttons/BackButton";
+import {SafeAreaView} from "react-native-safe-area-context";
+import FetchWithRetry from "../../API/fetchWithRetry";
+import {useContext, useEffect, useState} from "react";
+import {AuthContext} from "../../provider/AuthContext";
+import {useLanguageContext} from "../../provider/LanguageContext";
 
 export default function Help({ navigation }) {
   const {theme} = useThemeContext();
   const styles = GlobalStyles(theme);
-  return (<View style={styles.container}>
-    <BackButton onPress={() => navigation.goBack()} />
-    <Text style={styles.title}>Pute = Thoams</Text>
-    <Text style={styles.subtitle}>Hugo le Supreme leader</Text>
-    <Text style={styles.text}>
-      Le reste:
-      Le corps du texte (et pas du Christ 👀)
-    </Text>
-  </View>);
+  const {i18n} = useLanguageContext();
+  const {userToken} = useContext(AuthContext);
+  const [data, setData] = useState({});
+  const [error, setError] = useState('');
+  const fetchData = async () => {
+    try {
+      setError('');
+      const items = await FetchWithRetry(
+        `http://${process.env.EXPO_PUBLIC_API_URL}:${process.env.EXPO_PUBLIC_PORT}/v1/personSubscription/getOwnSubscription`,{
+        method: 'GET',
+        headers: {
+          "authorization": `Bearer ${await userToken()}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setData(items);
+      console.log(data)
+    } catch (e) {
+      setError(e.message);
+    }
+  };
+  useEffect(() => {
+    fetchData()
+  }, []);
+
+  return (
+    <ScrollView style={{backgroundColor: Colors(theme).backgroundColor}}>>
+      <SafeAreaView style={styles.profileContainer}>
+        <BackButton onPress={() => navigation.goBack()} />
+        {data.own ? null : (
+          <>
+            <Text style={styles.subtitle}>{i18n.t('own')}</Text>
+            <View style={styles.subContainer}>yolo</View>
+          </>
+        )}
+        <ScrollView
+          style={{ backgroundColor: Colors(theme).backgroundColor }}
+          horizontal
+        >
+          <View>
+            <Text style={styles.title}>Pute = Thoams yuzsdgfuijyuqasgdfuojyhqgsdjklfhgqsdjklfgvqsdjkhhDGDFqjyhsgdfjklqhdgvfkjqhsdfgKJQHSDWFKJQSHYGFJKYH</Text>
+            <Text style={styles.subtitle}>Hugo le Supreme leader</Text>
+            <Text style={styles.text}>
+              Le reste:
+              Le corps du texte (et pas du Christ 👀)
+            </Text>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </ScrollView>
+
+  );
 }
