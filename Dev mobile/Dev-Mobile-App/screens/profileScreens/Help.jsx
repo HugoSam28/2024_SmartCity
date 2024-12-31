@@ -96,22 +96,24 @@ Kind regards,\n${lastName} ${firstName}, ${email} | ${phoneNumber}`
             />
           </View>
         </View>
-        <ActionButton onPress={openDefaultMailApp}  />
-        <TouchableOpacity style={{...loginStyles.button, backgroundColor: Colors(theme).accentColor, marginTop: 40}} onPress={openDefaultMailApp}>
-          <Text>{i18n.t('submit')}</Text>
+        <TouchableOpacity
+          style={{
+            ...buttonStyle.button,
+            backgroundColor: Colors(theme).accentColor,}}
+          onPress={openDefaultMailApp}>
+          <Text style={{...styles.subtitle, color: '#FAFDFF'}}>{i18n.t('submit')}</Text>
         </TouchableOpacity>
       </SafeAreaView>
     </ScrollView>
   );
 }
 
-const loginStyles = StyleSheet.create({
+const buttonStyle = StyleSheet.create({
   button: {
-      height: 50,
-      width: '100%',
-      borderRadius: 8,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginVertical:20
-    }
-  })
+    height: 60,
+    width: '100%',
+    borderRadius: 15,
+    marginTop: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+}})

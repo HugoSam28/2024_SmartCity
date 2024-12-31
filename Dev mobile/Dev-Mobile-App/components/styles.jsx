@@ -118,8 +118,8 @@ export function GlobalStyles(theme){
       alignItems: 'center',
     },
     flexContainer: {
-      flexDirection: 'row', // Aligne les enfants horizontalement
-      justifyContent: 'space-between', // Espace entre les composants
+      flexDirection: 'row',
+      justifyContent: 'space-between',
       paddingLeft: 10,
       paddingRight: 10
     },
