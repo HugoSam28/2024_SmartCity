@@ -41,6 +41,7 @@ export const fr = {
   add: "Ajouter",
   withdraw: "Retirer",
   credit: "Crédits",
-  amount: "Montant"
-
+  amount: "Montant",
+  modify: "Modifier",
+  information: "Informations"
 }

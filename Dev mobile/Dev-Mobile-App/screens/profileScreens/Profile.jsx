@@ -44,6 +44,7 @@ export default function ProfileMenu({ navigation }) {
         setError(e.message);
     }
   };
+  
   useEffect(() => {
     fetchData()
   }, [])

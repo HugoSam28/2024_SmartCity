@@ -41,5 +41,7 @@ export const en = {
   add: "Add",
   withdraw: "Withdraw",
   credit: "Credits",
-  amount: "Amount"
+  amount: "Amount",
+  modify: "Modify",
+  information: "Information"
 }
