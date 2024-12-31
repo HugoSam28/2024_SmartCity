@@ -218,12 +218,12 @@ export default function ProfileMenu({ navigation }) {
               </View>
             </Modal>
               <TouchableOpacity
-                style={{...styles.button, backgroundColor: Colors(theme).containerInArrayColor, flex: '1'}}
+                style={{...styles.button, backgroundColor: Colors(theme).containerInArrayColor}}
                 onPress={() => setOpenModalWithdraw(true)}>
                 <Text style={{...styles.text}}>{i18n.t('withdraw')}</Text>
               </TouchableOpacity>
             <TouchableOpacity
-              style={{...styles.button, backgroundColor: Colors(theme).accentColor,flex: '1', border: '1px solid #fff'}}
+              style={{...styles.button, backgroundColor: Colors(theme).accentColor}}
               onPress={() => setOpenModalAdd(true)}>
               <Text style={{...styles.text, color: '#FAFDFF'}}>{i18n.t('add')}</Text>
             </TouchableOpacity>

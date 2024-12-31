@@ -117,7 +117,7 @@ export function GlobalStyles(theme){
       color: Colors(theme).text,
     },
     button: {
-      height: 30,
+      height: 40,
       width: '45%',
       borderRadius: 8,
       justifyContent: 'center',

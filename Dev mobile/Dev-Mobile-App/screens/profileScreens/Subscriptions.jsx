@@ -7,13 +7,14 @@ import FetchWithRetry from "../../API/fetchWithRetry";
 import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../provider/AuthContext";
 import {useLanguageContext} from "../../provider/LanguageContext";
+import Subscription from "../../components/Subscription";
 
 export default function Help({ navigation }) {
   const {theme} = useThemeContext();
   const styles = GlobalStyles(theme);
   const {i18n} = useLanguageContext();
   const {userToken} = useContext(AuthContext);
-  const [data, setData] = useState({});
+  const [data, setData] = useState({others:[], own:[]});
   const [error, setError] = useState('');
   const fetchData = async () => {
     try {
@@ -40,16 +41,22 @@ export default function Help({ navigation }) {
     <ScrollView style={{backgroundColor: Colors(theme).backgroundColor}}>>
       <SafeAreaView style={styles.profileContainer}>
         <BackButton onPress={() => navigation.goBack()} />
-        {data.own ? null : (
+        {data?.own[0] ? null : (
           <>
             <Text style={styles.subtitle}>{i18n.t('own')}</Text>
             <ScrollView
               style={{ backgroundColor: Colors(theme).backgroundColor }}
               horizontal
             >
-              <View style={styles.subContainer}>
+              <Subscription
+                id={0}
+                label={'Gold'}
+                discount={5}
+                paymentRecurrence={'monthly'}
+                vehicleType={'Voiture'}
+              >
                 <Text>yolo</Text>
-              </View>
+              </Subscription>
               <View style={styles.subContainer}>
                 <Text>yolo</Text>
               </View>
@@ -80,7 +87,7 @@ export default function Help({ navigation }) {
             </ScrollView>
           </>
         )}
-        {!data.others ? null : (
+        {!data?.others[0] ? null : (
           <>
 
           </>
