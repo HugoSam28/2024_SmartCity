@@ -43,22 +43,57 @@ export default function Help({ navigation }) {
         {data.own ? null : (
           <>
             <Text style={styles.subtitle}>{i18n.t('own')}</Text>
-            <View style={styles.subContainer}>yolo</View>
+            <ScrollView
+              style={{ backgroundColor: Colors(theme).backgroundColor }}
+              horizontal
+            >
+              <View style={styles.subContainer}>
+                <Text>yolo</Text>
+              </View>
+              <View style={styles.subContainer}>
+                <Text>yolo</Text>
+              </View>
+              <View style={styles.subContainer}>
+                <Text>yolo</Text>
+              </View>
+              <View style={styles.subContainer}>
+                <Text>yolo</Text>
+              </View>
+              <View style={styles.subContainer}>
+                <Text>yolo</Text>
+              </View>
+              <View style={styles.subContainer}>
+                <Text>yolo</Text>
+              </View>
+              <View style={styles.subContainer}>
+                <Text>yolo</Text>
+              </View>
+              <View style={styles.subContainer}>
+                <Text>yolo</Text>
+              </View>
+              <View style={styles.subContainer}>
+                <Text>yolo</Text>
+              </View>
+              <View style={styles.subContainer}>
+                <Text>yolo</Text>
+              </View>
+            </ScrollView>
           </>
         )}
-        <ScrollView
-          style={{ backgroundColor: Colors(theme).backgroundColor }}
-          horizontal
-        >
+        {!data.others ? null : (
+          <>
+            
+          </>
+        )}
+
           <View>
-            <Text style={styles.title}>Pute = Thoams yuzsdgfuijyuqasgdfuojyhqgsdjklfhgqsdjklfgvqsdjkhhDGDFqjyhsgdfjklqhdgvfkjqhsdfgKJQHSDWFKJQSHYGFJKYH</Text>
+            <Text style={styles.title}>Pute = Thoams</Text>
             <Text style={styles.subtitle}>Hugo le Supreme leader</Text>
             <Text style={styles.text}>
               Le reste:
               Le corps du texte (et pas du Christ 👀)
             </Text>
           </View>
-        </ScrollView>
       </SafeAreaView>
     </ScrollView>
 
