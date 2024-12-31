@@ -5,7 +5,6 @@ import BackButton from "../../components/buttons/BackButton";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {useLanguageContext} from "../../provider/LanguageContext";
 import {useState} from "react";
-import ActionButton from "../../components/buttons/ActionButton";''
 
 export default function Help({ navigation }) {
   const {theme} = useThemeContext();
@@ -48,7 +47,7 @@ Kind regards,\n${lastName} ${firstName}, ${email} | ${phoneNumber}`
               name={'firstName'}
               label={i18n.t('firstName')}
               placeholder={'John'}
-              placeholderTextColor={Colors(theme).text}
+              placeholderTextColor={Colors(theme).placeholderTextColor}
               style={styles.input}
               value={firstName}
               onChangeText={setFirstName}
@@ -61,7 +60,7 @@ Kind regards,\n${lastName} ${firstName}, ${email} | ${phoneNumber}`
               name={'lastName'}
               label={i18n.t('lastName')}
               placeholder={'Smith'}
-              placeholderTextColor={Colors(theme).text}
+              placeholderTextColor={Colors(theme).placeholderTextColor}
               style={styles.input}
               value={lastName}
               onChangeText={setLastName}
@@ -74,7 +73,7 @@ Kind regards,\n${lastName} ${firstName}, ${email} | ${phoneNumber}`
               name={'email'}
               label={i18n.t('email')}
               placeholder={'johnsmith@gmail.com'}
-              placeholderTextColor={Colors(theme).text}
+              placeholderTextColor={Colors(theme).placeholderTextColor}
               style={styles.input}
               value={email}
               onChangeText={setEmail}
@@ -87,7 +86,7 @@ Kind regards,\n${lastName} ${firstName}, ${email} | ${phoneNumber}`
               name={'phoneNumber'}
               label={i18n.t('phoneNumber')}
               placeholder={'+32123456789'}
-              placeholderTextColor={Colors(theme).text}
+              placeholderTextColor={Colors(theme).placeholderTextColor}
               style={styles.input}
               value={phoneNumber}
               keyboardType={'phone-pad'}
@@ -96,22 +95,24 @@ Kind regards,\n${lastName} ${firstName}, ${email} | ${phoneNumber}`
             />
           </View>
         </View>
-        <ActionButton onPress={openDefaultMailApp}  />
-        <TouchableOpacity style={{...loginStyles.button, backgroundColor: Colors(theme).accentColor, marginTop: 40}} onPress={openDefaultMailApp}>
-          <Text>{i18n.t('submit')}</Text>
+        <TouchableOpacity
+          style={{
+            ...buttonStyle.button,
+            backgroundColor: Colors(theme).accentColor,}}
+          onPress={openDefaultMailApp}>
+          <Text style={{...styles.subtitle, color: '#FAFDFF'}}>{i18n.t('submit')}</Text>
         </TouchableOpacity>
       </SafeAreaView>
     </ScrollView>
   );
 }
 
-const loginStyles = StyleSheet.create({
+const buttonStyle = StyleSheet.create({
   button: {
-      height: 50,
-      width: '100%',
-      borderRadius: 8,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginVertical:20
-    }
-  })
+    height: 60,
+    width: '100%',
+    borderRadius: 15,
+    marginTop: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+}})

@@ -1,5 +1,5 @@
 import {Text, TouchableOpacity, View, ScrollView, Modal, TextInput} from 'react-native';
-import React from 'react';
+import React, {useRef} from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {SafeAreaView} from "react-native-safe-area-context"; // Utilisation des icônes d'Ionicons
 import { GlobalStyles, Colors } from "../../components/styles";
@@ -23,11 +23,12 @@ export default function ProfileMenu({ navigation }) {
   ];
   const [openModalWithdraw, setOpenModalWithdraw] = useState(false);
   const [openModalAdd, setOpenModalAdd] = useState(false);
+  const inputBalanceAdd = useRef();
+  const inputBalanceWithdraw = useRef();
   const {theme} = useThemeContext();
   const styles = GlobalStyles(theme);
   const {logOut, userToken} = React.useContext(AuthContext);
   const [datas, setDatas] = useState([]);
-  const [balanceValue, setBalanceValue] = useState("0");
 
   const fetchData = async () => {
     try {
@@ -43,23 +44,25 @@ export default function ProfileMenu({ navigation }) {
         setError(e.message);
     }
   };
+  
   useEffect(() => {
     fetchData()
   }, [])
 
-  const updateBalance = async () => {
-    try {
-      console.log(parseInt(balanceValue));
-            await FetchWithRetry(`http://${process.env.EXPO_PUBLIC_API_URL}:${process.env.EXPO_PUBLIC_PORT}/v1/person/updateBalance`,{
-            method: 'PATCH',
-            headers: {
-                "authorization": `Bearer ${await userToken()}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({balance:parseInt(balanceValue)}),
+  const updateBalance = async (value) => {
+    if(value){
+      try {
+        await FetchWithRetry(`http://${process.env.EXPO_PUBLIC_API_URL}:${process.env.EXPO_PUBLIC_PORT}/v1/person/updateBalance`,{
+          method: 'PATCH',
+          headers: {
+              "authorization": `Bearer ${await userToken()}`,
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({balance:value < 0 && parseFloat(datas.balance) < value * -1 ? datas.balance * -1: value}),
         });
-    } catch (e) {
-        setError(e.message);
+      } catch (e) {
+          setError(e.message);
+      }
     }
   };
 
@@ -111,7 +114,7 @@ export default function ProfileMenu({ navigation }) {
                 flex:1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor:'rgba(28, 35, 53, 0.75)'
+                backgroundColor:Colors(theme).backGroundOpacityColor
               }}>
                 <View style={{
                   margin: 20,
@@ -129,10 +132,13 @@ export default function ProfileMenu({ navigation }) {
                   }}>
                     <TextInput
                       style={{...styles.text, width: '90%', height:'100%', textAlign:'center'}}
-                      value = {balanceValue}
-                      placeholderTextColor={Colors(theme).text}
+                      placeholder = "10"
+                      placeholderTextColor={Colors(theme).placeholderTextColor}
                       keyboardType={'numeric'}
-                      onChangeText={(value) => {setBalanceValue(value * -1)}}
+                      ref={inputBalanceWithdraw}
+                      onChangeText={text => {
+                        if (inputBalanceWithdraw.current) inputBalanceWithdraw.current.value = text;
+                      }}
                     />
                   </View>
                   <TouchableOpacity
@@ -144,7 +150,8 @@ export default function ProfileMenu({ navigation }) {
                       backgroundColor: Colors(theme).accentColor
                     }}
                     onPress={async () => {
-                      await updateBalance()
+                      setOpenModalWithdraw(false)
+                      await updateBalance(parseFloat((inputBalanceWithdraw.current.value.includes(',') ? inputBalanceWithdraw.current.value.replace(',', '.') : inputBalanceWithdraw.current.value) * -1))
                       await fetchData()
                     }}
                   >
@@ -165,7 +172,7 @@ export default function ProfileMenu({ navigation }) {
                 flex:1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor:'rgba(28, 35, 53, 0.75)'
+                backgroundColor: Colors(theme).backGroundOpacityColor
               }}>
                 <View style={{
                   margin: 20,
@@ -183,10 +190,13 @@ export default function ProfileMenu({ navigation }) {
                   }}>
                     <TextInput
                       style={{...styles.text, width: '90%', height:'100%', textAlign:'center'}}
-                      value={balanceValue}
-                      placeholderTextColor={Colors(theme).text}
+                      placeholder = "10"
+                      placeholderTextColor={Colors(theme).placeholderTextColor}
                       keyboardType={'numeric'}
-                      onChangeText={(value) => {setBalanceValue(value)}}
+                      ref={inputBalanceAdd}
+                      onChangeText={text => {
+                        if (inputBalanceAdd.current) inputBalanceAdd.current.value = text;
+                      }}
                     />
                   </View>
                   <TouchableOpacity
@@ -198,8 +208,8 @@ export default function ProfileMenu({ navigation }) {
                       backgroundColor: Colors(theme).accentColor
                     }}
                     onPress={async () => {
-                      setOpenModalWithdraw(false)
-                      await updateBalance()
+                      setOpenModalAdd(false)
+                      await updateBalance(parseFloat(inputBalanceAdd.current.value.includes(',') ? inputBalanceAdd.current.value.replace(',', '.') : inputBalanceAdd.current.value))
                       await fetchData()
                     }}
                   >
@@ -209,12 +219,12 @@ export default function ProfileMenu({ navigation }) {
               </View>
             </Modal>
               <TouchableOpacity
-                style={{...styles.button, backgroundColor: Colors(theme).containerInArrayColor, flex: '1'}}
+                style={{...styles.button, backgroundColor: Colors(theme).containerInArrayColor}}
                 onPress={() => setOpenModalWithdraw(true)}>
                 <Text style={{...styles.text}}>{i18n.t('withdraw')}</Text>
               </TouchableOpacity>
             <TouchableOpacity
-              style={{...styles.button, backgroundColor: Colors(theme).accentColor,flex: '1', border: '1px solid #fff'}}
+              style={{...styles.button, backgroundColor: Colors(theme).accentColor}}
               onPress={() => setOpenModalAdd(true)}>
               <Text style={{...styles.text, color: '#FAFDFF'}}>{i18n.t('add')}</Text>
             </TouchableOpacity>

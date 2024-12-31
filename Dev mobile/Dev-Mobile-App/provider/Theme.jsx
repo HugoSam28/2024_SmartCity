@@ -31,7 +31,7 @@ export const useThemeContext = () => useContext(ThemeContext);
 
 import { GlobalStyles, Colors } from "../components/styles";
 import { useContext } from "react";
-import ThemeContext from "../provider/Theme";
+import useThemeContext from "../provider/Theme";
 
 export const myComponent(){
   const {theme} = useThemeContext();
