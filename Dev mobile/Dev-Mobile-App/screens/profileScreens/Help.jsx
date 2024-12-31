@@ -5,7 +5,6 @@ import BackButton from "../../components/buttons/BackButton";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {useLanguageContext} from "../../provider/LanguageContext";
 import {useState} from "react";
-import ActionButton from "../../components/buttons/ActionButton";''
 
 export default function Help({ navigation }) {
   const {theme} = useThemeContext();
