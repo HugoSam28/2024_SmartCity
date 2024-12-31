@@ -70,7 +70,7 @@ export default function Login({navigation}) {
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="john.smith@gmail.com"
-                placeholderTextColor={Colors(theme).text}
+                placeholderTextColor={Colors(theme).placeholderTextColor}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 onChangeText={handleChange('email')}
@@ -91,7 +91,7 @@ export default function Login({navigation}) {
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="Strong.passw0rd"
-                placeholderTextColor={Colors(theme).text}
+                placeholderTextColor={Colors(theme).placeholderTextColor}
                 secureTextEntry
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}

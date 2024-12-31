@@ -47,7 +47,7 @@ Kind regards,\n${lastName} ${firstName}, ${email} | ${phoneNumber}`
               name={'firstName'}
               label={i18n.t('firstName')}
               placeholder={'John'}
-              placeholderTextColor={Colors(theme).text}
+              placeholderTextColor={Colors(theme).placeholderTextColor}
               style={styles.input}
               value={firstName}
               onChangeText={setFirstName}
@@ -60,7 +60,7 @@ Kind regards,\n${lastName} ${firstName}, ${email} | ${phoneNumber}`
               name={'lastName'}
               label={i18n.t('lastName')}
               placeholder={'Smith'}
-              placeholderTextColor={Colors(theme).text}
+              placeholderTextColor={Colors(theme).placeholderTextColor}
               style={styles.input}
               value={lastName}
               onChangeText={setLastName}
@@ -73,7 +73,7 @@ Kind regards,\n${lastName} ${firstName}, ${email} | ${phoneNumber}`
               name={'email'}
               label={i18n.t('email')}
               placeholder={'johnsmith@gmail.com'}
-              placeholderTextColor={Colors(theme).text}
+              placeholderTextColor={Colors(theme).placeholderTextColor}
               style={styles.input}
               value={email}
               onChangeText={setEmail}
@@ -86,7 +86,7 @@ Kind regards,\n${lastName} ${firstName}, ${email} | ${phoneNumber}`
               name={'phoneNumber'}
               label={i18n.t('phoneNumber')}
               placeholder={'+32123456789'}
-              placeholderTextColor={Colors(theme).text}
+              placeholderTextColor={Colors(theme).placeholderTextColor}
               style={styles.input}
               value={phoneNumber}
               keyboardType={'phone-pad'}
