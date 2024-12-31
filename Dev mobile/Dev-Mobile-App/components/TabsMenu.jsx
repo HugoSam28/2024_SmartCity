@@ -180,7 +180,7 @@ export default function TabsMenu() {
     () => ({
       register: async (values) => {
         try {
-          await FetchWithRetry(`http://${process.env.EXPO_PUBLIC_rAPI_URL}:${process.env.EXPO_PUBLIC_PORT}/v1/person/registration`, {
+          await FetchWithRetry(`http://${process.env.EXPO_PUBLIC_API_URL}:${process.env.EXPO_PUBLIC_PORT}/v1/person/registration`, {
             method: 'POST',
             headers: {
               "Content-Type": "application/json",
@@ -194,7 +194,6 @@ export default function TabsMenu() {
         dispatch({ type: 'REGISTER' });
       },
       logIn: async (values) => {
-        console.log(`http://${process.env.EXPO_PUBLIC_API_URL}:${process.env.EXPO_PUBLIC_PORT}/v1/person/login`)
         const token = await FetchWithRetry(`http://${process.env.EXPO_PUBLIC_API_URL}:${process.env.EXPO_PUBLIC_PORT}/v1/person/login`, {
           method: 'POST',
           headers: {
