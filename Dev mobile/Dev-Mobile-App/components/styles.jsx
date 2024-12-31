@@ -15,22 +15,26 @@ export default function LoadStyles() {
 const lightColors = {
   backgroundColor: "#FAFDFF",           // Couleur de fond
   text: "#000095",                      // Texte principal
+  placeholderText:"rgba(0, 0, 149, 0.5)",  
   iconColor: "#000095",                 // Couleur des icones
   mutedColor: "#666666",                // Texte secondaire
   containerBackgroundColor: "#ECF3FF",  // Encadrer
   containerInArrayColor: "#e0edff",     // Bouton dans les encadrer
   selected: "#e0edff",
   shadowColor: "#5b5b5b",
+  backgroundOpacity:"rgba(250, 253, 255, 0.75)",
 }
 const darkColors = {
   backgroundColor: "#1C2335",
   text: "#F2F6FF",
+  placeholderText:"rgba(242, 246, 255, 0.5)",
   iconColor: "#F2F6FF",
   mutedColor: "#666666",
   containerBackgroundColor: "#29334D",
   containerInArrayColor: "#333F5E",
   selected: "#333F5E",
   shadowColor: "#000000",
+  backgroundOpacity: "rgba(28, 35, 53, 0.75)",
 
 
 };
@@ -41,12 +45,14 @@ export function Colors(theme){
       accentColor: "#1E5AFF",
       backgroundColor: theme === 'light' ? lightColors.backgroundColor : darkColors.backgroundColor,
       text: theme === 'light' ? lightColors.text : darkColors.text,
+      placeholderTextColor: theme === 'light' ? lightColors.placeholderText : darkColors.placeholderText,
       iconColor: theme === 'light' ? lightColors.iconColor : darkColors.iconColor,
       mutedColor: theme === 'light' ? lightColors.mutedColor : darkColors.mutedColor,
       containerBackgroundColor: theme === 'light' ? lightColors.containerBackgroundColor : darkColors.containerBackgroundColor,
       containerInArrayColor: theme === 'light' ? lightColors.containerInArrayColor : darkColors.containerInArrayColor,
       selected: theme === 'light' ? lightColors.selected : darkColors.selected,
       shadowColor: theme === 'light' ? lightColors.shadowColor : darkColors.shadowColor,
+      backGroundOpacityColor: theme === 'light' ? lightColors.backgroundOpacity : darkColors.backgroundOpacity,
     }
   );
 }

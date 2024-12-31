@@ -108,7 +108,7 @@ export default function Register({navigation}) {
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="John"
-                placeholderTextColor={Colors(theme).text}
+                placeholderTextColor={Colors(theme).placeholderTextColor}
                 onChangeText={handleChange('firstName')}
                 onBlur={handleBlur('firstName')}
                 value={values.firstName}
@@ -127,7 +127,7 @@ export default function Register({navigation}) {
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="Smith"
-                placeholderTextColor={Colors(theme).text}
+                placeholderTextColor={Colors(theme).placeholderTextColor}
                 onChangeText={handleChange('lastName')}
                 onBlur={handleBlur('lastName')}
                 value={values.lastName}
@@ -146,7 +146,7 @@ export default function Register({navigation}) {
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="john.smith@gmail.com"
-                placeholderTextColor={Colors(theme).text}
+                placeholderTextColor={Colors(theme).placeholderTextColor}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 onChangeText={handleChange('email')}
@@ -167,7 +167,7 @@ export default function Register({navigation}) {
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="Strong.passw0rd"
-                placeholderTextColor={Colors(theme).text}
+                placeholderTextColor={Colors(theme).placeholderTextColor}
                 secureTextEntry
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
@@ -187,7 +187,7 @@ export default function Register({navigation}) {
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="+32123456789"
-                placeholderTextColor={Colors(theme).text}
+                placeholderTextColor={Colors(theme).placeholderTextColor}
                 keyboardType={'phone-pad'}
                 onChangeText={handleChange('phoneNumber')}
                 onBlur={handleBlur('phoneNumber')}
@@ -283,7 +283,7 @@ export default function Register({navigation}) {
               <TextInput
                 style={{...styles.text, width: '90%', height:'100%'}}
                 placeholder="8404B98D"
-                placeholderTextColor={Colors(theme).text}
+                placeholderTextColor={Colors(theme).placeholderTextColor}
                 onChangeText={handleChange('referralCode')}
                 onBlur={handleBlur('referralCode')}
                 value={values.referralCode}

@@ -113,7 +113,7 @@ export default function ProfileMenu({ navigation }) {
                 flex:1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor:'rgba(28, 35, 53, 0.75)'
+                backgroundColor:Colors(theme).backGroundOpacityColor
               }}>
                 <View style={{
                   margin: 20,
@@ -132,7 +132,7 @@ export default function ProfileMenu({ navigation }) {
                     <TextInput
                       style={{...styles.text, width: '90%', height:'100%', textAlign:'center'}}
                       placeholder = "10"
-                      placeholderTextColor={Colors(theme).text}
+                      placeholderTextColor={Colors(theme).placeholderTextColor}
                       keyboardType={'numeric'}
                       ref={inputBalanceWithdraw}
                       onChangeText={text => {
@@ -171,7 +171,7 @@ export default function ProfileMenu({ navigation }) {
                 flex:1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor:'rgba(28, 35, 53, 0.75)'
+                backgroundColor: Colors(theme).backGroundOpacityColor
               }}>
                 <View style={{
                   margin: 20,
@@ -190,7 +190,7 @@ export default function ProfileMenu({ navigation }) {
                     <TextInput
                       style={{...styles.text, width: '90%', height:'100%', textAlign:'center'}}
                       placeholder = "10"
-                      placeholderTextColor={Colors(theme).text}
+                      placeholderTextColor={Colors(theme).placeholderTextColor}
                       keyboardType={'numeric'}
                       ref={inputBalanceAdd}
                       onChangeText={text => {
