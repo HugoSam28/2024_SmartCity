@@ -26,7 +26,7 @@ export default function ProfileMenu({ navigation }) {
   const {theme} = useThemeContext();
   const styles = GlobalStyles(theme);
   const {logOut, userToken} = React.useContext(AuthContext);
-  const [datas, setDatas] = useState("test")
+  const [datas, setDatas] = useState([]);
   const [balanceValue, setBalanceValue] = useState("0");
 
   const fetchData = async () => {
@@ -143,9 +143,9 @@ export default function ProfileMenu({ navigation }) {
                       elevation: 2,
                       backgroundColor: Colors(theme).accentColor
                     }}
-                    onPress={() => {
-                      setOpenModalWithdraw(false)
-                      updateBalance()
+                    onPress={async () => {
+                      await updateBalance()
+                      await fetchData()
                     }}
                   >
                     <Text style={{...styles.text, fontSize:18, color: '#FAFDFF'}}>{i18n.t('withdraw')}</Text>
@@ -197,9 +197,10 @@ export default function ProfileMenu({ navigation }) {
                       elevation: 2,
                       backgroundColor: Colors(theme).accentColor
                     }}
-                    onPress={() => {
+                    onPress={async () => {
                       setOpenModalWithdraw(false)
-                      updateBalance()
+                      await updateBalance()
+                      await fetchData()
                     }}
                   >
                     <Text style={{...styles.text, fontSize:18, color: '#FAFDFF'}}>{i18n.t('add')}</Text>

@@ -4,6 +4,7 @@ import {Colors, GlobalStyles} from "../../components/styles";
 import BackButton from "../../components/buttons/BackButton";
 import ActionButton from "../../components/buttons/ActionButton";
 import ClipboardToast from "react-native-clipboard-toast";
+import {AuthContext} from "../../provider/AuthContext";     
 import {SafeAreaView} from "react-native-safe-area-context";
 import {useLanguageContext} from "../../provider/LanguageContext";
 
@@ -11,17 +12,38 @@ export default function InviteFriends({ navigation }) {
   const {theme} = useThemeContext();
   const styles = GlobalStyles(theme);
   const {i18n} = useLanguageContext();
+  const {userToken} = React.useContext(AuthContext);
+  const [datas, setDatas] = useState([]);
 
   const handleShare = async () => {
     try {
       await Share.share({
-        message: `J'ai une superbe offre pour toi ! Inscris toi vite chez ShareCrash avec mon code de parrainage (3XH9S8V2), et démarre avec 3€ sur ton compte!\nhttps://scharecrash.com/register`
+        message: `J'ai une superbe offre pour toi ! Inscris toi vite chez ShareCrash avec mon code de parrainage (${datas.referral_code}), et démarre avec 3€ sur ton compte!\nhttps://scharecrash.com/register`
       })
     }
     catch (error) {
       Alert.alert(error.message);
     }
   }
+
+  const fetchData = async () => {
+    try {
+        const items = await FetchWithRetry(`http://${process.env.EXPO_PUBLIC_API_URL}:${process.env.EXPO_PUBLIC_PORT}/v1/person/porfile`,{
+            method: 'GET',
+            headers: {
+                "authorization": `Bearer ${await userToken()}`,
+                "Content-Type": "application/json",
+            },
+        });
+        setDatas(items);
+    } catch (e) {
+        setError(e.message);
+    }
+  };
+  useEffect(() => {
+    fetchData()
+  }, [])
+
   return (
     <>
       <SafeAreaView style={{...styles.container, alignItems: "center"}}>
@@ -64,8 +86,8 @@ export default function InviteFriends({ navigation }) {
           {i18n.t('inviteTextView')}
         </Text>
         <ClipboardToast
-          textToShow='3XH9S8V2'
-          textToCopy='3XH9S8V2'
+          textToShow={datas.referral_code}
+          textToCopy={datas.referral_code}
           toastText='Copié !'
           containerStyle={{
             marginTop: 90,
