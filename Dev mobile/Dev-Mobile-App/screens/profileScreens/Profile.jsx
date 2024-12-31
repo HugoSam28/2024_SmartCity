@@ -49,15 +49,14 @@ export default function ProfileMenu({ navigation }) {
 
   const updateBalance = async () => {
     try {
-      console.log(parseInt(balanceValue));
-            await FetchWithRetry(`http://${process.env.EXPO_PUBLIC_API_URL}:${process.env.EXPO_PUBLIC_PORT}/v1/person/updateBalance`,{
-            method: 'PATCH',
-            headers: {
-                "authorization": `Bearer ${await userToken()}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({balance:parseInt(balanceValue)}),
-        });
+      await FetchWithRetry(`http://${process.env.EXPO_PUBLIC_API_URL}:${process.env.EXPO_PUBLIC_PORT}/v1/person/updateBalance`,{
+        method: 'PATCH',
+        headers: {
+            "authorization": `Bearer ${await userToken()}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({balance:parseInt(balanceValue) < 0 && datas.balance < parseInt(balanceValue) * -1 ? datas.balance * -1: balanceValue}),
+      });
     } catch (e) {
         setError(e.message);
     }
@@ -144,6 +143,7 @@ export default function ProfileMenu({ navigation }) {
                       backgroundColor: Colors(theme).accentColor
                     }}
                     onPress={async () => {
+                      setOpenModalWithdraw(false)
                       await updateBalance()
                       await fetchData()
                     }}
@@ -198,7 +198,7 @@ export default function ProfileMenu({ navigation }) {
                       backgroundColor: Colors(theme).accentColor
                     }}
                     onPress={async () => {
-                      setOpenModalWithdraw(false)
+                      setOpenModalAdd(false)
                       await updateBalance()
                       await fetchData()
                     }}

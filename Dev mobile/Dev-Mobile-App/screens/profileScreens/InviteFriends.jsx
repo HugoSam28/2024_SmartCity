@@ -1,3 +1,4 @@
+import React from 'react';
 import { Text, Image, Share, Alert } from "react-native";
 import {useThemeContext} from "../../provider/Theme";
 import {Colors, GlobalStyles} from "../../components/styles";
@@ -7,6 +8,9 @@ import ClipboardToast from "react-native-clipboard-toast";
 import {AuthContext} from "../../provider/AuthContext";     
 import {SafeAreaView} from "react-native-safe-area-context";
 import {useLanguageContext} from "../../provider/LanguageContext";
+import FetchWithRetry from "../../API/fetchWithRetry";
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 export default function InviteFriends({ navigation }) {
   const {theme} = useThemeContext();
