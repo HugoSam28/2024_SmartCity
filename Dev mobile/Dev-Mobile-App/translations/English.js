@@ -43,5 +43,6 @@ export const en = {
   credit: "Credits",
   amount: "Amount",
   modify: "Modify",
-  information: "Information"
+  information: "Information",
+  refresh : "Refresh",
 }

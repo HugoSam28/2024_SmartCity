@@ -138,6 +138,20 @@ export function GlobalStyles(theme){
       borderRadius: 8,
       paddingHorizontal: 10,
       marginTop: 20,
+    },
+    refreshButton: {
+      position: 'absolute',
+      bottom: 50,
+      right: 20,
+      backgroundColor: '#007AFF',
+      padding: 10,
+      borderRadius: 5,
+      zIndex: 100,
+    },
+    refreshButtonText: {
+      color: 'white',
+      fontSize: 16,
+      fontWeight: 'bold',
     }
   });
 }

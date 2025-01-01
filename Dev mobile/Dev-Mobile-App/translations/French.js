@@ -43,5 +43,6 @@ export const fr = {
   credit: "Crédits",
   amount: "Montant",
   modify: "Modifier",
-  information: "Informations"
+  information: "Informations",
+  refresh: "rafraîchir",
 }
